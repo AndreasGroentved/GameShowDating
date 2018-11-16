@@ -2,6 +2,7 @@ package dating.innovative.gameshowdating;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -16,7 +17,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     //DB
     private static final String DATABASE_NAME = "GAMESHOWDATING_CACHEDB";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
 
     //table
     private static final String TABLE_USERS = "users";
@@ -24,6 +25,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     //coloumns
     private static final String KEY_USER_ID = "id";
     private static final String KEY_USER_NAME = "userName";
+    private static final String KEY_USER_PASSWORD = "password";
     private static final String KEY_USER_PROFILE_PICTURE = "profilePictureURL";
     private static final String KEY_USER_PROFILE_BIOGRAPHY = "biography";
     private static final String KEY_USER_VIDEO_1 = "firstVideoURL";
@@ -62,8 +64,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USERS + "(" +
-                KEY_USER_ID + " INTEGER PRIMARY KEY," +
+                KEY_USER_ID + " TEXT PRIMARY KEY," +
                 KEY_USER_NAME + " TEXT," +
+                KEY_USER_PASSWORD + " TEXT, " +
                 KEY_USER_PROFILE_PICTURE + " TEXT," +
                 KEY_USER_PROFILE_BIOGRAPHY + " TEXT," +
                 KEY_USER_VIDEO_1 + " TEXT," +
@@ -93,6 +96,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put(KEY_USER_ID,id);
             values.put(KEY_USER_NAME, user.username);
+            values.put(KEY_USER_PASSWORD, user.password);
             values.put(KEY_USER_PROFILE_PICTURE, user.profileImage);
             values.put(KEY_USER_PROFILE_BIOGRAPHY, user.biography);
             values.put(KEY_USER_VIDEO_1, user.video1);
@@ -106,5 +110,39 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         } finally {
             db.endTransaction();
         }
+    }
+
+    public User getUserByUsername(String username){
+        SQLiteDatabase db = getReadableDatabase();
+
+        String USERNAME_GET_QUERY = "SELECT * FROM " + TABLE_USERS + " WHERE " + KEY_USER_NAME + "='" + username + "';";
+        User user = new User();
+
+        Cursor cursor = db.rawQuery(USERNAME_GET_QUERY, null);
+        try {
+            if(cursor.moveToFirst()){
+                do {
+                    user.username = cursor.getString(cursor.getColumnIndex(KEY_USER_NAME));
+                    user.password = cursor.getString(cursor.getColumnIndex(KEY_USER_PASSWORD));
+                    user.biography = cursor.getString(cursor.getColumnIndex(KEY_USER_PROFILE_BIOGRAPHY));
+                    user.profileImage = cursor.getString(cursor.getColumnIndex(KEY_USER_PROFILE_PICTURE));
+                    user.video1 = cursor.getString(cursor.getColumnIndex(KEY_USER_VIDEO_1));
+                    user.video2 = cursor.getString(cursor.getColumnIndex(KEY_USER_VIDEO_2));
+                    user.video3 = cursor.getString(cursor.getColumnIndex(KEY_USER_VIDEO_3));
+                } while(cursor.moveToNext());
+            }
+        } catch(Exception e){
+            e.printStackTrace();
+        } finally {
+            if(cursor != null && !cursor.isClosed()){
+                cursor.close();
+            }
+        }
+        if(user.username != null){
+            return user;
+        } else {
+            return null;
+        }
+
     }
 }

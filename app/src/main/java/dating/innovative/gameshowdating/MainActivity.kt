@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         var button = findViewById<Button>(R.id.switchScreen)
         button.setOnClickListener{
-            val intent = Intent(applicationContext, ProfileActivity::class.java)
+            val intent = Intent(applicationContext, LoginActivity::class.java)
             startActivity(intent)
         }
     }
