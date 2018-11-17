@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+                                             android:layout_height="match_parent">
+
+    <EditText
+            android:layout_width="351dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/usernameRegisterEditText" app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="98dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
+            android:layout_marginBottom="29dp" app:layout_constraintBottom_toTopOf="@+id/passwordRegisterEditText"
+            android:hint="Username" android:layout_marginEnd="16dp" app:layout_constraintEnd_toEndOf="parent"/>
+    <EditText
+            android:layout_width="352dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/passwordRegisterEditText"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
+            app:layout_constraintHorizontal_bias="0.0" android:layout_marginTop="43dp"
+            app:layout_constraintTop_toBottomOf="@+id/usernameRegisterEditText" android:layout_marginBottom="29dp"
+            app:layout_constraintBottom_toTopOf="@+id/confirmPasswordEditText" android:hint="Password"
+            android:password="true"/>
+    <EditText
+            android:layout_width="352dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/confirmPasswordEditText"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
+            app:layout_constraintHorizontal_bias="0.0" android:layout_marginTop="43dp"
+            app:layout_constraintTop_toBottomOf="@+id/passwordRegisterEditText" android:layout_marginBottom="189dp"
+            app:layout_constraintBottom_toBottomOf="parent" android:hint="Confirm Password" android:password="true"/>
+    <Button
+            android:text="Register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/registerRegisterButton" android:layout_marginTop="29dp"
+            app:layout_constraintTop_toBottomOf="@+id/confirmPasswordEditText"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="148dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="148dp"
+            android:layout_marginBottom="98dp" app:layout_constraintBottom_toBottomOf="parent"
+            android:backgroundTint="@color/colorPrimary" android:textAppearance="@style/TextAppearance.AppCompat"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/errorRegisterTextLabel" app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="31dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="162dp" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="164dp" android:layout_marginBottom="34dp"
+            app:layout_constraintBottom_toTopOf="@+id/usernameRegisterEditText"/>
+</android.support.constraint.ConstraintLayout>
