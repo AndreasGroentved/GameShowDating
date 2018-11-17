@@ -1,12 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-    <TextView
-            android:text="Testing screen"
+    <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" tools:layout_editor_absoluteY="105dp"
-            tools:layout_editor_absoluteX="134dp" android:id="@+id/testText" android:layout_centerHorizontal="true"
-            android:layout_alignParentTop="true" android:layout_marginTop="108dp"/>
+            android:layout_height="226dp" tools:srcCompat="@drawable/defaultprofilepic"
+            android:layout_alignParentStart="true" android:layout_marginStart="19dp"
+            android:layout_alignParentTop="true" android:id="@+id/profileImage" android:layout_marginTop="19dp"
+            android:layout_alignParentBottom="true" android:layout_marginBottom="266dp"
+            android:layout_alignParentEnd="true" android:layout_marginEnd="19dp"
+            app:srcCompat="@drawable/defaultprofilepic"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/profileName"
+            android:textColor="@android:color/black"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="216dp" android:layout_centerHorizontal="true"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true" android:id="@+id/profileBiography"
+            android:layout_marginBottom="151dp"
+            android:textColor="@android:color/black" android:layout_centerHorizontal="true"/>
+    <Button
+            android:text="Video 1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_alignParentBottom="true"
+            android:id="@+id/profileVideo1Button"
+            android:layout_marginBottom="19dp" android:layout_alignParentStart="true"
+            android:layout_marginStart="19dp" android:textAppearance="@style/TextAppearance.AppCompat"
+            android:backgroundTint="@color/colorPrimary"/>
+    <Button
+            android:text="Video 2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_alignParentBottom="true"
+            android:id="@+id/profileVideo2Button"
+            android:layout_alignStart="@+id/profileImage" android:layout_marginBottom="19dp"
+            android:layout_marginStart="115dp" android:textAppearance="@style/TextAppearance.AppCompat"
+            android:backgroundTint="@color/colorPrimary"/>
+    <Button
+            android:text="Video 3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_alignParentBottom="true"
+            android:id="@+id/profileVideo3Button"
+            android:layout_alignStart="@+id/profileImage" android:layout_marginBottom="19dp"
+            android:layout_marginEnd="19dp"
+            android:layout_marginStart="237dp" android:layout_alignParentEnd="true"
+            android:textAppearance="@style/TextAppearance.AppCompat" android:backgroundTint="@color/colorPrimary"/>
+    <TextView
+            android:text="Username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_centerHorizontal="true"
+            android:id="@+id/profileNameLabel"
+            android:textColor="@android:color/black" android:layout_alignParentBottom="true"
+            android:layout_marginBottom="242dp" android:textSize="10sp"/>
+    <TextView
+            android:text="Biography"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/profileBiographyTitle"
+            android:textColor="@android:color/black"
+            android:layout_alignParentBottom="true" android:layout_marginBottom="176dp"
+            android:textAlignment="viewStart" android:layout_centerHorizontal="true" android:textSize="10sp"/>
 </RelativeLayout>

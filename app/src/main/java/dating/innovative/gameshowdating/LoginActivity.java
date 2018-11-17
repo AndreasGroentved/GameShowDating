@@ -33,9 +33,7 @@ public class LoginActivity extends BaseActivity {
 
 
     public void onCreate(Bundle savedInstanceState) {
-        System.out.println("yo");
         super.onCreate(savedInstanceState);
-        System.out.println("yo2");
 
         dbHelper = SQLiteHelper.getSqLiteHelperInstance(getApplicationContext());
 
@@ -58,9 +56,9 @@ public class LoginActivity extends BaseActivity {
             public void onClick(View view) {
                 User user = dbHelper.getUserByUsername(usernameTextField.getText().toString());
                 if (user != null) {
-                    System.out.println(user.toString());
                     if (user.password.equals(passwordTextField.getText().toString())) {
                         Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
+                        i.putExtra("username", user.username);
                         startActivity(i);
                     } else {
                         errorLabel.setText("Incorrect password");
