@@ -1,20 +1,29 @@
 package dating.innovative.gameshowdating;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
-import org.w3c.dom.Text;
 
-public class ProfileActivity extends Activity {
+public class ProfileActivity extends BaseActivity {
 
     TextView testText;
 
     public void onCreate(Bundle onSavedState) {
         super.onCreate(onSavedState);
-        setContentView(R.layout.activity_profile);
 
-        testText = (TextView) findViewById(R.id.testText);
+        testText = findViewById(R.id.testText);
 
     }
 
+    @Override
+    public int getLayout() {
+        return R.layout.activity_profile;
+    }
+
+    @NonNull
+    @Override
+    public Toolbar getToolBar() {
+        return findViewById(R.id.toolbar_profile);
+    }
 }

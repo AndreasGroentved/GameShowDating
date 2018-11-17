@@ -1,14 +1,16 @@
 package dating.innovative.gameshowdating;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class LoginActivity extends Activity {
+import org.jetbrains.annotations.NotNull;
+
+public class LoginActivity extends BaseActivity {
 
     EditText usernameTextField;
     EditText passwordTextField;
@@ -17,17 +19,31 @@ public class LoginActivity extends Activity {
     TextView errorLabel;
     SQLiteHelper dbHelper;
 
-    public void onCreate(Bundle savedInstanceState){
+
+    @NotNull
+    @Override
+    public Toolbar getToolBar() {
+        return findViewById(R.id.toolbar_login);
+    }
+
+    @Override
+    public int getLayout() {
+        return R.layout.activity_login;
+    }
+
+
+    public void onCreate(Bundle savedInstanceState) {
+        System.out.println("yo");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        System.out.println("yo2");
 
         dbHelper = SQLiteHelper.getSqLiteHelperInstance(getApplicationContext());
 
-        usernameTextField = (EditText) findViewById(R.id.usernameEditText);
-        passwordTextField = (EditText) findViewById(R.id.passwordEditText);
-        loginButton = (Button) findViewById(R.id.loginButton);
-        registerButton = (Button) findViewById(R.id.registerButton);
-        errorLabel = (TextView) findViewById(R.id.errorLoginTextView);
+        usernameTextField = findViewById(R.id.usernameEditText);
+        passwordTextField = findViewById(R.id.passwordEditText);
+        loginButton = findViewById(R.id.loginButton);
+        registerButton = findViewById(R.id.registerButton);
+        errorLabel = findViewById(R.id.errorLoginTextView);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,9 +57,9 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View view) {
                 User user = dbHelper.getUserByUsername(usernameTextField.getText().toString());
-                if(user != null){
+                if (user != null) {
                     System.out.println(user.toString());
-                    if(user.password.equals(passwordTextField.getText().toString())) {
+                    if (user.password.equals(passwordTextField.getText().toString())) {
                         Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
                         startActivity(i);
                     } else {
@@ -55,4 +71,6 @@ public class LoginActivity extends Activity {
             }
         });
     }
+
+
 }
