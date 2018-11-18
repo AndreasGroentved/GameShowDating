@@ -50,7 +50,7 @@
             android:layout_marginStart="237dp" android:layout_alignParentEnd="true"
             android:textAppearance="@style/TextAppearance.AppCompat" android:backgroundTint="@color/colorPrimary"/>
     <TextView
-            android:text="Username"
+            android:text="Username, Sex, Age"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:layout_centerHorizontal="true"
             android:id="@+id/profileNameLabel"

@@ -34,7 +34,9 @@ public class ProfileActivity extends BaseActivity {
         video3 = findViewById(R.id.profileVideo3Button);
         dbHelper = SQLiteHelper.getSqLiteHelperInstance(getApplicationContext());
 
-        profileUsername.setText(dbHelper.getUserByUsername(intentFromLastPage.getStringExtra("username")).username);
+        profileUsername.setText(dbHelper.getUserByUsername(intentFromLastPage.getStringExtra("username")).username + ", " +
+        dbHelper.getUserByUsername(intentFromLastPage.getStringExtra("username")).sex + ", " +
+        dbHelper.getUserByUsername(intentFromLastPage.getStringExtra("username")).age);
         profileBiography.setText(dbHelper.getUserByUsername(intentFromLastPage.getStringExtra("username")).biography);
 
         video1.setOnClickListener(new View.OnClickListener() {
@@ -79,15 +81,17 @@ public class ProfileActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_profile, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
-            case R.id.action_settings:
-                Toast.makeText(getApplicationContext(), "Yet to do anything", Toast.LENGTH_LONG).show();
+            case R.id.profileLogOut:
+                PreferenceManagerClass.clearUsernamePreference(getApplicationContext());
+                Intent i = new Intent(getApplicationContext(),LoginActivity.class);
+                startActivity(i);
                 return true;
         }
         return false;

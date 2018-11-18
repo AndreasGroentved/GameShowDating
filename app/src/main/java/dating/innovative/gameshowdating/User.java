@@ -11,10 +11,12 @@ public class User {
     public String video1;
     public String video2;
     public String video3;
+    public String sex;
+    public int age;
 
     public User(){}
 
-    public User(String username, String password, String profileImage, String biography, String video1, String video2, String video3) {
+    public User(String username, String password, String profileImage, String biography, String video1, String video2, String video3, String sex, int age) {
         this.username = username;
         this.password = password;
         this.profileImage = profileImage;
@@ -22,6 +24,24 @@ public class User {
         this.video1 = video1;
         this.video2 = video2;
         this.video3 = video3;
+        this.sex = sex;
+        this.age = age;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public String getUsername() {

@@ -1,7 +1,9 @@
 package dating.innovative.gameshowdating;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -37,6 +39,13 @@ public class LoginActivity extends BaseActivity {
 
         dbHelper = SQLiteHelper.getSqLiteHelperInstance(getApplicationContext());
 
+        if(!PreferenceManagerClass.getUsername(getApplicationContext()).isEmpty() &&
+                dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())) != null){
+            Intent i = new Intent(getApplicationContext(),ProfileActivity.class);
+            i.putExtra("username", PreferenceManagerClass.getUsername(getApplicationContext()));
+            startActivity(i);
+        }
+
         usernameTextField = findViewById(R.id.usernameEditText);
         passwordTextField = findViewById(R.id.passwordEditText);
         loginButton = findViewById(R.id.loginButton);
@@ -57,6 +66,7 @@ public class LoginActivity extends BaseActivity {
                 User user = dbHelper.getUserByUsername(usernameTextField.getText().toString());
                 if (user != null) {
                     if (user.password.equals(passwordTextField.getText().toString())) {
+                        PreferenceManagerClass.setUsername(getApplicationContext(),user.username);
                         Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
                         i.putExtra("username", user.username);
                         startActivity(i);

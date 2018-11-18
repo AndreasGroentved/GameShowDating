@@ -17,7 +17,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     //DB
     private static final String DATABASE_NAME = "GAMESHOWDATING_CACHEDB";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
     //table
     private static final String TABLE_USERS = "users";
@@ -31,6 +31,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     private static final String KEY_USER_VIDEO_1 = "firstVideoURL";
     private static final String KEY_USER_VIDEO_2 = "secondVideoURL";
     private static final String KEY_USER_VIDEO_3 = "thridVideoURL";
+    private static final String KEY_USER_SEX = "sex";
+    private static final String KEY_USER_AGE = "age";
 
     //ensure singleton pattern
     public static synchronized SQLiteHelper getSqLiteHelperInstance(Context context){
@@ -71,7 +73,10 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 KEY_USER_PROFILE_BIOGRAPHY + " TEXT," +
                 KEY_USER_VIDEO_1 + " TEXT," +
                 KEY_USER_VIDEO_2 + " TEXT," +
-                KEY_USER_VIDEO_3 + " TEXT" + ")";
+                KEY_USER_VIDEO_3 + " TEXT," +
+                KEY_USER_SEX + " TEXT," +
+                KEY_USER_AGE + " INTEGER" +
+                ")";
         sqLiteDatabase.execSQL(CREATE_USER_TABLE);
     }
 
@@ -102,6 +107,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             values.put(KEY_USER_VIDEO_1, user.video1);
             values.put(KEY_USER_VIDEO_2, user.video2);
             values.put(KEY_USER_VIDEO_3, user.video3);
+            values.put(KEY_USER_SEX, user.sex);
+            values.put(KEY_USER_AGE, user.age);
 
             db.insertOrThrow(TABLE_USERS, null, values);
             db.setTransactionSuccessful();
@@ -129,6 +136,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                     user.video1 = cursor.getString(cursor.getColumnIndex(KEY_USER_VIDEO_1));
                     user.video2 = cursor.getString(cursor.getColumnIndex(KEY_USER_VIDEO_2));
                     user.video3 = cursor.getString(cursor.getColumnIndex(KEY_USER_VIDEO_3));
+                    user.sex = cursor.getString(cursor.getColumnIndex(KEY_USER_SEX));
+                    user.age = cursor.getInt(cursor.getColumnIndex(KEY_USER_AGE));
                 } while(cursor.moveToNext());
             }
         } catch(Exception e){
