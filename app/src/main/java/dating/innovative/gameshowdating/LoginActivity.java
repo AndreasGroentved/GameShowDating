@@ -1,9 +1,7 @@
 package dating.innovative.gameshowdating;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -33,15 +31,19 @@ public class LoginActivity extends BaseActivity {
         return R.layout.activity_login;
     }
 
+    @Override
+    public void setUpToolBar() {
+        setSupportActionBar(getToolBar());
+    }
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         dbHelper = SQLiteHelper.getSqLiteHelperInstance(getApplicationContext());
 
-        if(!PreferenceManagerClass.getUsername(getApplicationContext()).isEmpty() &&
-                dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())) != null){
-            Intent i = new Intent(getApplicationContext(),ProfileActivity.class);
+        if (!PreferenceManagerClass.getUsername(getApplicationContext()).isEmpty() &&
+                dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())) != null) {
+            Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
             i.putExtra("username", PreferenceManagerClass.getUsername(getApplicationContext()));
             startActivity(i);
         }
@@ -66,7 +68,7 @@ public class LoginActivity extends BaseActivity {
                 User user = dbHelper.getUserByUsername(usernameTextField.getText().toString());
                 if (user != null) {
                     if (user.password.equals(passwordTextField.getText().toString())) {
-                        PreferenceManagerClass.setUsername(getApplicationContext(),user.username);
+                        PreferenceManagerClass.setUsername(getApplicationContext(), user.username);
                         Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
                         i.putExtra("username", user.username);
                         startActivity(i);

@@ -23,6 +23,7 @@ public class ProfileActivity extends BaseActivity {
     SQLiteHelper dbHelper;
 
 
+    @Override
     public void onCreate(Bundle onSavedState) {
         super.onCreate(onSavedState);
         final Intent intentFromLastPage = getIntent();
@@ -35,8 +36,8 @@ public class ProfileActivity extends BaseActivity {
         dbHelper = SQLiteHelper.getSqLiteHelperInstance(getApplicationContext());
 
         profileUsername.setText(dbHelper.getUserByUsername(intentFromLastPage.getStringExtra("username")).username + ", " +
-        dbHelper.getUserByUsername(intentFromLastPage.getStringExtra("username")).sex + ", " +
-        dbHelper.getUserByUsername(intentFromLastPage.getStringExtra("username")).age);
+                dbHelper.getUserByUsername(intentFromLastPage.getStringExtra("username")).sex + ", " +
+                dbHelper.getUserByUsername(intentFromLastPage.getStringExtra("username")).age);
         profileBiography.setText(dbHelper.getUserByUsername(intentFromLastPage.getStringExtra("username")).biography);
 
         video1.setOnClickListener(new View.OnClickListener() {
@@ -59,12 +60,12 @@ public class ProfileActivity extends BaseActivity {
         });
     }
 
-    public void checkVideoContent(String videoURL){
-        if(!videoURL.isEmpty()){
+    public void checkVideoContent(String videoURL) {
+        if (!videoURL.isEmpty()) {
             Intent i = new Intent(getApplicationContext(), VideoPlayerActivity.class);
             startActivity(i);
         } else {
-            Toast.makeText(getApplicationContext(),"There is no available video", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "There is no available video", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -80,21 +81,21 @@ public class ProfileActivity extends BaseActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_profile, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch (item.getItemId()){
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.profileLogOut:
                 PreferenceManagerClass.clearUsernamePreference(getApplicationContext());
-                Intent i = new Intent(getApplicationContext(),LoginActivity.class);
+                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(i);
                 return true;
         }
-        return false;
+        return super.onOptionsItemSelected(item);
     }
 
 }
