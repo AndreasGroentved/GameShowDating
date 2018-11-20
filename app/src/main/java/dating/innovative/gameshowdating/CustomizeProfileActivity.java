@@ -42,11 +42,34 @@ public class CustomizeProfileActivity extends Activity {
                     //hvis det virker så tilføj en for hver video også.
                     PreferenceManagerClass.clearRef(getApplicationContext(),PreferenceManagerClass.PREFERENCE_PROFILE_PICTURE);
                 }
+                if(!PreferenceManagerClass.getPreferenceVideo1(getApplicationContext()).isEmpty()){
+                    dbHelper.updateUserVideo1(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),
+                            PreferenceManagerClass.getPreferenceVideo1(getApplicationContext()));
+                }
+                if(!PreferenceManagerClass.getPreferenceVideo2(getApplicationContext()).isEmpty()){
+                    dbHelper.updateUserVideo1(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),
+                            PreferenceManagerClass.getPreferenceVideo2(getApplicationContext()));
+                }
+                if(!PreferenceManagerClass.getPreferenceVideo3(getApplicationContext()).isEmpty()){
+                    dbHelper.updateUserVideo1(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),
+                            PreferenceManagerClass.getPreferenceVideo3(getApplicationContext()));
+                }
                 Intent backToProfile = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(backToProfile);
             }
         });
+        video1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                transitionToVideoSettingScreen(1);
+            }
+        });
     }
 
+    public void transitionToVideoSettingScreen(int videoId){
+        Intent i = new Intent(getApplicationContext(), VideoSettingActivity.class);
+        i.putExtra("videoId", videoId);
+        startActivity(i);
+    }
 
 }

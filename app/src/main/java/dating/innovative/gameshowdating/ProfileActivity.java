@@ -61,6 +61,7 @@ public class ProfileActivity extends BaseActivity {
     public void checkVideoContent(String videoURL){
         if(!videoURL.isEmpty()){
             Intent i = new Intent(getApplicationContext(), VideoPlayerActivity.class);
+            i.putExtra("videoId", R.raw.video);
             startActivity(i);
         } else {
             Toast.makeText(getApplicationContext(),"There is no available video", Toast.LENGTH_LONG).show();
@@ -86,6 +87,7 @@ public class ProfileActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
+        super.onOptionsItemSelected(item);
         switch (item.getItemId()){
             case R.id.profileLogOut:
                 PreferenceManagerClass.clearPreferences(getApplicationContext());
