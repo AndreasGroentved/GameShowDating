@@ -25,7 +25,6 @@ public class ProfileActivity extends BaseActivity {
 
     public void onCreate(Bundle onSavedState) {
         super.onCreate(onSavedState);
-        final Intent intentFromLastPage = getIntent();
         profileUsername = findViewById(R.id.profileName);
         profileBiography = findViewById(R.id.profileBiography);
         profileImage = findViewById(R.id.profileImage);
@@ -34,27 +33,27 @@ public class ProfileActivity extends BaseActivity {
         video3 = findViewById(R.id.profileVideo3Button);
         dbHelper = SQLiteHelper.getSqLiteHelperInstance(getApplicationContext());
 
-        profileUsername.setText(dbHelper.getUserByUsername(intentFromLastPage.getStringExtra("username")).username + ", " +
-        dbHelper.getUserByUsername(intentFromLastPage.getStringExtra("username")).sex + ", " +
-        dbHelper.getUserByUsername(intentFromLastPage.getStringExtra("username")).age);
-        profileBiography.setText(dbHelper.getUserByUsername(intentFromLastPage.getStringExtra("username")).biography);
+        profileUsername.setText(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username + ", " +
+        dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).sex + ", " +
+        dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).age);
+        profileBiography.setText(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).biography);
 
         video1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkVideoContent(dbHelper.getUserByUsername(intentFromLastPage.getStringExtra("username")).video1);
+                checkVideoContent(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).video1);
             }
         });
         video2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkVideoContent(dbHelper.getUserByUsername(intentFromLastPage.getStringExtra("username")).video2);
+                checkVideoContent(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).video2);
             }
         });
         video3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkVideoContent(dbHelper.getUserByUsername(intentFromLastPage.getStringExtra("username")).video3);
+                checkVideoContent(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).video3);
             }
         });
     }
@@ -89,10 +88,13 @@ public class ProfileActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case R.id.profileLogOut:
-                PreferenceManagerClass.clearUsernamePreference(getApplicationContext());
-                Intent i = new Intent(getApplicationContext(),LoginActivity.class);
-                startActivity(i);
-                return true;
+                PreferenceManagerClass.clearPreferences(getApplicationContext());
+                Intent logoutIntent = new Intent(getApplicationContext(),LoginActivity.class);
+                startActivity(logoutIntent);
+                break;
+            case R.id.profileCustomize:
+                Intent customizeIntent = new Intent(getApplicationContext(), CustomizeProfileActivity.class);
+                startActivity(customizeIntent);
         }
         return false;
     }

@@ -154,4 +154,46 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         }
 
     }
+
+    public int updateUserBiography(User user, String biography){
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_USER_PROFILE_BIOGRAPHY, biography);
+        return db.update(TABLE_USERS, contentValues, KEY_USER_NAME + " = ?", new String[]{String.valueOf(user.username)});
+    }
+
+    public int updateUserProfileImage(User user, String profileImageURL){
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_USER_PROFILE_PICTURE, profileImageURL);
+        return db.update(TABLE_USERS, contentValues, KEY_USER_NAME + " = ?", new String[]{String.valueOf(user.username)});
+    }
+
+    public int updateUserVideo1(User user, String video1URL){
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_USER_VIDEO_1, video1URL);
+        return db.update(TABLE_USERS, contentValues, KEY_USER_NAME + " = ?", new String[]{String.valueOf(user.username)});
+    }
+
+    public int updateUserVideo2URL(User user, String video2URL){
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_USER_VIDEO_2, video2URL);
+        return db.update(TABLE_USERS, contentValues, KEY_USER_NAME + " = ?", new String[]{String.valueOf(user.username)});
+    }
+
+    public int updateUserVideo3URL(User user, String video3URL){
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(KEY_USER_VIDEO_3, video3URL);
+        return db.update(TABLE_USERS, contentValues, KEY_USER_NAME + " = ?", new String[]{String.valueOf(user.username)});
+    }
+
+
 }
