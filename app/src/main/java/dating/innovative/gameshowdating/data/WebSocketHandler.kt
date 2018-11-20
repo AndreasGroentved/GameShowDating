@@ -1,58 +1,67 @@
 package dating.innovative.gameshowdating.data
 
+import com.github.nkzawa.socketio.client.IO
+import com.github.nkzawa.socketio.client.Socket
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import okhttp3.*
-import okio.ByteString
-import java.util.concurrent.TimeUnit
+import okhttp3.WebSocketListener
+import java.io.File
 
 class WebSocketHandler : WebSocketListener() {
-    private var wSocket: WebSocket? = null
+
+
+    private val socket: Socket = IO.socket("http://10.0.2.2:3000")
     private val gson = Gson()
 
-    fun run() {
-        val client = OkHttpClient.Builder()
-            .readTimeout(0, TimeUnit.MILLISECONDS)
-            .build()
-
-        val request = Request.Builder()
-            .url("ws://10.0.2.2:3000")
-            .build()
-        client.newWebSocket(request, this)
-
+    init {
+        socket.connect();
     }
 
-    override fun onOpen(webSocket: WebSocket, response: Response?) {
-        wSocket = webSocket
+    fun logon(userName: String, password: String, callBack: (String) -> Unit) {
+        socket.on("login") {
+            socket.off("login")
+            val json = it[0] as String;
+            val response =
+                gson.fromJson<ResponseObject<String>>(json, object : TypeToken<ResponseObject<String>>() {}.type)
+            callBack(response.response)
+        }
+        socket.emit("login", userName, password)
     }
 
-    override fun onMessage(webSocket: WebSocket?, text: String?) {
-        println("MESSAGE: " + text!!)
-        println(gson.fromJson<ResponseObject<Any>>(text, object : TypeToken<ResponseObject<Any>>() {}.type))
-        val serverResponse = gson.fromJson<ResponseObject<Any>>(text, object : TypeToken<ResponseObject<Any>>() {}.type)
-        val callback = mapOfCallBacks[serverResponse.id]
-        callback?.invoke(serverResponse)
+    fun download(name: String, callBack: (ByteArray) -> Unit) {
+        socket.on("download") {
+            println("download")
+            socket.off("downloadFile")
+            val byteArr = it[0] as ByteArray
+            callBack(byteArr)
+        }
+        socket.emit("downloadFile", name)
     }
 
-    override fun onMessage(webSocket: WebSocket?, bytes: ByteString) {
-        println("MESSAGE: " + bytes.hex())
-
+    fun sendFile(file: File, name: String) {
+        socket.emit("uploadVideo", name, file.readBytes())
     }
 
-    override fun onClosing(webSocket: WebSocket, code: Int, reason: String?) {
-        webSocket.close(1000, null)
-        println("CLOSE: $code $reason")
+
+    /*
+
+       try {
+                    InputStream inputStream = getResources().openRawResource(R.raw.defaultprofilepic);
+                    File tempFile = File.createTempFile("pre", "suf");
+                    copyFile(inputStream, new FileOutputStream(tempFile));
+                    ws.sendFile(tempFile, "tester");
+                } catch (IOException e) {
+                    throw new RuntimeException("Can't create temp file ", e);
+                }
+
+
+                    private void copyFile(InputStream in, OutputStream out) throws IOException {
+        byte[] buffer = new byte[1024];
+        int read;
+        while ((read = in.read(buffer)) != -1) {
+            out.write(buffer, 0, read);
+        }
     }
 
-    override fun onFailure(webSocket: WebSocket?, t: Throwable, response: Response?) {
-        t.printStackTrace()
-    }
-
-    fun <T> send(data: CallObject, callBack: (ResponseObject<T>) -> Unit) {
-        println(gson.toJson(data))
-        if (wSocket != null) wSocket?.send(gson.toJson(data)) else throw RuntimeException("socket error")
-        mapOfCallBacks[data.id] = callBack as (ResponseObject<Any>) -> Unit //Alting kan castes til Any
-    }
-
-    private val mapOfCallBacks = mutableMapOf<String, (ResponseObject<Any>) -> Unit>()
+     */
 }

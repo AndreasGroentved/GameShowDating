@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
-import dating.innovative.gameshowdating.data.CallObject
-import dating.innovative.gameshowdating.data.WebSocketHandler
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
@@ -17,8 +15,6 @@ class MainActivity : BaseActivity() {
 
     override fun setUpToolBar() = setSupportActionBar(toolbar)
 
-    private var ws: WebSocketHandler? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -27,13 +23,6 @@ class MainActivity : BaseActivity() {
             println("switch")
             val intent = Intent(applicationContext, LoginActivity::class.java)
             startActivity(intent)
-        }
-        WebSocketHandler().apply { run() }
-    }
-
-    private fun testWs() {
-        ws?.send<String>(CallObject("test", "test")) {
-            println(it.response)
         }
     }
 

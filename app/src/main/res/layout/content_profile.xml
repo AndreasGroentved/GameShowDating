@@ -1,67 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-                android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="226dp" tools:srcCompat="@drawable/defaultprofilepic"
-            android:layout_alignParentStart="true" android:layout_marginStart="19dp"
-            android:layout_alignParentTop="true" android:id="@+id/profileImage" android:layout_marginTop="19dp"
-            android:layout_alignParentBottom="true" android:layout_marginBottom="266dp"
-            android:layout_alignParentEnd="true" android:layout_marginEnd="19dp"
-            app:srcCompat="@drawable/defaultprofilepic"/>
+        android:id="@+id/profileImage"
+        android:layout_width="wrap_content"
+        android:layout_height="226dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="19dp"
+        android:layout_marginEnd="19dp"
+        android:layout_marginBottom="266dp"
+        app:srcCompat="@drawable/defaultprofilepic"
+        tools:srcCompat="@drawable/defaultprofilepic" />
+
     <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/profileName"
-            android:textColor="@android:color/black"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="216dp" android:layout_centerHorizontal="true"/>
+        android:id="@+id/profileName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="216dp"
+        android:textColor="@android:color/black" />
+
     <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true" android:id="@+id/profileBiography"
-            android:layout_marginBottom="151dp"
-            android:textColor="@android:color/black" android:layout_centerHorizontal="true"/>
+        android:id="@+id/profileBiography"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="151dp"
+        android:textColor="@android:color/black" />
+
     <Button
-            android:text="Video 1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:layout_alignParentBottom="true"
-            android:id="@+id/profileVideo1Button"
-            android:layout_marginBottom="19dp" android:layout_alignParentStart="true"
-            android:layout_marginStart="19dp" android:textAppearance="@style/TextAppearance.AppCompat"
-            android:backgroundTint="@color/colorPrimary"/>
+        android:id="@+id/profileVideo1Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="19dp"
+        android:layout_marginBottom="19dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Video 1"
+        android:textAppearance="@style/TextAppearance.AppCompat" />
+
     <Button
-            android:text="Video 2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:layout_alignParentBottom="true"
-            android:id="@+id/profileVideo2Button"
-            android:layout_alignStart="@+id/profileImage" android:layout_marginBottom="19dp"
-            android:layout_marginStart="115dp" android:textAppearance="@style/TextAppearance.AppCompat"
-            android:backgroundTint="@color/colorPrimary"/>
+        android:id="@+id/profileVideo2Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/profileImage"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="115dp"
+        android:layout_marginBottom="19dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Video 2"
+        android:textAppearance="@style/TextAppearance.AppCompat" />
+
     <Button
-            android:text="Video 3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:layout_alignParentBottom="true"
-            android:id="@+id/profileVideo3Button"
-            android:layout_alignStart="@+id/profileImage" android:layout_marginBottom="19dp"
-            android:layout_marginEnd="19dp"
-            android:layout_marginStart="237dp" android:layout_alignParentEnd="true"
-            android:textAppearance="@style/TextAppearance.AppCompat" android:backgroundTint="@color/colorPrimary"/>
+        android:id="@+id/profileVideo3Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/profileImage"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="237dp"
+        android:layout_marginEnd="19dp"
+        android:layout_marginBottom="19dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Video 3"
+        android:textAppearance="@style/TextAppearance.AppCompat" />
+
     <TextView
-            android:text="Username, Sex, Age"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:layout_centerHorizontal="true"
-            android:id="@+id/profileNameLabel"
-            android:textColor="@android:color/black" android:layout_alignParentBottom="true"
-            android:layout_marginBottom="242dp" android:textSize="10sp"/>
+        android:id="@+id/profileNameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="242dp"
+        android:text="Username, Sex, Age"
+        android:textColor="@android:color/black"
+        android:textSize="10sp" />
+
     <TextView
-            android:text="Biography"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/profileBiographyTitle"
-            android:textColor="@android:color/black"
-            android:layout_alignParentBottom="true" android:layout_marginBottom="176dp"
-            android:textAlignment="viewStart" android:layout_centerHorizontal="true" android:textSize="10sp"/>
+        android:id="@+id/profileBiographyTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="176dp"
+        android:text="Biography"
+        android:textAlignment="viewStart"
+        android:textColor="@android:color/black"
+        android:textSize="10sp" />
 </RelativeLayout>

@@ -22,13 +22,12 @@ abstract class BaseActivity : AppCompatActivity() {
     abstract fun getToolBar(): android.support.v7.widget.Toolbar
 
     open fun setUpToolBar() {
-        println("sup")
         setSupportActionBar(getToolBar())
-        println("sup2")
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
     }
 
+    @CallSuper
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> finish()
