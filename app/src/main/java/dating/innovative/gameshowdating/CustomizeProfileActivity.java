@@ -37,22 +37,22 @@ public class CustomizeProfileActivity extends Activity {
                 if(!PreferenceManagerClass.getProfilePictureURL(getApplicationContext()).isEmpty()){
                     dbHelper.updateUserProfileImage(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),
                             PreferenceManagerClass.getProfilePictureURL(getApplicationContext()));
-                    //ikke 100 på det her virker, har ikke testet endnu
-                    //TODO: TEST DET HER
-                    //hvis det virker så tilføj en for hver video også.
                     PreferenceManagerClass.clearRef(getApplicationContext(),PreferenceManagerClass.PREFERENCE_PROFILE_PICTURE);
                 }
                 if(!PreferenceManagerClass.getPreferenceVideo1(getApplicationContext()).isEmpty()){
                     dbHelper.updateUserVideo1(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),
                             PreferenceManagerClass.getPreferenceVideo1(getApplicationContext()));
+                    PreferenceManagerClass.clearRef(getApplicationContext(),PreferenceManagerClass.PREFERENCE_VIDEO_1);
                 }
                 if(!PreferenceManagerClass.getPreferenceVideo2(getApplicationContext()).isEmpty()){
-                    dbHelper.updateUserVideo1(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),
+                    dbHelper.updateUserVideo2(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),
                             PreferenceManagerClass.getPreferenceVideo2(getApplicationContext()));
+                    PreferenceManagerClass.clearRef(getApplicationContext(),PreferenceManagerClass.PREFERENCE_VIDEO_2);
                 }
                 if(!PreferenceManagerClass.getPreferenceVideo3(getApplicationContext()).isEmpty()){
-                    dbHelper.updateUserVideo1(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),
+                    dbHelper.updateUserVideo3(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),
                             PreferenceManagerClass.getPreferenceVideo3(getApplicationContext()));
+                    PreferenceManagerClass.clearRef(getApplicationContext(),PreferenceManagerClass.PREFERENCE_VIDEO_3);
                 }
                 Intent backToProfile = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(backToProfile);
@@ -62,6 +62,18 @@ public class CustomizeProfileActivity extends Activity {
             @Override
             public void onClick(View view) {
                 transitionToVideoSettingScreen(1);
+            }
+        });
+        video2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                transitionToVideoSettingScreen(2);
+            }
+        });
+        video3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                transitionToVideoSettingScreen(3);
             }
         });
     }

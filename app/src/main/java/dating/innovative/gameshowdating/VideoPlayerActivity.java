@@ -11,18 +11,27 @@ import android.widget.VideoView;
 public class VideoPlayerActivity extends AppCompatActivity {
     VideoView videoPlayer;
     MediaController mediaController;
+    Uri uri;
+    SQLiteHelper dbHelper;
 
-    final Intent videoIdIntent = getIntent();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_videoplayer);
-
+        dbHelper = SQLiteHelper.getSqLiteHelperInstance(getApplicationContext());
+        final Intent videoIdIntent = getIntent();
         videoPlayer = (VideoView) findViewById(R.id.videoPlayerView);
         mediaController = new MediaController(this);
         mediaController.setAnchorView(videoPlayer);
-        Uri uri = Uri.parse("android.resource://"+getPackageName()+"/"+ videoIdIntent.getIntExtra("videoId",0));
+        if(videoIdIntent.getIntExtra("videoId",0) == 1){
+            uri = Uri.parse(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).video1);
+        } else if(videoIdIntent.getIntExtra("videoId",0) == 2){
+            uri = Uri.parse(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).video2);
+        } else if(videoIdIntent.getIntExtra("videoId",0) == 3){
+            uri = Uri.parse(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).video3);
+        }
+
         videoPlayer.setMediaController(mediaController);
         videoPlayer.setVideoURI(uri);
         videoPlayer.requestFocus();

@@ -41,27 +41,27 @@ public class ProfileActivity extends BaseActivity {
         video1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkVideoContent(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).video1);
+                checkVideoContent(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).video1, 1);
             }
         });
         video2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkVideoContent(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).video2);
+                checkVideoContent(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).video2, 2);
             }
         });
         video3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkVideoContent(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).video3);
+                checkVideoContent(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).video3, 3);
             }
         });
     }
 
-    public void checkVideoContent(String videoURL){
+    public void checkVideoContent(String videoURL, int videoId){
         if(!videoURL.isEmpty()){
             Intent i = new Intent(getApplicationContext(), VideoPlayerActivity.class);
-            i.putExtra("videoId", R.raw.video);
+            i.putExtra("videoId", videoId);
             startActivity(i);
         } else {
             Toast.makeText(getApplicationContext(),"There is no available video", Toast.LENGTH_LONG).show();

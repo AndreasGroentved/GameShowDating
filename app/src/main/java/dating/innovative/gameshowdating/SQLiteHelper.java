@@ -179,7 +179,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return db.update(TABLE_USERS, contentValues, KEY_USER_NAME + " = ?", new String[]{String.valueOf(user.username)});
     }
 
-    public int updateUserVideo2URL(User user, String video2URL){
+    public int updateUserVideo2(User user, String video2URL){
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
@@ -187,7 +187,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return db.update(TABLE_USERS, contentValues, KEY_USER_NAME + " = ?", new String[]{String.valueOf(user.username)});
     }
 
-    public int updateUserVideo3URL(User user, String video3URL){
+    public int updateUserVideo3(User user, String video3URL){
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
