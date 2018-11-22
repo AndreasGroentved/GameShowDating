@@ -12,14 +12,17 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
+import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.*;
 
-public class ImageSettingActivity extends Activity {
+public class ImageSettingActivity extends BaseActivity {
 
     ImageView previewImageView;
     Button uploadImageButton;
@@ -29,6 +32,20 @@ public class ImageSettingActivity extends Activity {
     SQLiteHelper dbHelper;
     public static String photoPath;
     boolean fromAlbum = false;
+
+
+
+    @NotNull
+    @Override
+    public Toolbar getToolBar() {
+        return findViewById(R.id.toolbar_image_settings);
+    }
+
+    @Override
+    public int getLayout() {
+        return R.layout.activity_image_setting;
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState){

@@ -3,11 +3,14 @@ package dating.innovative.gameshowdating;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class CustomizeProfileActivity extends Activity {
+import org.jetbrains.annotations.NotNull;
+
+public class CustomizeProfileActivity extends BaseActivity {
 
     EditText biographyEdit;
     Button profileImage;
@@ -17,10 +20,22 @@ public class CustomizeProfileActivity extends Activity {
     Button saveChanges;
     SQLiteHelper dbHelper;
 
+
+    @NotNull
+    @Override
+    public Toolbar getToolBar() {
+        return findViewById(R.id.toolbar_customizeProfile);
+    }
+
+    @Override
+    public int getLayout() {
+        return R.layout.activity_customizeprofile;
+    }
+
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_customizeprofile);
 
         biographyEdit = (EditText) findViewById(R.id.customizeBiography);
         video1 = (Button) findViewById(R.id.customizeVideo1);

@@ -1,11 +1,13 @@
 package dating.innovative.gameshowdating.data
 
+import android.net.Uri
 import com.github.nkzawa.socketio.client.IO
 import com.github.nkzawa.socketio.client.Socket
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import dating.innovative.gameshowdating.User
 import okhttp3.WebSocketListener
-import java.io.File
+import dating.innovative.gameshowdating.data.Util.uriToFile
 
 class WebSocketHandler : WebSocketListener() {
 
@@ -28,40 +30,23 @@ class WebSocketHandler : WebSocketListener() {
         socket.emit("login", userName, password)
     }
 
-    fun download(name: String, callBack: (ByteArray) -> Unit) {
+    fun getVideo(name: String, roundNumber: Int, callBack: (ByteArray) -> Unit) {
         socket.on("download") {
             println("download")
-            socket.off("downloadFile")
+            socket.off("download")
             val byteArr = it[0] as ByteArray
             callBack(byteArr)
         }
-        socket.emit("downloadFile", name)
+        socket.emit("downloadVideo", name,roundNumber)
     }
 
-    fun sendFile(file: File, name: String) {
-        socket.emit("uploadVideo", name, file.readBytes())
+    fun createUser(user:User){
+        
+    }
+
+    fun sendOrUpdateVideo(uri: Uri, name: String, roundNumber:Int) {
+        socket.emit("uploadVideo", name, roundNumber, uri.uriToFile().readBytes())
     }
 
 
-    /*
-
-       try {
-                    InputStream inputStream = getResources().openRawResource(R.raw.defaultprofilepic);
-                    File tempFile = File.createTempFile("pre", "suf");
-                    copyFile(inputStream, new FileOutputStream(tempFile));
-                    ws.sendFile(tempFile, "tester");
-                } catch (IOException e) {
-                    throw new RuntimeException("Can't create temp file ", e);
-                }
-
-
-                    private void copyFile(InputStream in, OutputStream out) throws IOException {
-        byte[] buffer = new byte[1024];
-        int read;
-        while ((read = in.read(buffer)) != -1) {
-            out.write(buffer, 0, read);
-        }
-    }
-
-     */
 }

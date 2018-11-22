@@ -24,11 +24,11 @@ public class VideoPlayerActivity extends AppCompatActivity {
         videoPlayer = (VideoView) findViewById(R.id.videoPlayerView);
         mediaController = new MediaController(this);
         mediaController.setAnchorView(videoPlayer);
-        if(videoIdIntent.getIntExtra("videoId",0) == 1){
+        if (videoIdIntent.getIntExtra("videoId", 0) == 1) {
             uri = Uri.parse(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).video1);
-        } else if(videoIdIntent.getIntExtra("videoId",0) == 2){
+        } else if (videoIdIntent.getIntExtra("videoId", 0) == 2) {
             uri = Uri.parse(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).video2);
-        } else if(videoIdIntent.getIntExtra("videoId",0) == 3){
+        } else if (videoIdIntent.getIntExtra("videoId", 0) == 3) {
             uri = Uri.parse(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).video3);
         }
 
