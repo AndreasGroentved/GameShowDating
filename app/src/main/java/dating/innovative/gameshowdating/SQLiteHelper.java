@@ -17,7 +17,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     //DB
     private static final String DATABASE_NAME = "GAMESHOWDATING_CACHEDB";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
     //table
     private static final String TABLE_USERS = "users";

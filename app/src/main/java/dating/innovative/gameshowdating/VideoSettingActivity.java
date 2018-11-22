@@ -39,7 +39,6 @@ public class VideoSettingActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_setting);
         final Intent lastScreenIntent = getIntent();
-        System.out.println(lastScreenIntent.getIntExtra("videoId",0));
         uploadVideoButton = (Button) findViewById(R.id.videoSettingUploadButton);
         recordVideoButton = (Button) findViewById(R.id.videoSettingRecordButton);
         returnButton = (Button) findViewById(R.id.videoSettingReturnButton);

@@ -32,13 +32,13 @@ public class PreferenceManagerClass {
         editor.commit();
     }
 
-    public static void setPreferenceProfilePicture(Context context, String profilePictureURL){
+    public static void setPreferenceProfilePictureUpdated(Context context, String profilePictureURL){
         SharedPreferences.Editor editor = getSharedPreferences(context).edit();
         editor.putString(PREFERENCE_PROFILE_PICTURE, profilePictureURL);
         editor.commit();
     }
 
-    public static String getProfilePictureURL(Context context){
+    public static String getProfilePictureUpdated(Context context){
         return getSharedPreferences(context).getString(PREFERENCE_PROFILE_PICTURE, "");
     }
 

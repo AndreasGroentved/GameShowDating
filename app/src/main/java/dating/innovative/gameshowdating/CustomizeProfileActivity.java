@@ -10,6 +10,7 @@ import android.widget.EditText;
 public class CustomizeProfileActivity extends Activity {
 
     EditText biographyEdit;
+    Button profileImage;
     Button video1;
     Button video2;
     Button video3;
@@ -25,6 +26,7 @@ public class CustomizeProfileActivity extends Activity {
         video1 = (Button) findViewById(R.id.customizeVideo1);
         video2 = (Button) findViewById(R.id.customizeVideo2);
         video3 = (Button) findViewById(R.id.customizeVideo3);
+        profileImage = (Button) findViewById(R.id.customizeProfileImage);
         saveChanges = (Button) findViewById(R.id.customizeSaveButton);
         dbHelper = SQLiteHelper.getSqLiteHelperInstance(getApplicationContext());
 
@@ -34,9 +36,9 @@ public class CustomizeProfileActivity extends Activity {
                 if(!biographyEdit.getText().toString().isEmpty()){
                     dbHelper.updateUserBiography(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),biographyEdit.getText().toString());
                 }
-                if(!PreferenceManagerClass.getProfilePictureURL(getApplicationContext()).isEmpty()){
+                if(!PreferenceManagerClass.getProfilePictureUpdated(getApplicationContext()).isEmpty()){
                     dbHelper.updateUserProfileImage(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),
-                            PreferenceManagerClass.getProfilePictureURL(getApplicationContext()));
+                            PreferenceManagerClass.getProfilePictureUpdated(getApplicationContext()));
                     PreferenceManagerClass.clearRef(getApplicationContext(),PreferenceManagerClass.PREFERENCE_PROFILE_PICTURE);
                 }
                 if(!PreferenceManagerClass.getPreferenceVideo1(getApplicationContext()).isEmpty()){
@@ -76,6 +78,15 @@ public class CustomizeProfileActivity extends Activity {
                 transitionToVideoSettingScreen(3);
             }
         });
+
+        profileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(),ImageSettingActivity.class);
+                startActivity(i);
+            }
+        });
+
     }
 
     public void transitionToVideoSettingScreen(int videoId){
@@ -83,5 +94,6 @@ public class CustomizeProfileActivity extends Activity {
         i.putExtra("videoId", videoId);
         startActivity(i);
     }
+
 
 }
