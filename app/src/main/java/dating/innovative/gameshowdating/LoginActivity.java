@@ -38,7 +38,6 @@ public class LoginActivity extends BaseActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         dbHelper = SQLiteHelper.getSqLiteHelperInstance(getApplicationContext());
 
         if (!PreferenceManagerClass.getUsername(getApplicationContext()).isEmpty() &&
@@ -81,6 +80,7 @@ public class LoginActivity extends BaseActivity {
             }
         });
     }
+
 
 
 }

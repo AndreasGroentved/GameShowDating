@@ -110,5 +110,12 @@ public class CustomizeProfileActivity extends BaseActivity {
         startActivity(i);
     }
 
+    @Override
+    public void onBackPressed(){
+        finishAffinity();
+        Intent backToProfile = new Intent(getApplicationContext(),ProfileActivity.class);
+        startActivity(backToProfile);
+    }
+
 
 }

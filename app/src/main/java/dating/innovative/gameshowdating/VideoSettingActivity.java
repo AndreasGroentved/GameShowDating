@@ -85,7 +85,7 @@ public class VideoSettingActivity extends BaseActivity {
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!videoUri.toString().isEmpty()) {
+                if (!videoUri.toString().isEmpty() && videoUri != null) {
                     if (lastScreenIntent.getIntExtra("videoId", 0) == 1) {
                         PreferenceManagerClass.setPreferenceVideo1(getApplicationContext(), videoUri.toString());
                     } else if (lastScreenIntent.getIntExtra("videoId", 0) == 2) {
