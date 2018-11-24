@@ -42,8 +42,7 @@ public class LoginActivity extends BaseActivity {
 
         if (!PreferenceManagerClass.getUsername(getApplicationContext()).isEmpty() &&
                 dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())) != null) {
-            Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
-            i.putExtra("username", PreferenceManagerClass.getUsername(getApplicationContext()));
+            Intent i = new Intent(getApplicationContext(), MenuActivity.class);
             startActivity(i);
         }
 
@@ -68,8 +67,7 @@ public class LoginActivity extends BaseActivity {
                 if (user != null) {
                     if (user.password.equals(passwordTextField.getText().toString())) {
                         PreferenceManagerClass.setUsername(getApplicationContext(), user.username);
-                        Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
-                        i.putExtra("username", user.username);
+                        Intent i = new Intent(getApplicationContext(), MenuActivity.class);
                         startActivity(i);
                     } else {
                         errorLabel.setText("Incorrect password");
