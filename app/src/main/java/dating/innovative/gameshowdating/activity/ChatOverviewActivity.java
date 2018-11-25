@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import dating.innovative.gameshowdating.R;
 import dating.innovative.gameshowdating.model.Match;
 import dating.innovative.gameshowdating.model.User;
-import dating.innovative.gameshowdating.util.ChatAdapter;
+import dating.innovative.gameshowdating.util.ChatOverviewAdapter;
 import dating.innovative.gameshowdating.util.PreferenceManagerClass;
 
 import java.util.ArrayList;
@@ -28,9 +28,7 @@ public class ChatOverviewActivity extends Activity {
 
         //dbHelper.addMatch(PreferenceManagerClass.getUsername(getApplicationContext()), "test");
 
-        ArrayList<Match> tempMatches = new ArrayList<>();
         ArrayList<User> matches = new ArrayList<>();
-        //testdata
         for(int i = 0; i < dbHelper.getAllMatchesForUser(PreferenceManagerClass.getUsername(getApplicationContext())).size(); i++){
             matches.add(dbHelper.getUserByUsername(dbHelper.getAllMatchesForUser(PreferenceManagerClass.getUsername(getApplicationContext())).get(i).nameTwo));
         }
@@ -41,7 +39,7 @@ public class ChatOverviewActivity extends Activity {
         recyclerManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(recyclerManager);
 
-        recyclerAdapter = new ChatAdapter(matches);
+        recyclerAdapter = new ChatOverviewAdapter(matches);
         recyclerView.setAdapter(recyclerAdapter);
 
 
