@@ -1,4 +1,4 @@
-package dating.innovative.gameshowdating;
+package dating.innovative.gameshowdating.util;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,12 +13,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import dating.innovative.gameshowdating.activity.ChatActivity;
+import dating.innovative.gameshowdating.R;
+import dating.innovative.gameshowdating.activity.SQLiteHelper;
+import dating.innovative.gameshowdating.model.User;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
 
@@ -66,7 +68,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
             @Override
             public void onClick(View view) {
                 Intent chatActivity = new Intent(context,ChatActivity.class);
-                //chatActivity.putExtra("username", user.getUsername());
+                chatActivity.putExtra("username", user.getUsername());
                 context.startActivity(chatActivity);
             }
         });

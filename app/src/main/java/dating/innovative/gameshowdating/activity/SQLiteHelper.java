@@ -1,4 +1,4 @@
-package dating.innovative.gameshowdating;
+package dating.innovative.gameshowdating.activity;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,6 +7,8 @@ import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.Nullable;
+import dating.innovative.gameshowdating.model.Match;
+import dating.innovative.gameshowdating.model.User;
 
 import java.util.ArrayList;
 import java.util.UUID;

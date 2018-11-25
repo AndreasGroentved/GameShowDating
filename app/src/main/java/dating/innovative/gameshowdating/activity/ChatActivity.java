@@ -1,7 +1,8 @@
-package dating.innovative.gameshowdating;
+package dating.innovative.gameshowdating.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import dating.innovative.gameshowdating.R;
 
 public class ChatActivity extends Activity {
 

@@ -5,7 +5,7 @@ import com.github.nkzawa.socketio.client.IO
 import com.github.nkzawa.socketio.client.Socket
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import dating.innovative.gameshowdating.User
+import dating.innovative.gameshowdating.model.User
 import okhttp3.WebSocketListener
 import dating.innovative.gameshowdating.data.Util.uriToFile
 
@@ -40,7 +40,7 @@ class WebSocketHandler : WebSocketListener() {
         socket.emit("downloadVideo", name,roundNumber)
     }
 
-    fun createUser(user:User){
+    fun createUser(user: User){
         
     }
 

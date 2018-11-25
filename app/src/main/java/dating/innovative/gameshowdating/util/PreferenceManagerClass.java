@@ -1,4 +1,4 @@
-package dating.innovative.gameshowdating;
+package dating.innovative.gameshowdating.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -6,11 +6,11 @@ import android.preference.PreferenceManager;
 
 public class PreferenceManagerClass {
 
-    static final String PREFERENCE_USERNAME = "username";
-    static final String PREFERENCE_PROFILE_PICTURE = "profile_picture";
-    static final String PREFERENCE_VIDEO_1 = "video1_url";
-    static final String PREFERENCE_VIDEO_2 = "video2_url";
-    static final String PREFERENCE_VIDEO_3 = "video3_url";
+    public static final String PREFERENCE_USERNAME = "username";
+    public static final String PREFERENCE_PROFILE_PICTURE = "profile_picture";
+    public static final String PREFERENCE_VIDEO_1 = "video1_url";
+    public static final String PREFERENCE_VIDEO_2 = "video2_url";
+    public static final String PREFERENCE_VIDEO_3 = "video3_url";
 
     static SharedPreferences getSharedPreferences(Context context){
         return PreferenceManager.getDefaultSharedPreferences(context);

@@ -1,10 +1,12 @@
-package dating.innovative.gameshowdating
+package dating.innovative.gameshowdating.activity
 
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
+import dating.innovative.gameshowdating.R
+import dating.innovative.gameshowdating.util.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 

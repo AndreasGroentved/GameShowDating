@@ -1,18 +1,9 @@
-package dating.innovative.gameshowdating;
+package dating.innovative.gameshowdating.activity;
 
-import android.Manifest;
-import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.RequiresApi;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,9 +11,11 @@ import android.widget.Button;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
+import dating.innovative.gameshowdating.R;
+import dating.innovative.gameshowdating.activity.CustomizeProfileActivity;
+import dating.innovative.gameshowdating.util.BaseActivity;
+import dating.innovative.gameshowdating.util.PreferenceManagerClass;
 import org.jetbrains.annotations.NotNull;
-
-import java.io.FileNotFoundException;
 
 import dating.innovative.gameshowdating.data.WebSocketHandler;
 

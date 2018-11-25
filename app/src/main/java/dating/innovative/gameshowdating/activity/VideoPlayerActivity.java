@@ -1,4 +1,4 @@
-package dating.innovative.gameshowdating;
+package dating.innovative.gameshowdating.activity;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -7,6 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.MediaController;
 import android.widget.VideoView;
+import dating.innovative.gameshowdating.R;
+import dating.innovative.gameshowdating.activity.SQLiteHelper;
+import dating.innovative.gameshowdating.util.PreferenceManagerClass;
 
 public class VideoPlayerActivity extends AppCompatActivity {
     VideoView videoPlayer;

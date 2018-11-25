@@ -1,4 +1,4 @@
-package dating.innovative.gameshowdating;
+package dating.innovative.gameshowdating.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,12 +15,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import dating.innovative.gameshowdating.R;
+import dating.innovative.gameshowdating.util.BaseActivity;
+import dating.innovative.gameshowdating.util.PreferenceManagerClass;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static dating.innovative.gameshowdating.ImageSettingActivity.photoPath;
+import static dating.innovative.gameshowdating.activity.ImageSettingActivity.photoPath;
 
 public class ProfileActivity extends BaseActivity {
 

@@ -1,4 +1,4 @@
-package dating.innovative.gameshowdating;
+package dating.innovative.gameshowdating.model;
 
 import android.media.Image;
 import android.provider.MediaStore;

@@ -1,9 +1,14 @@
-package dating.innovative.gameshowdating;
+package dating.innovative.gameshowdating.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import dating.innovative.gameshowdating.R;
+import dating.innovative.gameshowdating.model.Match;
+import dating.innovative.gameshowdating.model.User;
+import dating.innovative.gameshowdating.util.ChatAdapter;
+import dating.innovative.gameshowdating.util.PreferenceManagerClass;
 
 import java.util.ArrayList;
 

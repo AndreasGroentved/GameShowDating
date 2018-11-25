@@ -1,4 +1,4 @@
-package dating.innovative.gameshowdating
+package dating.innovative.gameshowdating.util
 
 import android.os.Bundle
 import android.support.annotation.CallSuper

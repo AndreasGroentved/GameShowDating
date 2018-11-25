@@ -1,23 +1,23 @@
-package dating.innovative.gameshowdating;
+package dating.innovative.gameshowdating.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import dating.innovative.gameshowdating.R;
+import dating.innovative.gameshowdating.util.BaseActivity;
+import dating.innovative.gameshowdating.util.PreferenceManagerClass;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;

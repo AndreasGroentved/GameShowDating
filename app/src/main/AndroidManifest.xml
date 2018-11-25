@@ -29,7 +29,7 @@
         </provider>
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".activity.LoginActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -39,28 +39,28 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ProfileActivity"
+            android:name=".activity.ProfileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".activity.RegisterActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".VideoPlayerActivity" />
-        <activity android:name=".MenuActivity"/>
-        <activity android:name=".GamehubActivity"/>
-        <activity android:name=".ChatOverviewActivity"/>
-        <activity android:name=".ChatActivity"/>
+        <activity android:name=".activity.VideoPlayerActivity" />
+        <activity android:name=".activity.MenuActivity"/>
+        <activity android:name=".activity.GamehubActivity"/>
+        <activity android:name=".activity.ChatOverviewActivity"/>
+        <activity android:name=".activity.ChatActivity"/>
         <activity
-            android:name=".CustomizeProfileActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".VideoSettingActivity"
+            android:name=".activity.CustomizeProfileActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ImageSettingActivity"
+            android:name=".activity.VideoSettingActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.ImageSettingActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

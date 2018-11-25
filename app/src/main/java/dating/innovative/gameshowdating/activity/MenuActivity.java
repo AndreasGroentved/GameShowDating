@@ -1,10 +1,11 @@
-package dating.innovative.gameshowdating;
+package dating.innovative.gameshowdating.activity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import dating.innovative.gameshowdating.R;
 
 public class MenuActivity extends Activity {
 
