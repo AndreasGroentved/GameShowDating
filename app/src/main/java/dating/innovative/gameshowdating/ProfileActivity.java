@@ -157,4 +157,10 @@ public class ProfileActivity extends BaseActivity {
         return false;
     }
 
+    @Override
+    public void onBackPressed(){
+        Intent backToMenu = new Intent(getApplicationContext(), MenuActivity.class);
+        startActivity(backToMenu);
+        super.onBackPressed();
+    }
 }

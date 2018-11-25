@@ -12,7 +12,6 @@ public class ChatOverviewActivity extends Activity {
     RecyclerView recyclerView;
     RecyclerView.Adapter recyclerAdapter;
     RecyclerView.LayoutManager recyclerManager;
-    ArrayList<User> matches;
     SQLiteHelper dbHelper;
 
     @Override
@@ -22,10 +21,13 @@ public class ChatOverviewActivity extends Activity {
 
         dbHelper = SQLiteHelper.getSqLiteHelperInstance(getApplicationContext());
 
-        matches = new ArrayList<>();
+        //dbHelper.addMatch(PreferenceManagerClass.getUsername(getApplicationContext()), "test");
+
+        ArrayList<Match> tempMatches = new ArrayList<>();
+        ArrayList<User> matches = new ArrayList<>();
         //testdata
-        for(int i = 0; i < 200; i++){
-            matches.add(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())));
+        for(int i = 0; i < dbHelper.getAllMatchesForUser(PreferenceManagerClass.getUsername(getApplicationContext())).size(); i++){
+            matches.add(dbHelper.getUserByUsername(dbHelper.getAllMatchesForUser(PreferenceManagerClass.getUsername(getApplicationContext())).get(i).nameTwo));
         }
 
         recyclerView = (RecyclerView) findViewById(R.id.chatoverviewRecyclerView);
@@ -36,5 +38,7 @@ public class ChatOverviewActivity extends Activity {
 
         recyclerAdapter = new ChatAdapter(matches);
         recyclerView.setAdapter(recyclerAdapter);
+
+
     }
 }

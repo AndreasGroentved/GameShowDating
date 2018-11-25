@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.Nullable;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class SQLiteHelper extends SQLiteOpenHelper {
@@ -17,12 +18,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     //DB
     private static final String DATABASE_NAME = "GAMESHOWDATING_CACHEDB";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 7;
 
     //table
     private static final String TABLE_USERS = "users";
+    private static final String TABLE_MATCHES = "matches";
 
-    //coloumns
+    //coloumns for users
     private static final String KEY_USER_ID = "id";
     private static final String KEY_USER_NAME = "userName";
     private static final String KEY_USER_PASSWORD = "password";
@@ -33,6 +35,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     private static final String KEY_USER_VIDEO_3 = "thridVideoURL";
     private static final String KEY_USER_SEX = "sex";
     private static final String KEY_USER_AGE = "age";
+
+    //coloumns for matches
+    private static final String KEY_MATCHES_ID = "id";
+    private static final String KEY_MATCHES_NAME_ONE = "userOne";
+    private static final String KEY_MATCHES_NAME_TWO = "userTwo";
 
     //ensure singleton pattern
     public static synchronized SQLiteHelper getSqLiteHelperInstance(Context context){
@@ -78,16 +85,78 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 KEY_USER_AGE + " INTEGER" +
                 ")";
         sqLiteDatabase.execSQL(CREATE_USER_TABLE);
+
+        String CREATE_MATCHES_TABLE = "CREATE TABLE " + TABLE_MATCHES + "(" +
+                KEY_MATCHES_ID + " TEXT PRIMARY KEY," +
+                KEY_MATCHES_NAME_ONE + " TEXT NOT NULL, " +
+                KEY_MATCHES_NAME_TWO + " TEXT NOT NULL " +
+                ")";
+        sqLiteDatabase.execSQL(CREATE_MATCHES_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
         if(oldVersion != newVersion){
             sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_MATCHES);
             onCreate(sqLiteDatabase);
         }
     }
 
+    public void addMatch(String self, String match){
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.beginTransaction();
+        try{
+            String id = UUID.randomUUID().toString();
+            ContentValues values = new ContentValues();
+            values.put(KEY_MATCHES_ID, id);
+            values.put(KEY_MATCHES_NAME_ONE, self);
+            values.put(KEY_MATCHES_NAME_TWO, match);
+
+            db.insertOrThrow(TABLE_MATCHES, null, values);
+            db.setTransactionSuccessful();
+        } catch (Exception exception){
+            exception.printStackTrace();
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+
+    //not sure this works yet xD
+    public ArrayList<Match> getAllMatchesForUser(String username) {
+        SQLiteDatabase db = getReadableDatabase();
+        ArrayList<Match> matches = new ArrayList<>();
+        String GET_MATCHES_FOR_LOGGED_IN_USER_QUERY =
+                "SELECT * " +
+                        " FROM " + TABLE_MATCHES +
+                        " WHERE " + KEY_MATCHES_NAME_ONE + "='" + username + "';";
+
+        Cursor cursor = db.rawQuery(GET_MATCHES_FOR_LOGGED_IN_USER_QUERY, null);
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    Match match = new Match();
+                    match.nameOne = cursor.getString(cursor.getColumnIndex(KEY_MATCHES_NAME_ONE));
+                    match.nameTwo = cursor.getString(cursor.getColumnIndex(KEY_MATCHES_NAME_TWO));
+                    matches.add(match);
+                } while(cursor.moveToNext());
+            }
+
+        } catch (Exception exception){
+            exception.printStackTrace();
+        } finally {
+            if(cursor != null && !cursor.isClosed()){
+                cursor.close();
+            }
+        }
+        if(matches.size() > 0){
+            return matches;
+        } else {
+            return null;
+        }
+    }
 
     /*
     CREATE UPDATE METHODS FOR EACH OF THESE VALUES TO UPDATE INDIVIDUALLY

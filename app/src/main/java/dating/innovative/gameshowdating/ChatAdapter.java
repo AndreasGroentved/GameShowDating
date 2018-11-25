@@ -1,6 +1,7 @@
 package dating.innovative.gameshowdating;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -16,23 +17,27 @@ import android.widget.TextView;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
 
-    private List<User> userDataSet;
+    private ArrayList<User> userDataSet;
     private Context context;
+    SQLiteHelper dbHelper;
 
 
-    public ChatAdapter(List<User> userDataSet){
-        this.userDataSet = userDataSet;
+    public ChatAdapter(ArrayList<User> matches){
+        this.userDataSet = matches;
     }
 
     @NonNull
     @Override
     public ChatViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
+        dbHelper = SQLiteHelper.getSqLiteHelperInstance(context);
         LayoutInflater inflater = LayoutInflater.from(context);
+
 
         View contactView = inflater.inflate(R.layout.user_list_view, parent, false);
         ChatViewHolder chatViewHolder = new ChatViewHolder(contactView);
@@ -41,8 +46,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
-        User user = userDataSet.get(position);
-
+        final User user = userDataSet.get(position);
         ImageView matchProfileImage = holder.profilePictureView;
         Uri profilePicUri = Uri.parse(user.profileImage);
         InputStream imageStream = null;
@@ -52,14 +56,37 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
             e.printStackTrace();
         }
         Bitmap matchImage = BitmapFactory.decodeStream(imageStream);
-        matchProfileImage.setImageBitmap(resizeBitmap(matchImage,50,50));
+        matchProfileImage.setImageBitmap(resizeBitmap(matchImage,50));
 
         TextView nameView = holder.nameTextView;
         nameView.setText(user.getUsername());
 
+        Button openChatButton = holder.messageButton;
+        openChatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent chatActivity = new Intent(context,ChatActivity.class);
+                //chatActivity.putExtra("username", user.getUsername());
+                context.startActivity(chatActivity);
+            }
+        });
+
     }
 
-    public Bitmap resizeBitmap(Bitmap image, int bitmapWidth, int bitmapHeight){
+    public Bitmap resizeBitmap(Bitmap image, int maxSize){
+
+        int bitmapWidth = image.getWidth();
+        int bitmapHeight = image.getHeight();
+
+        float bitmapRatio = (float) bitmapWidth / (float) bitmapHeight;
+        if(bitmapRatio > 1){
+            bitmapWidth = maxSize;
+            bitmapHeight = (int) (bitmapWidth / bitmapRatio);
+        } else {
+            bitmapHeight = maxSize;
+            bitmapWidth = (int) (bitmapHeight * bitmapRatio);
+        }
+
         return Bitmap.createScaledBitmap(image, bitmapWidth, bitmapHeight, true);
     }
 
