@@ -29,8 +29,10 @@ public class ChatOverviewActivity extends Activity {
         //dbHelper.addMatch(PreferenceManagerClass.getUsername(getApplicationContext()), "test");
 
         ArrayList<User> matches = new ArrayList<>();
-        for(int i = 0; i < dbHelper.getAllMatchesForUser(PreferenceManagerClass.getUsername(getApplicationContext())).size(); i++){
-            matches.add(dbHelper.getUserByUsername(dbHelper.getAllMatchesForUser(PreferenceManagerClass.getUsername(getApplicationContext())).get(i).nameTwo));
+        if(dbHelper.getAllMatchesForUser(PreferenceManagerClass.getUsername(getApplicationContext())) != null){
+            for(int i = 0; i < dbHelper.getAllMatchesForUser(PreferenceManagerClass.getUsername(getApplicationContext())).size(); i++){
+                matches.add(dbHelper.getUserByUsername(dbHelper.getAllMatchesForUser(PreferenceManagerClass.getUsername(getApplicationContext())).get(i).nameTwo));
+            }
         }
 
         recyclerView = (RecyclerView) findViewById(R.id.chatoverviewRecyclerView);

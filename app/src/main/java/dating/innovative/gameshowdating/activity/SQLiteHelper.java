@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.Nullable;
 import dating.innovative.gameshowdating.model.Match;
+import dating.innovative.gameshowdating.model.Message;
 import dating.innovative.gameshowdating.model.User;
 
 import java.util.ArrayList;
@@ -20,11 +21,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     //DB
     private static final String DATABASE_NAME = "GAMESHOWDATING_CACHEDB";
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 9;
 
     //table
     private static final String TABLE_USERS = "users";
     private static final String TABLE_MATCHES = "matches";
+    private static final String TABLE_MESSAGES = "messages";
 
     //coloumns for users
     private static final String KEY_USER_ID = "id";
@@ -42,6 +44,16 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     private static final String KEY_MATCHES_ID = "id";
     private static final String KEY_MATCHES_NAME_ONE = "userOne";
     private static final String KEY_MATCHES_NAME_TWO = "userTwo";
+
+    //coloumns for messaging
+    private static final String KEY_MESSAGES_ID = "id";
+    private static final String KEY_MESSAGES_NAME_ONE = "userOne";
+    private static final String KEY_MESSAGES_NAME_TWO = "userTwo";
+    private static final String KEY_MESSAGES_MESSAGE_FROM_NAME_ONE = "userOneMessage";
+    private static final String KEY_MESSAGES_MESSAGE_FROM_NAME_TWO = "userTwoMessage";
+    private static final String KEY_MESSAGES_MESSAGE_TIMESTAMP = "timestamp";
+
+
 
     //ensure singleton pattern
     public static synchronized SQLiteHelper getSqLiteHelperInstance(Context context){
@@ -94,6 +106,16 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 KEY_MATCHES_NAME_TWO + " TEXT NOT NULL " +
                 ")";
         sqLiteDatabase.execSQL(CREATE_MATCHES_TABLE);
+
+        String CREATE_MESSAGES_TABLE = "CREATE TABLE " + TABLE_MESSAGES + "(" +
+                KEY_MESSAGES_ID + " TEXT PRIMARY KEY," +
+                KEY_MESSAGES_NAME_ONE + " TEXT NOT NULL, " +
+                KEY_MESSAGES_NAME_TWO + " TEXT NOT NULL, " +
+                KEY_MESSAGES_MESSAGE_FROM_NAME_ONE + " TEXT, " +
+                KEY_MESSAGES_MESSAGE_FROM_NAME_TWO + " TEXT, " +
+                KEY_MESSAGES_MESSAGE_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP" +
+                ")";
+        sqLiteDatabase.execSQL(CREATE_MESSAGES_TABLE);
     }
 
     @Override
@@ -101,8 +123,94 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         if(oldVersion != newVersion){
             sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
             sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_MATCHES);
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_MESSAGES);
             onCreate(sqLiteDatabase);
         }
+    }
+
+    public void addMessageToConversationFromSelf(String self, String match, String message){
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.beginTransaction();
+        try{
+            String id = UUID.randomUUID().toString();
+            ContentValues values = new ContentValues();
+            values.put(KEY_MESSAGES_ID,id);
+            values.put(KEY_MESSAGES_NAME_ONE, self);
+            values.put(KEY_MESSAGES_NAME_TWO, match);
+            values.put(KEY_MESSAGES_MESSAGE_FROM_NAME_ONE, message);
+
+            db.insertOrThrow(TABLE_MESSAGES, null, values);
+            db.setTransactionSuccessful();
+        }catch (Exception exception){
+            exception.printStackTrace();
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    public void addMessageToConversationFromMatch(String self, String match, String message){
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.beginTransaction();
+        try{
+            String id = UUID.randomUUID().toString();
+            ContentValues values = new ContentValues();
+            values.put(KEY_MESSAGES_ID,id);
+            values.put(KEY_MESSAGES_NAME_ONE, self);
+            values.put(KEY_MESSAGES_NAME_TWO, match);
+            values.put(KEY_MESSAGES_MESSAGE_FROM_NAME_TWO, message);
+
+            db.insertOrThrow(TABLE_MESSAGES, null, values);
+            db.setTransactionSuccessful();
+        }catch (Exception exception){
+            exception.printStackTrace();
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    /*
+    helper method for testing
+     */
+    public void truncateMessages(){
+        SQLiteDatabase db = getWritableDatabase();
+        String truncate = "DELETE FROM " + TABLE_MESSAGES;
+        db.execSQL(truncate);
+    }
+
+    public ArrayList<Message> getMessagesForConversation(String self, String match){
+        SQLiteDatabase db = getReadableDatabase();
+        ArrayList<Message> messages = new ArrayList<>();
+        String GET_MESSAGES_FOR_CONVERSATION =
+                "SELECT *"+
+                        " FROM " + TABLE_MESSAGES +
+                        " WHERE " + KEY_MESSAGES_NAME_ONE + "='" + self + "' AND "
+                        + KEY_MATCHES_NAME_TWO + "='" + match + "';";
+        Cursor cursor = db.rawQuery(GET_MESSAGES_FOR_CONVERSATION,null);
+        try{
+            if(cursor.moveToFirst()){
+                do{
+                    Message message = new Message();
+                    message.self = cursor.getString(cursor.getColumnIndex(KEY_MESSAGES_NAME_ONE));
+                    message.match = cursor.getString(cursor.getColumnIndex(KEY_MESSAGES_NAME_TWO));
+                    if(cursor.getString(cursor.getColumnIndex(KEY_MESSAGES_MESSAGE_FROM_NAME_ONE)) != null){
+                        message.messageFromSelf = cursor.getString(cursor.getColumnIndex(KEY_MESSAGES_MESSAGE_FROM_NAME_ONE));
+                    } else {
+                        message.messageFromMatch = cursor.getString(cursor.getColumnIndex(KEY_MESSAGES_MESSAGE_FROM_NAME_TWO));
+                    }
+                    message.timestamp = cursor.getString(cursor.getColumnIndex(KEY_MESSAGES_MESSAGE_TIMESTAMP));
+                    messages.add(message);
+                } while(cursor.moveToNext());
+            }
+        } catch (Exception exception){
+            exception.printStackTrace();
+        } finally {
+            if(cursor != null && !cursor.isClosed()){
+                cursor.close();
+            }
+        }
+        return messages;
     }
 
     public void addMatch(String self, String match){
@@ -125,8 +233,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
-
-    //not sure this works yet xD
     public ArrayList<Match> getAllMatchesForUser(String username) {
         SQLiteDatabase db = getReadableDatabase();
         ArrayList<Match> matches = new ArrayList<>();
@@ -160,9 +266,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
-    /*
-    CREATE UPDATE METHODS FOR EACH OF THESE VALUES TO UPDATE INDIVIDUALLY
-     */
     public void addUser(User user){
         SQLiteDatabase db = getWritableDatabase();
 
