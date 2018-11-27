@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+                                             android:layout_height="match_parent">
+
+    <RadioGroup
+            android:id="@+id/judge_radio_group"
+            android:layout_width="104dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/findGameSearchButton" app:layout_constraintVertical_bias="0.812">
+
+        <RadioButton
+                android:id="@+id/findGame_radio_judge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onRadioButtonClicked"
+                android:text="Judge"/>
+
+        <RadioButton
+                android:id="@+id/findGame_radio_be_judged"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onRadioButtonClicked"
+                android:text="Be Judged"/>
+    </RadioGroup>
+    <Button
+            android:text="Find Game"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/findGameSearchButton" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" app:layout_constraintVertical_bias="0.926"
+            android:textAppearance="@style/TextAppearance.AppCompat" android:background="@color/colorPrimary"/>
+    <TextView
+            android:text="I wish to..."
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/findGame_textView_judge" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/judge_radio_group" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintVertical_bias="0.948"
+            android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent" android:textColor="@android:color/black"/>
+    <TextView
+            android:text="I am looking for..."
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/findGame_textview_lookingfor" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/findGame_textView_judge" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintHorizontal_bias="0.506" app:layout_constraintVertical_bias="0.194"
+            android:textColor="@android:color/black"/>
+    <CheckBox
+            android:text="Males"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/findGame_male_checkbox"
+            android:layout_marginTop="32dp" app:layout_constraintTop_toBottomOf="@+id/findGame_textview_lookingfor"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            android:onClick="onCheckboxClicked"/>
+    <CheckBox
+            android:text="Females"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/findGame_checkbox_female"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/findGame_male_checkbox"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/findGame_textView_judge"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintHorizontal_bias="0.532" app:layout_constraintVertical_bias="0.0"
+            android:onClick="onCheckboxClicked"/>
+</android.support.constraint.ConstraintLayout>

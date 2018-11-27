@@ -50,9 +50,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activity.VideoPlayerActivity" />
         <activity android:name=".activity.MenuActivity"/>
-        <activity android:name=".activity.GamehubActivity"/>
         <activity android:name=".activity.ChatOverviewActivity"/>
         <activity android:name=".activity.ChatActivity"/>
+        <activity android:name=".activity.FindGameActivity"/>
         <activity
             android:name=".activity.CustomizeProfileActivity"
             android:theme="@style/AppTheme.NoActionBar" />

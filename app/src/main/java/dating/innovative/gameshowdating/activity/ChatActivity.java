@@ -35,6 +35,10 @@ public class ChatActivity extends Activity {
         final Intent intentFromLast = getIntent();
 
         final ArrayList<Message> messages = new ArrayList<>();
+
+        /*
+        Testdata
+         */
         /*dbHelper.addMessageToConversationFromSelf(PreferenceManagerClass.getUsername(getApplicationContext()),
                 intentFromLast.getStringExtra("username"), "this is a message from self");
         dbHelper.addMessageToConversationFromMatch(PreferenceManagerClass.getUsername(getApplicationContext()),

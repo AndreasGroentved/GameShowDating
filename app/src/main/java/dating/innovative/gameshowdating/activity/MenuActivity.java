@@ -33,7 +33,7 @@ public class MenuActivity extends Activity {
         gameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent gameIntent = new Intent(getApplicationContext(), GamehubActivity.class);
+                Intent gameIntent = new Intent(getApplicationContext(), FindGameActivity.class);
                 startActivity(gameIntent);
             }
         });
