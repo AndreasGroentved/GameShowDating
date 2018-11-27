@@ -3,4 +3,5 @@
 
     <item android:title="Log out" android:id="@+id/profileLogOut"/>
     <item android:title="Customize profile" android:id="@+id/profileCustomize"/>
+    <item android:title="View Feedback" android:id="@+id/profileFeedbackMenuItem"/>
 </menu>

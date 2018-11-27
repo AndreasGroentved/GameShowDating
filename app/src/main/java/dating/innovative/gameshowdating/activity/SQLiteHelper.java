@@ -7,6 +7,7 @@ import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.Nullable;
+import dating.innovative.gameshowdating.model.Feedback;
 import dating.innovative.gameshowdating.model.Match;
 import dating.innovative.gameshowdating.model.Message;
 import dating.innovative.gameshowdating.model.User;
@@ -21,12 +22,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     //DB
     private static final String DATABASE_NAME = "GAMESHOWDATING_CACHEDB";
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 10;
 
-    //table
+    //tables
     private static final String TABLE_USERS = "users";
     private static final String TABLE_MATCHES = "matches";
     private static final String TABLE_MESSAGES = "messages";
+    private static final String TABLE_FEEDBACK = "feedback";
 
     //coloumns for users
     private static final String KEY_USER_ID = "id";
@@ -52,6 +54,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     private static final String KEY_MESSAGES_MESSAGE_FROM_NAME_ONE = "userOneMessage";
     private static final String KEY_MESSAGES_MESSAGE_FROM_NAME_TWO = "userTwoMessage";
     private static final String KEY_MESSAGES_MESSAGE_TIMESTAMP = "timestamp";
+
+    //coloumns for feedback
+    private static final String KEY_FEEDBACK_ID = "id";
+    private static final String KEY_FEEDBACK_NAME = "feedbackGiverName";
+    private static final String KEY_FEEDBACK_FEEDBACK = "feedbackContents";
 
 
 
@@ -116,6 +123,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 KEY_MESSAGES_MESSAGE_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP" +
                 ")";
         sqLiteDatabase.execSQL(CREATE_MESSAGES_TABLE);
+
+        String CREATE_FEEDBACK_TABLE = "CREATE TABLE " + TABLE_FEEDBACK + "(" +
+                KEY_FEEDBACK_ID + " TEXT PRIMARY KEY," +
+                KEY_FEEDBACK_NAME + " TEXT, " +
+                KEY_FEEDBACK_FEEDBACK + " TEXT" +
+                ")";
+        sqLiteDatabase.execSQL(CREATE_FEEDBACK_TABLE);
     }
 
     @Override
@@ -124,8 +138,53 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
             sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_MATCHES);
             sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_MESSAGES);
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_FEEDBACK);
             onCreate(sqLiteDatabase);
         }
+    }
+
+    public void addFeedback(String name, String feedback){
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.beginTransaction();
+        try{
+            String id = UUID.randomUUID().toString();
+            ContentValues values = new ContentValues();
+            values.put(KEY_FEEDBACK_ID,id);
+            values.put(KEY_FEEDBACK_NAME, name);
+            values.put(KEY_FEEDBACK_FEEDBACK,feedback);
+
+            db.insertOrThrow(TABLE_FEEDBACK, null, values);
+            db.setTransactionSuccessful();
+        } catch(Exception exception){
+            exception.printStackTrace();
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    public ArrayList<Feedback> getFeedback(){
+        SQLiteDatabase db = getReadableDatabase();
+        ArrayList<Feedback> feedbackArrayList = new ArrayList<>();
+        String GET_FEEDBACK = "SELECT * FROM " + TABLE_FEEDBACK;
+        Cursor cursor = db.rawQuery(GET_FEEDBACK, null);
+        try{
+            if(cursor.moveToFirst()){
+                do{
+                    Feedback feedback = new Feedback();
+                    feedback.name = cursor.getString(cursor.getColumnIndex(KEY_FEEDBACK_NAME));
+                    feedback.feedback = cursor.getString(cursor.getColumnIndex(KEY_FEEDBACK_FEEDBACK));
+                    feedbackArrayList.add(feedback);
+                } while(cursor.moveToNext());
+            }
+        } catch (Exception exception){
+            exception.printStackTrace();
+        } finally {
+            if(cursor != null && !cursor.isClosed()){
+                cursor.close();
+            }
+        }
+        return feedbackArrayList;
     }
 
     public void addMessageToConversationFromSelf(String self, String match, String message){
@@ -169,6 +228,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             db.endTransaction();
         }
     }
+
+
 
     /*
     helper method for testing

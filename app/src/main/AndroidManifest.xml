@@ -53,6 +53,7 @@
         <activity android:name=".activity.ChatOverviewActivity"/>
         <activity android:name=".activity.ChatActivity"/>
         <activity android:name=".activity.FindGameActivity"/>
+        <activity android:name=".activity.ViewFeedbackActivity"/>
         <activity
             android:name=".activity.CustomizeProfileActivity"
             android:theme="@style/AppTheme.NoActionBar" />

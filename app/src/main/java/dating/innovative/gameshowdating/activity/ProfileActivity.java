@@ -156,6 +156,11 @@ public class ProfileActivity extends BaseActivity {
             case R.id.profileCustomize:
                 Intent customizeIntent = new Intent(getApplicationContext(), CustomizeProfileActivity.class);
                 startActivity(customizeIntent);
+                break;
+            case R.id.profileFeedbackMenuItem:
+                Intent feedbackIntent = new Intent(getApplicationContext(), ViewFeedbackActivity.class);
+                startActivity(feedbackIntent);
+                break;
         }
         return false;
     }
