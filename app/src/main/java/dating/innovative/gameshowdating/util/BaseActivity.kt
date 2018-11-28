@@ -27,6 +27,10 @@ abstract class BaseActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+    }
+
     @CallSuper
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
