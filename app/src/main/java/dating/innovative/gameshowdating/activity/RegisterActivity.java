@@ -12,6 +12,8 @@ import android.widget.TextView;
 import dating.innovative.gameshowdating.R;
 import dating.innovative.gameshowdating.model.User;
 import dating.innovative.gameshowdating.util.BaseActivity;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 public class RegisterActivity extends BaseActivity {
 
@@ -121,6 +123,15 @@ public class RegisterActivity extends BaseActivity {
         user.setVideo1("");
         user.setVideo2("");
         user.setVideo3("");
+
+        LoginActivity.ws.createUser(user, new Function1<Boolean, Unit>() {
+            @Override
+            public Unit invoke(Boolean aBoolean) {
+                System.out.println("user created" + aBoolean);
+                return null;
+            }
+        });
+
         return user;
     }
 }

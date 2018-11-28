@@ -24,6 +24,7 @@ public class LoginActivity extends BaseActivity {
     Button registerButton;
     TextView errorLabel;
     SQLiteHelper dbHelper;
+    final static WebSocketHandler ws = new WebSocketHandler();
 
 
     @NotNull
@@ -45,59 +46,27 @@ public class LoginActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        System.out.println("what?");
-        final WebSocketHandler ws = new WebSocketHandler();
-        /*User user = new User();
-        user.username = "super human";
-        user.age = 123;
-        user.sex = "female";
-        user.password = "123";
-        ws.createUser(user, new Function1<Boolean, Unit>() {
-                    @Override
-                    public Unit invoke(Boolean aBoolean) {
-                        System.out.println("success " + aBoolean);
-                        return null;
-                    }
-                }
-        );*/
-
-        ws.logon("super human", "123", new Function1<Boolean, Unit>() {
-            @Override
-            public Unit invoke(Boolean aBoolean) {
-                System.out.println("logon " + aBoolean);
-
-              /*  ws.updateBiography("I am Unit", new Function1<Boolean, Unit>() {
-                    @Override
-                    public Unit invoke(Boolean aBoolean) {
-                        System.out.println("updated " + aBoolean);
-                        return null;
-                    }
-                });*/
-
-                ws.getUser("super human", new Function1<User, Unit>() {
-                    @Override
-                    public Unit invoke(User user) {
-                        System.out.println(user);
-                        return null;
-                    }
-                });
-                return null;
-            }
-        });
-
-
         dbHelper = SQLiteHelper.getSqLiteHelperInstance(getApplicationContext());
 
         if (!PreferenceManagerClass.getUsername(getApplicationContext()).isEmpty() &&
                 dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())) != null) {
 
-            /* WebSocketHandler.getInstance().logon(PreferenceManagerClass.getUsername(this), dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(this)).password, new Function1<Boolean, Unit>() {
+            ws.logon(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username,
+                    dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).password,
+                    new Function1<Boolean, Unit>() {
                 @Override
                 public Unit invoke(Boolean aBoolean) {
-
+                    ws.getUser(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username, new Function1<User, Unit>() {
+                        @Override
+                        public Unit invoke(User user) {
+                            System.out.println(user);
+                            return null;
+                        }
+                    });
                     return null;
                 }
-            });*/
+            });
+
             Intent i = new Intent(getApplicationContext(), MenuActivity.class);
             startActivity(i);
         }
@@ -123,6 +92,23 @@ public class LoginActivity extends BaseActivity {
                 if (user != null) {
                     if (user.password.equals(passwordTextField.getText().toString())) {
                         PreferenceManagerClass.setUsername(getApplicationContext(), user.username);
+
+                        ws.logon(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username,
+                                dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).password,
+                                new Function1<Boolean, Unit>() {
+                                    @Override
+                                    public Unit invoke(Boolean aBoolean) {
+                                        ws.getUser(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username, new Function1<User, Unit>() {
+                                            @Override
+                                            public Unit invoke(User user) {
+                                                System.out.println(user);
+                                                return null;
+                                            }
+                                        });
+                                        return null;
+                                    }
+                                });
+
                         Intent i = new Intent(getApplicationContext(), MenuActivity.class);
                         startActivity(i);
                     } else {
