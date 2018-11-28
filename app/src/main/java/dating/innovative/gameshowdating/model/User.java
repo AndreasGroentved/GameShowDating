@@ -1,8 +1,5 @@
 package dating.innovative.gameshowdating.model;
 
-import android.media.Image;
-import android.provider.MediaStore;
-
 public class User {
     public String username;
     public String password;
@@ -15,7 +12,8 @@ public class User {
     public int age;
     public int match;
 
-    public User(){}
+    public User() {
+    }
 
     public String getPassword() {
         return password;
@@ -112,7 +110,7 @@ public class User {
 
     //for debugging purposes
     @Override
-    public String toString(){
+    public String toString() {
         return "Username: " + getUsername() + "\n" +
                 "Biography: " + getBiography() + "\n" +
                 "Image: " + getProfileImage() + "\n" +

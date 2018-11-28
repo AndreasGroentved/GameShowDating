@@ -1,7 +1,5 @@
 package dating.innovative.gameshowdating.model;
 
-import java.util.Date;
-
 public class Message {
 
     public String self;
@@ -10,7 +8,8 @@ public class Message {
     public String messageFromMatch;
     public String timestamp;
 
-    public Message(){}
+    public Message() {
+    }
 
     public Message(String self, String match, String messageFromSelf, String messageFromMatch) {
         this.self = self;

@@ -7,11 +7,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import dating.innovative.gameshowdating.R;
+import dating.innovative.gameshowdating.data.WebSocketHandler;
 import dating.innovative.gameshowdating.model.User;
 import dating.innovative.gameshowdating.util.BaseActivity;
 import dating.innovative.gameshowdating.util.PreferenceManagerClass;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 import org.jetbrains.annotations.NotNull;
 
 public class LoginActivity extends BaseActivity {
@@ -42,10 +44,36 @@ public class LoginActivity extends BaseActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        System.out.println("what?");
+        WebSocketHandler ws = new WebSocketHandler();
+        User user = new User();
+        user.username = "super human";
+        user.age = 123;
+        user.sex = "female";
+        user.password = "123";
+        ws.createUser(user, new Function1<Boolean, Unit>() {
+                    @Override
+                    public Unit invoke(Boolean aBoolean) {
+                        System.out.println("success " + aBoolean);
+                        return null;
+                    }
+                }
+
+        );
+
+
         dbHelper = SQLiteHelper.getSqLiteHelperInstance(getApplicationContext());
 
         if (!PreferenceManagerClass.getUsername(getApplicationContext()).isEmpty() &&
                 dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())) != null) {
+//            WebSocketHandler.getInstance().logon(PreferenceManagerClass.getUsername(this), dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(this)).password, new Function1<String, Unit>() {
+//                @Override
+//                public Unit invoke(String s) {
+//                    //TODO hvis brugernavn og password er forkert...
+//                    return null;
+//                }
+//            });
             Intent i = new Intent(getApplicationContext(), MenuActivity.class);
             startActivity(i);
         }
@@ -82,7 +110,6 @@ public class LoginActivity extends BaseActivity {
             }
         });
     }
-
 
 
 }

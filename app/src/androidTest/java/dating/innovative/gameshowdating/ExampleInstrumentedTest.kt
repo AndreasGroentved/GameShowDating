@@ -18,5 +18,6 @@ class ExampleInstrumentedTest {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
         assertEquals("dating.innovative.gameshowdating", appContext.packageName)
+
     }
 }
