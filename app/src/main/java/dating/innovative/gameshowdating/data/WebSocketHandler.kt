@@ -9,6 +9,8 @@ import dating.innovative.gameshowdating.data.Util.uriToFile
 import dating.innovative.gameshowdating.model.GameData
 import dating.innovative.gameshowdating.model.User
 import okhttp3.WebSocketListener
+import org.json.JSONObject
+
 
 internal class WebSocketHandler : WebSocketListener() {
 
@@ -130,11 +132,16 @@ internal class WebSocketHandler : WebSocketListener() {
 
     fun getUser(username: String, callBack: (User?) -> Unit) {
         socket.on("getUser") {
-            socket.off("getUer")
-            val returnVal = it[0] as String
+            socket.off("getUser")
+            val returnVal = try {
+                it[0] as String?
+            } catch (e: Exception) {
+                "success"
+            }
             if (returnVal == "failure") callBack(null)
+            val data = (it[0] as JSONObject).toString()
             val gsonToken = object : TypeToken<User>() {}.type
-            val user = gson.fromJson<User>(returnVal, gsonToken)
+            val user = gson.fromJson<User>(data, gsonToken)
             callBack(user)
         }
 

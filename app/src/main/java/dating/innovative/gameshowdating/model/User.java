@@ -1,8 +1,12 @@
 package dating.innovative.gameshowdating.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class User {
+    @SerializedName("_id")
     public String username;
     public String password;
+    @SerializedName("profilePicture")
     public String profileImage;
     public String biography;
     public String video1;
@@ -108,14 +112,19 @@ public class User {
         this.video3 = video3;
     }
 
-    //for debugging purposes
     @Override
     public String toString() {
-        return "Username: " + getUsername() + "\n" +
-                "Biography: " + getBiography() + "\n" +
-                "Image: " + getProfileImage() + "\n" +
-                "Video1: " + getVideo1() + "\n" +
-                "Video2: " + getVideo2() + "\n" +
-                "Video3: " + getVideo3();
+        return "User{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", profileImage='" + profileImage + '\'' +
+                ", biography='" + biography + '\'' +
+                ", video1='" + video1 + '\'' +
+                ", video2='" + video2 + '\'' +
+                ", video3='" + video3 + '\'' +
+                ", sex='" + sex + '\'' +
+                ", age=" + age +
+                ", match=" + match +
+                '}';
     }
 }

@@ -46,8 +46,8 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         System.out.println("what?");
-        WebSocketHandler ws = new WebSocketHandler();
-        User user = new User();
+        final WebSocketHandler ws = new WebSocketHandler();
+        /*User user = new User();
         user.username = "super human";
         user.age = 123;
         user.sex = "female";
@@ -59,21 +59,45 @@ public class LoginActivity extends BaseActivity {
                         return null;
                     }
                 }
+        );*/
 
-        );
+        ws.logon("super human", "123", new Function1<Boolean, Unit>() {
+            @Override
+            public Unit invoke(Boolean aBoolean) {
+                System.out.println("logon " + aBoolean);
+
+              /*  ws.updateBiography("I am Unit", new Function1<Boolean, Unit>() {
+                    @Override
+                    public Unit invoke(Boolean aBoolean) {
+                        System.out.println("updated " + aBoolean);
+                        return null;
+                    }
+                });*/
+
+                ws.getUser("super human", new Function1<User, Unit>() {
+                    @Override
+                    public Unit invoke(User user) {
+                        System.out.println(user);
+                        return null;
+                    }
+                });
+                return null;
+            }
+        });
 
 
         dbHelper = SQLiteHelper.getSqLiteHelperInstance(getApplicationContext());
 
         if (!PreferenceManagerClass.getUsername(getApplicationContext()).isEmpty() &&
                 dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())) != null) {
-//            WebSocketHandler.getInstance().logon(PreferenceManagerClass.getUsername(this), dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(this)).password, new Function1<String, Unit>() {
-//                @Override
-//                public Unit invoke(String s) {
-//                    //TODO hvis brugernavn og password er forkert...
-//                    return null;
-//                }
-//            });
+
+            /* WebSocketHandler.getInstance().logon(PreferenceManagerClass.getUsername(this), dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(this)).password, new Function1<Boolean, Unit>() {
+                @Override
+                public Unit invoke(Boolean aBoolean) {
+
+                    return null;
+                }
+            });*/
             Intent i = new Intent(getApplicationContext(), MenuActivity.class);
             startActivity(i);
         }
