@@ -6,13 +6,14 @@ import com.github.nkzawa.socketio.client.Socket
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dating.innovative.gameshowdating.data.Util.uriToFile
+import dating.innovative.gameshowdating.model.Game
 import dating.innovative.gameshowdating.model.GameData
 import dating.innovative.gameshowdating.model.User
 import okhttp3.WebSocketListener
 import org.json.JSONObject
 
 
-internal class WebSocketHandler : WebSocketListener() {
+class WebSocketHandler private constructor() : WebSocketListener() {
 
 
     private object Holder {
@@ -62,7 +63,7 @@ internal class WebSocketHandler : WebSocketListener() {
                 callBack(byteArr)
             }
         }
-        socket.emit("downloadFile", token, username, roundNumber)
+        socket.emit("getVideo", token, username, roundNumber)
     }
 
     /**
@@ -81,44 +82,7 @@ internal class WebSocketHandler : WebSocketListener() {
             val success = it[0] as String == "success"
             callBack(success)
         }
-        println("register")
         socket.emit("createUser", user.username, user.password, user.sex, user.age)
-    }
-
-
-    fun getListOfGames(games: (List<GameData>?) -> Unit) {
-        socket.on("getListOfGames") {
-            val success = it[0] as String == "success"
-            if (!success) {
-                games(null)
-            }
-            val json = it[0] as String
-            val gsonToken = object : TypeToken<List<GameData>>() {}.type
-            val user = gson.fromJson<List<GameData>>(json, gsonToken)
-            games(user)
-
-        }
-        socket.emit("getListOfGames", token)
-    }
-
-
-    fun joinGame(gameId: String, gameUpdates: (String) -> Unit) {
-        socket.on("game") {
-            val status = it[0] as String
-            //TODO
-            gameUpdates(status)
-        }
-        socket.emit("joinGame", token, gameId)
-    }
-
-
-    fun registerGame(gameUpdates: (String) -> Unit) {
-        socket.on("game") {
-            val status = it[0] as String
-            //TODO
-            gameUpdates(status)
-        }
-        socket.emit("registerGame", token)
     }
 
 
@@ -164,12 +128,43 @@ internal class WebSocketHandler : WebSocketListener() {
         socket.emit("updateBiography", token, bio)
     }
 
-    //TODO
-    fun match(callBack: (Boolean) -> Unit) {
-        socket.on("match") {
-            val success = it[0] as String == "success"
-            callBack(success)
+    fun subscribeToGame() {
+
+    }
+
+    fun imOut(gameId: String, videoTimeStamp: Long) {
+        socket.emit("vote", token, gameId, videoTimeStamp)
+    }
+
+    fun comment(gameId: String, comment: String) {
+        socket.emit("comment", token, gameId, comment)
+    }
+
+    fun confirm(confirm: Boolean, gameId: String, gameStart: (Game) -> Unit, gameUpdates: (String) -> Unit) {
+        socket.on("startGame") {
+            socket.off("startGame")
+            val gameId = it[0] as String
+            val userCount = it[1] as Int
+            val userName = it[2] as String
+            gameStart(Game(userName, userCount, gameId))
         }
-        socket.emit("match", token)
+        socket.on("gameUpdate") {
+            val userCount = it[0] as Int
+            val roundNumber = it[1] as Int
+        }
+        socket.emit("confirmParticipation", token, gameId)
+
+    }
+
+    //TODO
+    fun match(judger: Boolean, inQueueCallback: (Boolean) -> Unit, matchAcceptedIdCallback: (Int) -> Unit) {
+        socket.on("inQueue") {
+            val success = it[0] as Boolean
+            inQueueCallback(success)
+        }
+        socket.on("match") {
+
+        }
+        socket.emit("match", token, judger)
     }
 }

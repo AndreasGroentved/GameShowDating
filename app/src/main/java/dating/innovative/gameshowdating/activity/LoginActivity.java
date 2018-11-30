@@ -24,7 +24,7 @@ public class LoginActivity extends BaseActivity {
     Button registerButton;
     TextView errorLabel;
     SQLiteHelper dbHelper;
-    final static WebSocketHandler ws = new WebSocketHandler();
+    final static WebSocketHandler ws = WebSocketHandler.getInstance();
 
 
     @NotNull
@@ -54,18 +54,18 @@ public class LoginActivity extends BaseActivity {
             ws.logon(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username,
                     dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).password,
                     new Function1<Boolean, Unit>() {
-                @Override
-                public Unit invoke(Boolean aBoolean) {
-                    ws.getUser(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username, new Function1<User, Unit>() {
                         @Override
-                        public Unit invoke(User user) {
-                            System.out.println(user);
+                        public Unit invoke(Boolean aBoolean) {
+                            ws.getUser(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username, new Function1<User, Unit>() {
+                                @Override
+                                public Unit invoke(User user) {
+                                    System.out.println(user);
+                                    return null;
+                                }
+                            });
                             return null;
                         }
                     });
-                    return null;
-                }
-            });
 
             Intent i = new Intent(getApplicationContext(), MenuActivity.class);
             startActivity(i);
