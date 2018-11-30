@@ -108,12 +108,12 @@ class WebSocketHandler private constructor() : WebSocketListener() {
         socket.emit("getUser", token, username)
     }
 
-    fun updateProfilePicture(profilePicture: Uri, callBack: (Boolean) -> Unit) {
+    fun updateProfilePicture(profilePicture: File, callBack: (Boolean) -> Unit) {
         socket.on("updateProfilePicture") {
             val success = it[0] as String == "success"
             callBack(success)
         }
-        socket.emit("updateProfilePicture", token, profilePicture.uriToFile().readBytes())
+        socket.emit("updateProfilePicture", token, profilePicture)
     }
 
     fun updateBiography(bio: String, callBack: (Boolean) -> Unit) {
