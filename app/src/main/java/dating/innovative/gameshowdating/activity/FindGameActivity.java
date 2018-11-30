@@ -1,6 +1,7 @@
 package dating.innovative.gameshowdating.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +27,21 @@ public class FindGameActivity extends Activity {
         lookingForFemalesCheckBox = (CheckBox) findViewById(R.id.findGame_checkbox_female);
         judgeRadioButton = (RadioButton) findViewById(R.id.findGame_radio_judge);
         beJudgedRadioButton = (RadioButton) findViewById(R.id.findGame_radio_be_judged);
+
+        findGameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if((lookingForMalesCheckBox.isChecked() || lookingForFemalesCheckBox.isChecked()) &&  (beJudgedRadioButton.isChecked() || judgeRadioButton.isChecked())){
+                    Intent findGameIntent = new Intent(getApplicationContext(), InQueueActivity.class);
+                    findGameIntent.putExtra("maleCheckBox", lookingForMalesCheckBox.isChecked());
+                    findGameIntent.putExtra("femaleCheckBox", lookingForFemalesCheckBox.isChecked());
+                    findGameIntent.putExtra("beJudged", beJudgedRadioButton.isChecked());
+                    findGameIntent.putExtra("judge", judgeRadioButton.isChecked());
+                    startActivity(findGameIntent);
+                }
+
+            }
+        });
     }
 
     public void onRadioButtonClicked(View view){
