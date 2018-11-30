@@ -110,8 +110,7 @@ public class VideoSettingActivity extends BaseActivity {
                     } else {
                         PreferenceManagerClass.setPreferenceVideo3(getApplicationContext(), videoUriString);
                     }
-                    WebSocketHandler ws = new WebSocketHandler();
-                    ws.sendOrUpdateVideo(videoUri, PreferenceManagerClass.getUsername(this), videoId);
+
                 }
 
             }

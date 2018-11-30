@@ -10,9 +10,10 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import dating.innovative.gameshowdating.R;
-import dating.innovative.gameshowdating.data.WebSocketHandler;
 import dating.innovative.gameshowdating.model.User;
 import dating.innovative.gameshowdating.util.BaseActivity;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 public class RegisterActivity extends BaseActivity {
 
@@ -24,7 +25,6 @@ public class RegisterActivity extends BaseActivity {
     RadioButton radioRegisterButtonMale;
     RadioButton radioRegisterButtonFemale;
     EditText registerAge;
-    WebSocketHandler wsHandler;
     SQLiteHelper dbHelper;
 
 
@@ -65,8 +65,10 @@ public class RegisterActivity extends BaseActivity {
                         User newUser = null;
                         if(radioRegisterButtonFemale.isChecked()){
                             newUser = createNewUser(registerUsername.getText().toString(), registerPassword.getText().toString(), radioRegisterButtonFemale.getText().toString(),  Integer.parseInt(registerAge.getText().toString()));
+                            createRemoteUser(newUser);
                         } else if(radioRegisterButtonMale.isChecked()){
                             newUser = createNewUser(registerUsername.getText().toString(),registerPassword.getText().toString(),radioRegisterButtonMale.getText().toString(), Integer.parseInt(registerAge.getText().toString()));
+                            createRemoteUser(newUser);
                         } else {
                             errorLabel.setText("A sex must be chosen");
                         }
@@ -124,5 +126,15 @@ public class RegisterActivity extends BaseActivity {
         user.setVideo2("");
         user.setVideo3("");
         return user;
+    }
+
+    public void createRemoteUser(User user){
+        LoginActivity.ws.createUser(user, new Function1<Boolean, Unit>() {
+            @Override
+            public Unit invoke(Boolean aBoolean) {
+                System.out.println("user created" + aBoolean);
+                return null;
+            }
+        });
     }
 }
