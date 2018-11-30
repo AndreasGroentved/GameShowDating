@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dating.innovative.gameshowdating.data.Util.uriToFile
 import dating.innovative.gameshowdating.model.Game
+import dating.innovative.gameshowdating.model.RemoteUser
 import dating.innovative.gameshowdating.model.User
 import okhttp3.WebSocketListener
 import org.json.JSONObject
@@ -82,15 +83,15 @@ class WebSocketHandler private constructor() : WebSocketListener() {
     }
 
 
-    fun sendOrUpdateVideo(/*uri: Uri,*/ file: File, username: String, roundNumber: Int, callBack: (Boolean) -> Unit) {
+    fun sendOrUpdateVideo(file: File, username: String, roundNumber: Int, callBack: (Boolean) -> Unit) {
         socket.on("uploadFile") {
             val success = it[0] as String == "success"
             callBack(success)
         }
-        socket.emit("uploadFile", token, username, roundNumber, file/*, uri.uriToFile().readBytes()*/)
+        socket.emit("uploadFile", token, username, roundNumber, file)
     }
 
-    fun getUser(username: String, callBack: (User?) -> Unit) {
+    fun getUser(username: String, callBack: (RemoteUser?) -> Unit) {
         socket.on("getUser") {
             socket.off("getUser")
             val returnVal = try {
@@ -100,8 +101,8 @@ class WebSocketHandler private constructor() : WebSocketListener() {
             }
             if (returnVal == "failure") callBack(null)
             val data = (it[0] as JSONObject).toString()
-            val gsonToken = object : TypeToken<User>() {}.type
-            val user = gson.fromJson<User>(data, gsonToken)
+            val gsonToken = object : TypeToken<RemoteUser>() {}.type
+            val user = gson.fromJson<RemoteUser>(data, gsonToken)
             callBack(user)
         }
 
@@ -123,7 +124,6 @@ class WebSocketHandler private constructor() : WebSocketListener() {
         }
         socket.emit("updateBiography", token, bio)
     }
-
 
 
     fun imOut(gameId: String, videoTimeStamp: Long) {
@@ -153,6 +153,10 @@ class WebSocketHandler private constructor() : WebSocketListener() {
             val userTotal = it[1] as Int
             gameUpdates(Game(userName, userTotal, userCount, gameId, roundNumber))
         }
+        socket.on("gameOver") {
+            
+        }
+
         socket.emit("confirmParticipation", token, gameId, confirm)
     }
 
@@ -167,5 +171,13 @@ class WebSocketHandler private constructor() : WebSocketListener() {
             matchAcceptedIdCallback(gameId)
         }
         socket.emit("match", token, judger)
+    }
+
+    fun sendChatMessage(to: String, message: String, timeStamp: Long) {
+
+    }
+
+    fun getChat(with: String) {
+
     }
 }
