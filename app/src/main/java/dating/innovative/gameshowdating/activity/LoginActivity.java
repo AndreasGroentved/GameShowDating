@@ -24,7 +24,7 @@ public class LoginActivity extends BaseActivity {
     Button registerButton;
     TextView errorLabel;
     SQLiteHelper dbHelper;
-    final static WebSocketHandler ws = WebSocketHandler.getInstance();
+    WebSocketHandler ws = WebSocketHandler.getInstance();
 
 
     @NotNull

@@ -1,6 +1,7 @@
 package dating.innovative.gameshowdating.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -11,6 +12,8 @@ import dating.innovative.gameshowdating.*;
 import dating.innovative.gameshowdating.data.WebSocketHandler;
 import dating.innovative.gameshowdating.util.BaseActivity;
 import dating.innovative.gameshowdating.util.PreferenceManagerClass;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 import org.jetbrains.annotations.NotNull;
 
 public class CustomizeProfileActivity extends BaseActivity {
@@ -37,7 +40,7 @@ public class CustomizeProfileActivity extends BaseActivity {
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         biographyEdit = (EditText) findViewById(R.id.customizeBiography);
@@ -51,28 +54,28 @@ public class CustomizeProfileActivity extends BaseActivity {
         saveChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!biographyEdit.getText().toString().isEmpty()){
-                    dbHelper.updateUserBiography(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),biographyEdit.getText().toString());
+                if (!biographyEdit.getText().toString().isEmpty()) {
+                    dbHelper.updateUserBiography(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())), biographyEdit.getText().toString());
                 }
-                if(!PreferenceManagerClass.getProfilePictureUpdated(getApplicationContext()).isEmpty()){
+                if (!PreferenceManagerClass.getProfilePictureUpdated(getApplicationContext()).isEmpty()) {
                     dbHelper.updateUserProfileImage(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),
                             PreferenceManagerClass.getProfilePictureUpdated(getApplicationContext()));
-                    PreferenceManagerClass.clearRef(getApplicationContext(),PreferenceManagerClass.PREFERENCE_PROFILE_PICTURE);
+                    PreferenceManagerClass.clearRef(getApplicationContext(), PreferenceManagerClass.PREFERENCE_PROFILE_PICTURE);
                 }
-                if(!PreferenceManagerClass.getPreferenceVideo1(getApplicationContext()).isEmpty()){
+                if (!PreferenceManagerClass.getPreferenceVideo1(getApplicationContext()).isEmpty()) {
                     dbHelper.updateUserVideo1(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),
                             PreferenceManagerClass.getPreferenceVideo1(getApplicationContext()));
-                    PreferenceManagerClass.clearRef(getApplicationContext(),PreferenceManagerClass.PREFERENCE_VIDEO_1);
+                    PreferenceManagerClass.clearRef(getApplicationContext(), PreferenceManagerClass.PREFERENCE_VIDEO_1);
                 }
-                if(!PreferenceManagerClass.getPreferenceVideo2(getApplicationContext()).isEmpty()){
+                if (!PreferenceManagerClass.getPreferenceVideo2(getApplicationContext()).isEmpty()) {
                     dbHelper.updateUserVideo2(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),
                             PreferenceManagerClass.getPreferenceVideo2(getApplicationContext()));
-                    PreferenceManagerClass.clearRef(getApplicationContext(),PreferenceManagerClass.PREFERENCE_VIDEO_2);
+                    PreferenceManagerClass.clearRef(getApplicationContext(), PreferenceManagerClass.PREFERENCE_VIDEO_2);
                 }
-                if(!PreferenceManagerClass.getPreferenceVideo3(getApplicationContext()).isEmpty()){
+                if (!PreferenceManagerClass.getPreferenceVideo3(getApplicationContext()).isEmpty()) {
                     dbHelper.updateUserVideo3(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),
                             PreferenceManagerClass.getPreferenceVideo3(getApplicationContext()));
-                    PreferenceManagerClass.clearRef(getApplicationContext(),PreferenceManagerClass.PREFERENCE_VIDEO_3);
+                    PreferenceManagerClass.clearRef(getApplicationContext(), PreferenceManagerClass.PREFERENCE_VIDEO_3);
                 }
                 Intent backToProfile = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(backToProfile);
@@ -100,23 +103,23 @@ public class CustomizeProfileActivity extends BaseActivity {
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(),ImageSettingActivity.class);
+                Intent i = new Intent(getApplicationContext(), ImageSettingActivity.class);
                 startActivity(i);
             }
         });
 
     }
 
-    public void transitionToVideoSettingScreen(int videoId){
+    public void transitionToVideoSettingScreen(int videoId) {
         Intent i = new Intent(getApplicationContext(), VideoSettingActivity.class);
         i.putExtra("videoId", videoId);
         startActivity(i);
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         finish();
-        Intent backToProfile = new Intent(getApplicationContext(),ProfileActivity.class);
+        Intent backToProfile = new Intent(getApplicationContext(), ProfileActivity.class);
         startActivity(backToProfile);
     }
 

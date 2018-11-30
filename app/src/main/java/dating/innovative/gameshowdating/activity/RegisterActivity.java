@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import dating.innovative.gameshowdating.R;
+import dating.innovative.gameshowdating.data.WebSocketHandler;
 import dating.innovative.gameshowdating.model.User;
 import dating.innovative.gameshowdating.util.BaseActivity;
 import kotlin.Unit;
@@ -63,16 +64,16 @@ public class RegisterActivity extends BaseActivity {
                         registerConfirmPassword.getText().toString().equals(registerPassword.getText().toString())) {
                     if (dbHelper.getUserByUsername(registerUsername.getText().toString()) == null) {
                         User newUser = null;
-                        if(radioRegisterButtonFemale.isChecked()){
-                            newUser = createNewUser(registerUsername.getText().toString(), registerPassword.getText().toString(), radioRegisterButtonFemale.getText().toString(),  Integer.parseInt(registerAge.getText().toString()));
+                        if (radioRegisterButtonFemale.isChecked()) {
+                            newUser = createNewUser(registerUsername.getText().toString(), registerPassword.getText().toString(), radioRegisterButtonFemale.getText().toString(), Integer.parseInt(registerAge.getText().toString()));
                             createRemoteUser(newUser);
-                        } else if(radioRegisterButtonMale.isChecked()){
-                            newUser = createNewUser(registerUsername.getText().toString(),registerPassword.getText().toString(),radioRegisterButtonMale.getText().toString(), Integer.parseInt(registerAge.getText().toString()));
+                        } else if (radioRegisterButtonMale.isChecked()) {
+                            newUser = createNewUser(registerUsername.getText().toString(), registerPassword.getText().toString(), radioRegisterButtonMale.getText().toString(), Integer.parseInt(registerAge.getText().toString()));
                             createRemoteUser(newUser);
                         } else {
                             errorLabel.setText("A sex must be chosen");
                         }
-                        if(newUser != null){
+                        if (newUser != null) {
                             dbHelper.addUser(newUser);
                             Intent i = new Intent(getApplicationContext(), LoginActivity.class);
                             startActivity(i);
@@ -86,7 +87,7 @@ public class RegisterActivity extends BaseActivity {
                         errorLabel.setText("Username can not be empty");
                     } else if (registerPassword.getText().toString().isEmpty()) {
                         errorLabel.setText("Password can not be empty");
-                    } else if(registerAge.getText().toString().isEmpty()){
+                    } else if (registerAge.getText().toString().isEmpty()) {
                         errorLabel.setText("An age must be set");
                     } else if (!registerConfirmPassword.getText().toString().equals(registerPassword.getText().toString())) {
                         errorLabel.setText("Passwords do not match");
@@ -96,18 +97,18 @@ public class RegisterActivity extends BaseActivity {
         });
     }
 
-    public void onRadioButtonClicked(View view){
+    public void onRadioButtonClicked(View view) {
         boolean checked = ((RadioButton) view).isChecked();
 
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.radio_male:
-                if(checked){
+                if (checked) {
                     radioRegisterButtonMale.setChecked(true);
                     radioRegisterButtonFemale.setChecked(false);
                 }
                 break;
             case R.id.radio_female:
-                if(checked){
+                if (checked) {
                     radioRegisterButtonFemale.setChecked(true);
                     radioRegisterButtonMale.setChecked(false);
                 }
@@ -128,8 +129,8 @@ public class RegisterActivity extends BaseActivity {
         return user;
     }
 
-    public void createRemoteUser(User user){
-        LoginActivity.ws.createUser(user, new Function1<Boolean, Unit>() {
+    public void createRemoteUser(User user) {
+        WebSocketHandler.getInstance().createUser(user, new Function1<Boolean, Unit>() {
             @Override
             public Unit invoke(Boolean aBoolean) {
                 System.out.println("user created" + aBoolean);

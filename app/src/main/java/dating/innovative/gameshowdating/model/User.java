@@ -14,7 +14,7 @@ public class User {
     public String video3;
     public String sex;
     public int age;
-    public int match;
+
 
     public User() {
     }
@@ -23,15 +23,8 @@ public class User {
         return password;
     }
 
-    public int getMatch() {
-        return match;
-    }
 
-    public void setMatch(int match) {
-        this.match = match;
-    }
-
-    public User(String username, String password, String profileImage, String biography, String video1, String video2, String video3, String sex, int age, int match) {
+    public User(String username, String password, String profileImage, String biography, String video1, String video2, String video3, String sex, int age) {
         this.username = username;
         this.password = password;
         this.profileImage = profileImage;
@@ -41,7 +34,6 @@ public class User {
         this.video3 = video3;
         this.sex = sex;
         this.age = age;
-        this.match = match;
     }
 
     public String getSex() {
@@ -124,7 +116,6 @@ public class User {
                 ", video3='" + video3 + '\'' +
                 ", sex='" + sex + '\'' +
                 ", age=" + age +
-                ", match=" + match +
                 '}';
     }
 }
