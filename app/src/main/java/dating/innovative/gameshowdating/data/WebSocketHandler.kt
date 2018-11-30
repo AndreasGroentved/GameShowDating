@@ -25,7 +25,7 @@ class WebSocketHandler private constructor() : WebSocketListener() {
     }
 
 
-    private val socket: Socket = IO.socket("http://10.126.36.226:3000")
+    private val socket: Socket = IO.socket("http://10.126.85.21:3000")
 
     init {
         socket.connect()

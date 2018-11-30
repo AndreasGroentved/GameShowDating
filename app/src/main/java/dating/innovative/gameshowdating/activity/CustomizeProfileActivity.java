@@ -67,6 +67,12 @@ public class CustomizeProfileActivity extends BaseActivity {
             public void onClick(View view) {
                 if(!biographyEdit.getText().toString().isEmpty()){
                     dbHelper.updateUserBiography(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),biographyEdit.getText().toString());
+                    ws.updateBiography(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).biography, new Function1<Boolean, Unit>() {
+                        @Override
+                        public Unit invoke(Boolean aBoolean) {
+                            return null;
+                        }
+                    });
                 }
                 if(!PreferenceManagerClass.getProfilePictureUpdated(getApplicationContext()).isEmpty()){
                     dbHelper.updateUserProfileImage(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),
