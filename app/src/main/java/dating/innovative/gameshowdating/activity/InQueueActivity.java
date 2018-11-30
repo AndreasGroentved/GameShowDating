@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 import dating.innovative.gameshowdating.R;
-import org.w3c.dom.Text;
+import dating.innovative.gameshowdating.data.WebSocketHandler;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 public class InQueueActivity extends Activity {
 
@@ -14,40 +16,62 @@ public class InQueueActivity extends Activity {
     TextView timeElapsedQueueTextView;
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_in_queue);
         final long start = System.currentTimeMillis();
         Intent lastActivityIntent = getIntent();
 
-        sexPreferenceQueueTextView = (TextView) findViewById(R.id.inQueueSexTextField);
-        rolePreferenceQueueTextView = (TextView) findViewById(R.id.inQueueRoleTextField);
-        timeElapsedQueueTextView = (TextView) findViewById(R.id.inQueueTimePassedTextField2);
+        WebSocketHandler ws = WebSocketHandler.getInstance();
 
-        boolean maleCheck = lastActivityIntent.getBooleanExtra("maleCheckBox",false);
-        boolean femaleCheck = lastActivityIntent.getBooleanExtra("femaleCheckBox",false);
-        boolean beJudgedCheck = lastActivityIntent.getBooleanExtra("beJudged",false);
-        boolean judgeCheck = lastActivityIntent.getBooleanExtra("judge",false);
 
-        if(maleCheck && femaleCheck){
+        sexPreferenceQueueTextView = findViewById(R.id.inQueueSexTextField);
+        rolePreferenceQueueTextView = findViewById(R.id.inQueueRoleTextField);
+        timeElapsedQueueTextView = findViewById(R.id.inQueueTimePassedTextField2);
+
+        boolean maleCheck = lastActivityIntent.getBooleanExtra("maleCheckBox", false);
+        boolean femaleCheck = lastActivityIntent.getBooleanExtra("femaleCheckBox", false);
+        boolean beJudgedCheck = lastActivityIntent.getBooleanExtra("beJudged", false);
+        boolean judgeCheck = lastActivityIntent.getBooleanExtra("judge", false);
+
+        final Activity a = this;
+        ws.match(true, new Function1<Boolean, Unit>() {
+            @Override
+            public Unit invoke(Boolean aBoolean) {
+                System.out.println("in queueu " + aBoolean);
+                return null;
+            }
+        }, new Function1<String, Unit>() {
+            @Override
+            public Unit invoke(String s) {
+                String gameID = s;
+
+                Intent i = new Intent(a, GameActivity.class);
+                i.putExtra("gameId", gameID);
+                a.startActivity(i);
+                return null;
+            }
+        });
+
+        if (maleCheck && femaleCheck) {
             sexPreferenceQueueTextView.setText("Male and Female users");
-        } else if(maleCheck){
+        } else if (maleCheck) {
             sexPreferenceQueueTextView.setText("Male users");
-        } else if(femaleCheck){
+        } else if (femaleCheck) {
             sexPreferenceQueueTextView.setText("Female users");
         }
 
-        if(beJudgedCheck){
+        if (beJudgedCheck) {
             rolePreferenceQueueTextView.setText("Getting judged");
-        } else if(judgeCheck){
+        } else if (judgeCheck) {
             rolePreferenceQueueTextView.setText("Judging a user");
         }
 
-        Thread t = new Thread(){
+        Thread t = new Thread() {
             @Override
-            public void run(){
-                try{
-                    while(!interrupted()) {
+            public void run() {
+                try {
+                    while (!interrupted()) {
                         Thread.sleep(1000);
                         final long now = System.currentTimeMillis();
                         runOnUiThread(new Runnable() {

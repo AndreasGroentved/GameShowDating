@@ -154,9 +154,8 @@ class WebSocketHandler private constructor() : WebSocketListener() {
             gameUpdates(Game(userName, userTotal, userCount, gameId, roundNumber))
         }
         socket.on("gameOver") {
-            
-        }
 
+        }
         socket.emit("confirmParticipation", token, gameId, confirm)
     }
 

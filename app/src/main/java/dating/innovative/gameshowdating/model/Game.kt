@@ -1,7 +1,7 @@
 package dating.innovative.gameshowdating.model
 
 data class Game(
-    val userName: String,
+    val nonJudger: String,
     val userCount: Int,
     val userLeft: Int,
     val gameId: String,

@@ -64,6 +64,7 @@
         <activity
             android:name=".activity.ImageSettingActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.GameActivity"/>
     </application>
 
 </manifest>
