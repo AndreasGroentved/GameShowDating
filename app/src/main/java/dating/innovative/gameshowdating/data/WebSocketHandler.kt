@@ -7,7 +7,6 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dating.innovative.gameshowdating.data.Util.uriToFile
 import dating.innovative.gameshowdating.model.Game
-import dating.innovative.gameshowdating.model.GameData
 import dating.innovative.gameshowdating.model.User
 import okhttp3.WebSocketListener
 import org.json.JSONObject
@@ -17,20 +16,16 @@ import java.io.File
 class WebSocketHandler private constructor() : WebSocketListener() {
 
 
-    private object Holder {
-        val INSTANCE = WebSocketHandler()
-    }
-
     private lateinit var token: String
     private val gson = Gson()
 
     companion object {
         @JvmStatic
-        val instance: WebSocketHandler by lazy { Holder.INSTANCE }
+        val instance: WebSocketHandler by lazy { WebSocketHandler() }
     }
 
 
-    private val socket: Socket = IO.socket("http://10.126.85.21:3000")
+    private val socket: Socket = IO.socket("http://10.126.36.226:3000")
 
     init {
         socket.connect()
@@ -87,12 +82,12 @@ class WebSocketHandler private constructor() : WebSocketListener() {
     }
 
 
-    fun sendOrUpdateVideo(file: File, username: String, roundNumber: Int, callBack: (Boolean) -> Unit) {
+    fun sendOrUpdateVideo(/*uri: Uri,*/ file: File, username: String, roundNumber: Int, callBack: (Boolean) -> Unit) {
         socket.on("uploadFile") {
             val success = it[0] as String == "success"
             callBack(success)
         }
-        socket.emit("uploadFile", token, username, roundNumber, file)
+        socket.emit("uploadFile", token, username, roundNumber, file/*, uri.uriToFile().readBytes()*/)
     }
 
     fun getUser(username: String, callBack: (User?) -> Unit) {
@@ -129,42 +124,47 @@ class WebSocketHandler private constructor() : WebSocketListener() {
         socket.emit("updateBiography", token, bio)
     }
 
-    fun subscribeToGame() {
 
-    }
 
     fun imOut(gameId: String, videoTimeStamp: Long) {
         socket.emit("vote", token, gameId, videoTimeStamp)
+    }
+
+    fun videoWatched(gameId: String) {
+        socket.emit("videoOver", token, gameId)
     }
 
     fun comment(gameId: String, comment: String) {
         socket.emit("comment", token, gameId, comment)
     }
 
-    fun confirm(confirm: Boolean, gameId: String, gameStart: (Game) -> Unit, gameUpdates: (String) -> Unit) {
+    fun confirmGame(confirm: Boolean, gameId: String, gameUpdates: (Game) -> Unit) {
+        var userName = ""
         socket.on("startGame") {
             socket.off("startGame")
             val gameId = it[0] as String
             val userCount = it[1] as Int
-            val userName = it[2] as String
-            gameStart(Game(userName, userCount, gameId))
+            userName = it[2] as String
+            gameUpdates(Game(userName, userCount, userCount, gameId, 0))
         }
         socket.on("gameUpdate") {
             val userCount = it[0] as Int
-            val roundNumber = it[1] as Int
+            val roundNumber = it[2] as Int
+            val userTotal = it[1] as Int
+            gameUpdates(Game(userName, userTotal, userCount, gameId, roundNumber))
         }
-        socket.emit("confirmParticipation", token, gameId)
-
+        socket.emit("confirmParticipation", token, gameId, confirm)
     }
 
-    //TODO
-    fun match(judger: Boolean, inQueueCallback: (Boolean) -> Unit, matchAcceptedIdCallback: (Int) -> Unit) {
+    fun match(judger: Boolean, inQueueCallback: (Boolean) -> Unit, matchAcceptedIdCallback: (String) -> Unit) {
         socket.on("inQueue") {
             val success = it[0] as Boolean
             inQueueCallback(success)
         }
         socket.on("match") {
-
+            val success = it[0] as String == "success"
+            val gameId = it[1] as String
+            matchAcceptedIdCallback(gameId)
         }
         socket.emit("match", token, judger)
     }
