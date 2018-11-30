@@ -26,7 +26,7 @@ class WebSocketHandler private constructor() : WebSocketListener() {
     }
 
 
-    private val socket: Socket = IO.socket("http://10.126.36.226:3000")
+    private val socket: Socket = IO.socket("http://10.126.85.21:3000")
 
     init {
         socket.connect()
@@ -109,12 +109,12 @@ class WebSocketHandler private constructor() : WebSocketListener() {
         socket.emit("getUser", token, username)
     }
 
-    fun updateProfilePicture(profilePicture: Uri, callBack: (Boolean) -> Unit) {
+    fun updateProfilePicture(profilePicture: File, callBack: (Boolean) -> Unit) {
         socket.on("updateProfilePicture") {
             val success = it[0] as String == "success"
             callBack(success)
         }
-        socket.emit("updateProfilePicture", token, profilePicture.uriToFile().readBytes())
+        socket.emit("updateProfilePicture", token, profilePicture)
     }
 
     fun updateBiography(bio: String, callBack: (Boolean) -> Unit) {

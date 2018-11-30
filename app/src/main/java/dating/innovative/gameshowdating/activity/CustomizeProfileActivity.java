@@ -33,6 +33,7 @@ public class CustomizeProfileActivity extends BaseActivity {
     File video1File;
     File video2File;
     File video3File;
+    File profilePictureFile;
 
 
     @NotNull
@@ -60,25 +61,44 @@ public class CustomizeProfileActivity extends BaseActivity {
         profileImage = (Button) findViewById(R.id.customizeProfileImage);
         saveChanges = (Button) findViewById(R.id.customizeSaveButton);
         dbHelper = SQLiteHelper.getSqLiteHelperInstance(getApplicationContext());
-        final File storageDir = getExternalFilesDir(Environment.DIRECTORY_MOVIES);
+        final File storageDirVideo = getExternalFilesDir(Environment.DIRECTORY_MOVIES);
+        final File storageDirImage = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
         saveChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(!biographyEdit.getText().toString().isEmpty()){
                     dbHelper.updateUserBiography(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),biographyEdit.getText().toString());
+                    ws.updateBiography(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).biography, new Function1<Boolean, Unit>() {
+                        @Override
+                        public Unit invoke(Boolean aBoolean) {
+                            return null;
+                        }
+                    });
                 }
                 if(!PreferenceManagerClass.getProfilePictureUpdated(getApplicationContext()).isEmpty()){
                     dbHelper.updateUserProfileImage(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),
                             PreferenceManagerClass.getProfilePictureUpdated(getApplicationContext()));
                     PreferenceManagerClass.clearRef(getApplicationContext(),PreferenceManagerClass.PREFERENCE_PROFILE_PICTURE);
+
+                    try{
+                        profilePictureFile = File.createTempFile("profilePictureUpload_" + dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username, ".jpg", storageDirImage);
+                    } catch(IOException e){
+                        e.printStackTrace();
+                    }
+                    ws.updateProfilePicture(profilePictureFile, new Function1<Boolean, Unit>() {
+                        @Override
+                        public Unit invoke(Boolean aBoolean) {
+                            return null;
+                        }
+                    });
                 }
                 if(!PreferenceManagerClass.getPreferenceVideo1(getApplicationContext()).isEmpty()){
                     dbHelper.updateUserVideo1(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),
                             PreferenceManagerClass.getPreferenceVideo1(getApplicationContext()));
                     PreferenceManagerClass.clearRef(getApplicationContext(),PreferenceManagerClass.PREFERENCE_VIDEO_1);
                     try {
-                        video1File = File.createTempFile("video1_" + dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username, ".mp4", storageDir);
+                        video1File = File.createTempFile("video1_" + dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username, ".mp4", storageDirVideo);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -97,7 +117,7 @@ public class CustomizeProfileActivity extends BaseActivity {
                     PreferenceManagerClass.clearRef(getApplicationContext(),PreferenceManagerClass.PREFERENCE_VIDEO_2);
 
                     try {
-                        video2File = File.createTempFile("video2_" + dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username, ".mp4", storageDir);
+                        video2File = File.createTempFile("video2_" + dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username, ".mp4", storageDirVideo);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -116,7 +136,7 @@ public class CustomizeProfileActivity extends BaseActivity {
                     PreferenceManagerClass.clearRef(getApplicationContext(),PreferenceManagerClass.PREFERENCE_VIDEO_3);
 
                     try {
-                        video3File = File.createTempFile("video3_" + dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username, ".mp4", storageDir);
+                        video3File = File.createTempFile("video3_" + dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username, ".mp4", storageDirVideo);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
