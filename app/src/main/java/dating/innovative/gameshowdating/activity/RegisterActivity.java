@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import dating.innovative.gameshowdating.R;
+import dating.innovative.gameshowdating.data.WebSocketHandler;
 import dating.innovative.gameshowdating.model.User;
 import dating.innovative.gameshowdating.util.BaseActivity;
 import kotlin.Unit;
@@ -26,6 +27,7 @@ public class RegisterActivity extends BaseActivity {
     RadioButton radioRegisterButtonFemale;
     EditText registerAge;
     SQLiteHelper dbHelper;
+    WebSocketHandler ws;
 
 
     @Override
@@ -41,7 +43,7 @@ public class RegisterActivity extends BaseActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        ws = WebSocketHandler.getInstance();
 
         dbHelper = SQLiteHelper.getSqLiteHelperInstance(getApplicationContext());
 
@@ -129,7 +131,7 @@ public class RegisterActivity extends BaseActivity {
     }
 
     public void createRemoteUser(User user){
-        LoginActivity.ws.createUser(user, new Function1<Boolean, Unit>() {
+        ws.createUser(user, new Function1<Boolean, Unit>() {
             @Override
             public Unit invoke(Boolean aBoolean) {
                 System.out.println("user created" + aBoolean);

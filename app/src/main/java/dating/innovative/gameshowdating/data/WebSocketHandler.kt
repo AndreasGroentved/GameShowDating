@@ -11,6 +11,7 @@ import dating.innovative.gameshowdating.model.GameData
 import dating.innovative.gameshowdating.model.User
 import okhttp3.WebSocketListener
 import org.json.JSONObject
+import java.io.File
 
 
 class WebSocketHandler private constructor() : WebSocketListener() {
@@ -29,7 +30,7 @@ class WebSocketHandler private constructor() : WebSocketListener() {
     }
 
 
-    private val socket: Socket = IO.socket("http://192.168.0.10:3000")
+    private val socket: Socket = IO.socket("http://10.126.85.21:3000")
 
     init {
         socket.connect()
@@ -86,12 +87,12 @@ class WebSocketHandler private constructor() : WebSocketListener() {
     }
 
 
-    fun sendOrUpdateVideo(uri: Uri, username: String, roundNumber: Int, callBack: (Boolean) -> Unit) {
+    fun sendOrUpdateVideo(file: File, username: String, roundNumber: Int, callBack: (Boolean) -> Unit) {
         socket.on("uploadFile") {
             val success = it[0] as String == "success"
             callBack(success)
         }
-        socket.emit("uploadFile", token, username, roundNumber, uri.uriToFile().readBytes())
+        socket.emit("uploadFile", token, username, roundNumber, file)
     }
 
     fun getUser(username: String, callBack: (User?) -> Unit) {
