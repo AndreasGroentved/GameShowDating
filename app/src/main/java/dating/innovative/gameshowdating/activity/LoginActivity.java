@@ -10,7 +10,6 @@ import android.widget.TextView;
 import dating.innovative.gameshowdating.R;
 import dating.innovative.gameshowdating.data.WebSocketHandler;
 import dating.innovative.gameshowdating.model.RemoteUser;
-import dating.innovative.gameshowdating.model.User;
 import dating.innovative.gameshowdating.util.BaseActivity;
 import dating.innovative.gameshowdating.util.PreferenceManagerClass;
 import kotlin.Unit;
@@ -91,36 +90,37 @@ public class LoginActivity extends BaseActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                User user = dbHelper.getUserByUsername(usernameTextField.getText().toString());
-                if (user != null) {
-                    if (user.password.equals(passwordTextField.getText().toString())) {
-                        PreferenceManagerClass.setUsername(getApplicationContext(), user.username);
 
-                        ws.logon(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username,
-                                dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).password,
-                                new Function1<Boolean, Unit>() {
+                ws.logon(usernameTextField.getText().toString(),
+                        passwordTextField.getText().toString(),
+                        new Function1<Boolean, Unit>() {
+                            @Override
+                            public Unit invoke(final Boolean aBoolean) {
+                                if (!aBoolean) {
+                                    LoginActivity.this.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            errorLabel.setText("Incorrect password");
+                                        }
+                                    });
+                                    return null;
+                                }
+                                ws.getUser(usernameTextField.getText().toString(), new Function1<RemoteUser, Unit>() {
                                     @Override
-                                    public Unit invoke(Boolean aBoolean) {
-                                        ws.getUser(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username, new Function1<RemoteUser, Unit>() {
-                                            @Override
-                                            public Unit invoke(RemoteUser user) {
-                                                System.out.println(user);
-                                                Intent i = new Intent(getApplicationContext(), MenuActivity.class);
-                                                startActivity(i);
-                                                return null;
-                                            }
-                                        });
+                                    public Unit invoke(RemoteUser user) {
+                                        System.out.println(user);
+                                        PreferenceManagerClass.setUsername(getApplicationContext(), user.get_id());
+
+                                        Intent i = new Intent(getApplicationContext(), MenuActivity.class);
+                                        startActivity(i);
                                         return null;
                                     }
                                 });
+                                return null;
+                            }
+                        });
 
 
-                    } else {
-                        errorLabel.setText("Incorrect password");
-                    }
-                } else {
-                    errorLabel.setText("No user with that name exists");
-                }
             }
         });
     }

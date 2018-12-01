@@ -145,7 +145,7 @@ public class ProfileActivity extends BaseActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onOptionsItemSelected(@NonNull MenuItem item){
         super.onOptionsItemSelected(item);
         switch (item.getItemId()){
             case R.id.profileLogOut:

@@ -29,7 +29,7 @@ class ChatActivity : Activity() {
         chatRecyclerView.scrollToPosition(0)
 
         updateMessages()
-        
+
         chatSendMessageButton.setOnClickListener {
             println("click")
             if (!chatEditText.text.toString().isEmpty()) {

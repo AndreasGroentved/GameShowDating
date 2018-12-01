@@ -203,6 +203,7 @@ class WebSocketHandler private constructor() : WebSocketListener() {
     private fun getMessageUpdate(username: String, callBack: (Map<String, List<Message>>) -> Unit) {
         socket.emit("getMessages", token)
         socket.on("getMessages") {
+            socket.off("getMessages")
             println(it[0])
             val returnVal = try {
                 it[0] as String?
