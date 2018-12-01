@@ -1,15 +1,12 @@
 package dating.innovative.gameshowdating.data
 
-import android.net.Uri
 import com.github.nkzawa.socketio.client.IO
 import com.github.nkzawa.socketio.client.Socket
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import dating.innovative.gameshowdating.data.Util.uriToFile
-import dating.innovative.gameshowdating.model.Game
-import dating.innovative.gameshowdating.model.RemoteUser
-import dating.innovative.gameshowdating.model.User
+import dating.innovative.gameshowdating.model.*
 import okhttp3.WebSocketListener
+import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 
@@ -26,7 +23,7 @@ class WebSocketHandler private constructor() : WebSocketListener() {
     }
 
 
-    private val socket: Socket = IO.socket("http://10.126.85.21:3000")
+    private val socket: Socket = IO.socket("http://192.168.0.101:3000")
 
     init {
         socket.connect()
@@ -37,7 +34,9 @@ class WebSocketHandler private constructor() : WebSocketListener() {
      *  Returns user token or "failure", call first!!!!!!!!!!!!!!
      */
     fun logon(userName: String, password: String, callBack: (Boolean) -> Unit) {
+        println("logon!!!")
         socket.on("login") {
+            println("logged in")
             socket.off("login")
             val json = it[0] as String
             if (json != "failure") token = json
@@ -173,10 +172,49 @@ class WebSocketHandler private constructor() : WebSocketListener() {
     }
 
     fun sendChatMessage(to: String, message: String, timeStamp: Long) {
+        socket.emit("sendMessage", token, to, message, timeStamp)
+    }
+
+    /**
+     * Alle samtaler, {hvem med mapper til en liste af beskeder}
+     */
+    fun getMessages(username: String, messageCallback: (Map<String, List<Message>>) -> Unit) {
+        getMessageUpdate(username, messageCallback)
+        socket.on("messageRecieved") {
+            getMessageUpdate(username, messageCallback)
+        }
 
     }
 
-    fun getChat(with: String) {
-
+    private fun getMessageUpdate(username: String, callBack: (Map<String, List<Message>>) -> Unit) {
+        socket.emit("getMessages", token)
+        socket.on("getMessages") {
+            socket.off("getMessages")
+            println(it[0])
+            val returnVal = try {
+                it[0] as String?
+            } catch (e: Exception) {
+                "success"
+            }
+            val remoteMessage =/*nailed it*/
+                (try {
+                    if (returnVal == "failure") callBack(mapOf())
+                    val data = (it[0] as JSONArray).toString()
+                    val gsonToken = object : TypeToken<List<RemoteMessage>>() {}.type
+                    gson.fromJson<List<RemoteMessage>>(data, gsonToken)
+                } catch (e: java.lang.Exception) {
+                    listOf<RemoteMessage>()
+                }).groupBy { if (username == it.reciever) it.sender else it.reciever }
+                    .map { (key, value) ->
+                        key to value.map {
+                            val other = if (it.reciever == username) it.sender else it.reciever
+                            val self = it.sender == username
+                            val messageSelf = if (self) it.message else null
+                            val messageOther = if (self) null else it.message
+                            Message(username, other, messageSelf, messageOther)
+                        }
+                    }.toMap()
+            callBack(remoteMessage)
+        }
     }
 }

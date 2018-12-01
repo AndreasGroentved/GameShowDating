@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import dating.innovative.gameshowdating.R;
 import dating.innovative.gameshowdating.data.WebSocketHandler;
+import dating.innovative.gameshowdating.model.RemoteUser;
 import dating.innovative.gameshowdating.model.User;
 import dating.innovative.gameshowdating.util.BaseActivity;
 import dating.innovative.gameshowdating.util.PreferenceManagerClass;
@@ -50,16 +51,19 @@ public class LoginActivity extends BaseActivity {
 
         if (!PreferenceManagerClass.getUsername(getApplicationContext()).isEmpty() &&
                 dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())) != null) {
-
+            System.out.println("logon");
             ws.logon(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username,
                     dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).password,
                     new Function1<Boolean, Unit>() {
                         @Override
                         public Unit invoke(Boolean aBoolean) {
-                            ws.getUser(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username, new Function1<User, Unit>() {
+                            System.out.println(aBoolean);
+                            ws.getUser(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username, new Function1<RemoteUser, Unit>() {
                                 @Override
-                                public Unit invoke(User user) {
+                                public Unit invoke(RemoteUser user) {
                                     System.out.println(user);
+                                    Intent i = new Intent(getApplicationContext(), MenuActivity.class);
+                                    startActivity(i);
                                     return null;
                                 }
                             });
@@ -67,8 +71,7 @@ public class LoginActivity extends BaseActivity {
                         }
                     });
 
-            Intent i = new Intent(getApplicationContext(), MenuActivity.class);
-            startActivity(i);
+
         }
 
         usernameTextField = findViewById(R.id.usernameEditText);
@@ -98,10 +101,12 @@ public class LoginActivity extends BaseActivity {
                                 new Function1<Boolean, Unit>() {
                                     @Override
                                     public Unit invoke(Boolean aBoolean) {
-                                        ws.getUser(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username, new Function1<User, Unit>() {
+                                        ws.getUser(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username, new Function1<RemoteUser, Unit>() {
                                             @Override
-                                            public Unit invoke(User user) {
+                                            public Unit invoke(RemoteUser user) {
                                                 System.out.println(user);
+                                                Intent i = new Intent(getApplicationContext(), MenuActivity.class);
+                                                startActivity(i);
                                                 return null;
                                             }
                                         });
@@ -109,8 +114,7 @@ public class LoginActivity extends BaseActivity {
                                     }
                                 });
 
-                        Intent i = new Intent(getApplicationContext(), MenuActivity.class);
-                        startActivity(i);
+
                     } else {
                         errorLabel.setText("Incorrect password");
                     }
