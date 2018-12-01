@@ -91,18 +91,28 @@ class WebSocketHandler private constructor() : WebSocketListener() {
     }
 
     fun getUser(username: String, callBack: (RemoteUser?) -> Unit) {
+        println("user to get $username")
+        var callBack: ((RemoteUser?) -> Unit)? = callBack
         socket.on("getUser") {
-            socket.off("getUser")
+            //socket.off("getUser")
             val returnVal = try {
                 it[0] as String?
             } catch (e: Exception) {
                 "success"
             }
-            if (returnVal == "failure") callBack(null)
+            if (returnVal == "failure") {
+                callBack(null)
+                callBack = null
+                return@on
+            }
             val data = (it[0] as JSONObject).toString()
             val gsonToken = object : TypeToken<RemoteUser>() {}.type
             val user = gson.fromJson<RemoteUser>(data, gsonToken)
-            callBack(user)
+
+            if (username == user._id) {
+                callBack?.invoke(user)
+                callBack = null
+            }
         }
 
         socket.emit("getUser", token, username)
@@ -171,8 +181,12 @@ class WebSocketHandler private constructor() : WebSocketListener() {
         socket.emit("match", token, judger)
     }
 
-    fun sendChatMessage(to: String, message: String, timeStamp: Long) {
+    fun sendChatMessage(to: String, message: String, timeStamp: Long, messageSentCallBack: (Boolean) -> Unit) {
         socket.emit("sendMessage", token, to, message, timeStamp)
+        socket.on("sendMessage") {
+            socket.off("sendMessage")
+            messageSentCallBack(true)//TODO
+        }
     }
 
     /**
@@ -189,7 +203,6 @@ class WebSocketHandler private constructor() : WebSocketListener() {
     private fun getMessageUpdate(username: String, callBack: (Map<String, List<Message>>) -> Unit) {
         socket.emit("getMessages", token)
         socket.on("getMessages") {
-            socket.off("getMessages")
             println(it[0])
             val returnVal = try {
                 it[0] as String?
@@ -212,8 +225,9 @@ class WebSocketHandler private constructor() : WebSocketListener() {
                             val messageSelf = if (self) it.message else null
                             val messageOther = if (self) null else it.message
                             Message(username, other, messageSelf, messageOther)
-                        }
+                        }.reversed()
                     }.toMap()
+            println(remoteMessage)
             callBack(remoteMessage)
         }
     }

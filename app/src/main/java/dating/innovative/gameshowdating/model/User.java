@@ -24,6 +24,13 @@ public class User {
     }
 
 
+    public User(String username, String password, String sex, int age) {
+        this.username = username;
+        this.password = password;
+        this.sex = sex;
+        this.age = age;
+    }
+
     public User(String username, String password, String profileImage, String biography, String video1, String video2, String video3, String sex, int age) {
         this.username = username;
         this.password = password;

@@ -5,22 +5,27 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import dating.innovative.gameshowdating.R;
-import dating.innovative.gameshowdating.model.Match;
-import dating.innovative.gameshowdating.model.User;
+import dating.innovative.gameshowdating.data.WebSocketHandler;
+import dating.innovative.gameshowdating.model.Message;
+import dating.innovative.gameshowdating.model.RemoteUser;
 import dating.innovative.gameshowdating.util.ChatOverviewAdapter;
 import dating.innovative.gameshowdating.util.PreferenceManagerClass;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class ChatOverviewActivity extends Activity {
 
     RecyclerView recyclerView;
-    RecyclerView.Adapter recyclerAdapter;
+    ChatOverviewAdapter recyclerAdapter;
     RecyclerView.LayoutManager recyclerManager;
     SQLiteHelper dbHelper;
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatoverview);
 
@@ -28,12 +33,13 @@ public class ChatOverviewActivity extends Activity {
 
         //dbHelper.addMatch(PreferenceManagerClass.getUsername(getApplicationContext()), "test");
 
-        ArrayList<User> matches = new ArrayList<>();
-        if(dbHelper.getAllMatchesForUser(PreferenceManagerClass.getUsername(getApplicationContext())) != null){
+        ArrayList<RemoteUser> matches = new ArrayList<>();
+       /* if(dbHelper.getAllMatchesForUser(PreferenceManagerClass.getUsername(getApplicationContext())) != null){
             for(int i = 0; i < dbHelper.getAllMatchesForUser(PreferenceManagerClass.getUsername(getApplicationContext())).size(); i++){
                 matches.add(dbHelper.getUserByUsername(dbHelper.getAllMatchesForUser(PreferenceManagerClass.getUsername(getApplicationContext())).get(i).nameTwo));
             }
-        }
+        }*/
+
 
         recyclerView = (RecyclerView) findViewById(R.id.chatoverviewRecyclerView);
         recyclerView.setHasFixedSize(true);
@@ -41,9 +47,38 @@ public class ChatOverviewActivity extends Activity {
         recyclerManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(recyclerManager);
 
-        recyclerAdapter = new ChatOverviewAdapter(matches);
+        recyclerAdapter = new ChatOverviewAdapter(new ArrayList<RemoteUser>());
         recyclerView.setAdapter(recyclerAdapter);
+        getData();
 
+    }
 
+    private void getData() {
+        final ChatOverviewActivity c = this;
+        String username = PreferenceManagerClass.getUsername(this);
+        final WebSocketHandler ws = WebSocketHandler.getInstance();
+        ws.getMessages(username, new Function1<Map<String, ? extends List<? extends Message>>, Unit>() {
+            @Override
+            public Unit invoke(Map<String, ? extends List<? extends Message>> stringMap) {
+                for (Map.Entry<String, ? extends List<? extends Message>> entry : stringMap.entrySet()) {
+                    System.out.println("user " + entry.getKey());
+                    ws.getUser(entry.getKey(), new Function1<RemoteUser, Unit>() {
+                        @Override
+                        public Unit invoke(RemoteUser remoteUser) {
+                            recyclerAdapter.userDataSet.add(remoteUser);
+                            c.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    recyclerAdapter.notifyDataSetChanged();
+                                }
+                            });
+                            return null;
+                        }
+                    });
+                }
+
+                return null;
+            }
+        });
     }
 }
