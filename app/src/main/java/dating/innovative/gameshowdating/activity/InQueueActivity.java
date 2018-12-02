@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
+
 import dating.innovative.gameshowdating.R;
 import dating.innovative.gameshowdating.data.WebSocketHandler;
 import kotlin.Unit;
@@ -43,23 +44,17 @@ public class InQueueActivity extends Activity {
             }
         }, new Function1<String, Unit>() {
             @Override
-            public Unit invoke(String s) {
-                String gameID = s;
-
-                if(beJudgedCheck){
+            public Unit invoke(String gameID) {
+                if (beJudgedCheck) {
                     Intent i = new Intent(a, GameBeingJudgedActivity.class);
                     i.putExtra("gameId", gameID);
                     a.startActivity(i);
-                    return null;
-                } else if(judgeCheck){
+                } else if (judgeCheck) {
                     Intent i = new Intent(a, GameJudgingActivity.class);
                     i.putExtra("gameId", gameID);
                     a.startActivity(i);
-                    return null;
-                } else {
-                    //This should not be able to happen.
-                    return null;
                 }
+                return null;
 
             }
         });

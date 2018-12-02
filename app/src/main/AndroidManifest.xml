@@ -1,54 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="dating.innovative.gameshowdating">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="dating.innovative.gameshowdating">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-feature android:name="android.hardware.camera" android:required="true" />
 
     <uses-feature
-        android:name="android.hardware.camera"
-        android:required="true" />
+            android:name="android.hardware.camera"
+            android:required="true"/>
+
 
     <application
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+            android:name=".GameShowDatingApp"
+            android:allowBackup="false"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme"
+            tools:ignore="GoogleAppIndexingWarning" >
         <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="dating.innovative.gameshowdating"
-            android:exported="false"
-            android:grantUriPermissions="true">
+                android:name="android.support.v4.content.FileProvider"
+                android:authorities="dating.innovative.gameshowdating"
+                android:exported="false"
+                android:grantUriPermissions="true">
             <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"></meta-data>
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/file_paths"/>
         </provider>
 
         <activity
-            android:name=".activity.LoginActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+                android:name=".activity.LoginActivity"
+                android:label="@string/app_name"
+                android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.ProfileActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+                android:name=".activity.ProfileActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".activity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+                android:name=".activity.MainActivity"
+                android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".activity.RegisterActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.VideoPlayerActivity" />
+                android:name=".activity.RegisterActivity"
+                android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".activity.VideoPlayerActivity"/>
         <activity android:name=".activity.MenuActivity"/>
         <activity android:name=".activity.ChatOverviewActivity"/>
         <activity android:name=".activity.ChatActivity"/>
@@ -58,15 +61,21 @@
         <activity android:name=".activity.GameJudgingActivity"/>
         <activity android:name=".activity.ProvideFeedbackActivity"/>
         <activity
-            android:name=".activity.CustomizeProfileActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+                android:name=".activity.CustomizeProfileActivity"
+                android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".activity.VideoSettingActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+                android:name=".activity.VideoSettingActivity"
+                android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".activity.ImageSettingActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+                android:name=".activity.ImageSettingActivity"
+                android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".activity.GameBeingJudgedActivity"/>
+        <activity android:name=".activity.ShouldDateActivity" />
+
+        <service
+                android:name=".activity.MessageScheduler"
+                android:exported="true"
+                android:permission="android.permission.BIND_JOB_SERVICE"/>
     </application>
 
 </manifest>

@@ -18,40 +18,35 @@ class ChatActivity : Activity() {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
-        val intentFromLast = intent
-        val dbHelper = SQLiteHelper.getSqLiteHelperInstance(applicationContext)!!
-        val messages = ArrayList<Message>()
+
         val messagesLayoutManager = LinearLayoutManager(this)
         messagesLayoutManager.reverseLayout = true
         chatRecyclerView.layoutManager = messagesLayoutManager
-        messagesAdapter = ChatAdapter(messages)
+        messagesAdapter = ChatAdapter(listOf<Message>())
         chatRecyclerView.adapter = messagesAdapter
         chatRecyclerView.scrollToPosition(0)
 
         updateMessages()
 
+        setUpSendMessage()
+    }
+
+    private fun setUpSendMessage() {
+        val messages = ArrayList<Message>()
+        val dbHelper = SQLiteHelper.getSqLiteHelperInstance(applicationContext)!!
         chatSendMessageButton.setOnClickListener {
-            println("click")
             if (!chatEditText.text.toString().isEmpty()) {
-                val to = intentFromLast.getStringExtra("username")
+                val to = intent.getStringExtra("username")
 
-                dbHelper.addMessageToConversationFromSelf(
-                    PreferenceManagerClass.getUsername(applicationContext),
-                    intentFromLast.getStringExtra("username"), chatEditText.text.toString()
-                )
+                dbHelper.addMessageToConversationFromSelf(PreferenceManagerClass.getUsername(applicationContext),
+                        intent.getStringExtra("username"), chatEditText.text.toString())
 
-                val message = Message(
-                    PreferenceManagerClass.getUsername(applicationContext),
-                    intentFromLast.getStringExtra("username"),
-                    chatEditText.text.toString(),
-                    null
-                )
+                val message = Message(PreferenceManagerClass.getUsername(applicationContext), intent.getStringExtra("username"),
+                        chatEditText.text.toString(), null)
                 WebSocketHandler.instance.sendChatMessage(to, message.messageFromSelf, System.currentTimeMillis()) {
                     updateMessages()
                 }
-                messages.add(
-                    0, message
-                )
+                messages.add(0, message)
                 messagesAdapter.notifyDataSetChanged()
                 chatRecyclerView.scrollToPosition(0)
                 chatEditText.setText("")
@@ -70,6 +65,4 @@ class ChatActivity : Activity() {
             }
         }
     }
-
-
 }

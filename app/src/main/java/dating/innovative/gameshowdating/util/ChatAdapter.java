@@ -8,17 +8,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.util.List;
+
 import dating.innovative.gameshowdating.R;
 import dating.innovative.gameshowdating.model.Message;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
 
     public List<Message> messages;
 
-    public ChatAdapter(ArrayList<Message> messages) {
+    public ChatAdapter(List<Message> messages) {
         this.messages = messages;
     }
 

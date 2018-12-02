@@ -15,6 +15,7 @@ class WebSocketHandler private constructor() : WebSocketListener() {
 
 
     private lateinit var token: String
+
     private val gson = Gson()
 
     companion object {
@@ -22,8 +23,10 @@ class WebSocketHandler private constructor() : WebSocketListener() {
         val instance: WebSocketHandler by lazy { WebSocketHandler() }
     }
 
+    fun isTokenSet() = ::token.isInitialized
 
-    private val socket: Socket = IO.socket("http://192.168.0.10:3000")
+
+    private val socket: Socket = IO.socket("http://192.168.0.101:3000")
 
     init {
         socket.connect()
@@ -147,7 +150,12 @@ class WebSocketHandler private constructor() : WebSocketListener() {
         socket.emit("comment", token, gameId, comment)
     }
 
-    fun confirmGame(confirm: Boolean, gameId: String, gameUpdates: (Game) -> Unit) {
+    fun confirmGame(
+        confirm: Boolean,
+        gameId: String,
+        gameUpdates: (Game) -> Unit,
+        gameOverCallBack: ((List<String>?) -> Unit)
+    ) {
         var userName = ""
         socket.on("startGame") {
             socket.off("startGame")
@@ -162,9 +170,22 @@ class WebSocketHandler private constructor() : WebSocketListener() {
             val userTotal = it[1] as Int
             gameUpdates(Game(userName, userTotal, userCount, gameId, roundNumber))
         }
-        socket.on("gameOver") {
 
+        socket.on("gameOver") {
+            socket.off("gameOver")
+            println(it[0])
+            gameOverCallBack(
+                (try {
+                    val data = (it[0] as JSONArray).toString()
+                    val gsonToken = object : TypeToken<List<String>>() {}.type
+                    gson.fromJson<List<String>>(data, gsonToken)
+                } catch (e: java.lang.Exception) {
+                    listOf<String>()
+                })
+            )
         }
+
+
         socket.emit("confirmParticipation", token, gameId, confirm)
     }
 
@@ -182,22 +203,25 @@ class WebSocketHandler private constructor() : WebSocketListener() {
     }
 
     fun sendChatMessage(to: String, message: String, timeStamp: Long, messageSentCallBack: (Boolean) -> Unit) {
-        socket.emit("sendMessage", token, to, message, timeStamp)
         socket.on("sendMessage") {
             socket.off("sendMessage")
             messageSentCallBack(true)//TODO
         }
+        socket.emit("sendMessage", token, to, message, timeStamp)
     }
 
     /**
      * Alle samtaler, {hvem med mapper til en liste af beskeder}
      */
     fun getMessages(username: String, messageCallback: (Map<String, List<Message>>) -> Unit) {
-        getMessageUpdate(username, messageCallback)
         socket.on("messageRecieved") {
             getMessageUpdate(username, messageCallback)
         }
+        getMessageUpdate(username, messageCallback)
+    }
 
+    fun videoOver(gameId: String) {
+        socket.emit("videoOver", gameId)
     }
 
     private fun getMessageUpdate(username: String, callBack: (Map<String, List<Message>>) -> Unit) {
@@ -231,5 +255,9 @@ class WebSocketHandler private constructor() : WebSocketListener() {
             println(remoteMessage)
             callBack(remoteMessage)
         }
+    }
+
+    fun stopGameUpdates() {
+        socket.off("gameUpdates")
     }
 }

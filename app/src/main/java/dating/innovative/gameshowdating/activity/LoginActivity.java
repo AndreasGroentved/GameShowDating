@@ -1,12 +1,19 @@
 package dating.innovative.gameshowdating.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import org.jetbrains.annotations.NotNull;
+
 import dating.innovative.gameshowdating.R;
 import dating.innovative.gameshowdating.data.WebSocketHandler;
 import dating.innovative.gameshowdating.model.RemoteUser;
@@ -14,7 +21,6 @@ import dating.innovative.gameshowdating.util.BaseActivity;
 import dating.innovative.gameshowdating.util.PreferenceManagerClass;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
-import org.jetbrains.annotations.NotNull;
 
 public class LoginActivity extends BaseActivity {
 
@@ -50,27 +56,8 @@ public class LoginActivity extends BaseActivity {
 
         if (!PreferenceManagerClass.getUsername(getApplicationContext()).isEmpty() &&
                 dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())) != null) {
-            System.out.println("logon");
-            ws.logon(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username,
-                    dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).password,
-                    new Function1<Boolean, Unit>() {
-                        @Override
-                        public Unit invoke(Boolean aBoolean) {
-                            System.out.println(aBoolean);
-                            ws.getUser(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username, new Function1<RemoteUser, Unit>() {
-                                @Override
-                                public Unit invoke(RemoteUser user) {
-                                    System.out.println(user);
-                                    Intent i = new Intent(getApplicationContext(), MenuActivity.class);
-                                    startActivity(i);
-                                    return null;
-                                }
-                            });
-                            return null;
-                        }
-                    });
-
-
+            loginUser(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username,
+                    dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).password);
         }
 
         usernameTextField = findViewById(R.id.usernameEditText);
@@ -90,40 +77,50 @@ public class LoginActivity extends BaseActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                loginUser(usernameTextField.getText().toString(),
+                        passwordTextField.getText().toString());
+            }
+        });
+        checkForPermissions();
+    }
 
-                ws.logon(usernameTextField.getText().toString(),
-                        passwordTextField.getText().toString(),
-                        new Function1<Boolean, Unit>() {
-                            @Override
-                            public Unit invoke(final Boolean aBoolean) {
-                                if (!aBoolean) {
-                                    LoginActivity.this.runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            errorLabel.setText("Incorrect password");
-                                        }
-                                    });
-                                    return null;
-                                }
-                                ws.getUser(usernameTextField.getText().toString(), new Function1<RemoteUser, Unit>() {
-                                    @Override
-                                    public Unit invoke(RemoteUser user) {
-                                        System.out.println(user);
-                                        PreferenceManagerClass.setUsername(getApplicationContext(), user.get_id());
-
-                                        Intent i = new Intent(getApplicationContext(), MenuActivity.class);
-                                        startActivity(i);
-                                        return null;
-                                    }
-                                });
-                                return null;
-                            }
-                        });
-
-
+    private void loginUser(String username, String password) {
+        ws.logon(username, password, new Function1<Boolean, Unit>() {
+            @Override
+            public Unit invoke(final Boolean aBoolean) {
+                if (!aBoolean) {
+                    LoginActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            errorLabel.setText("Incorrect password");
+                        }
+                    });
+                    return null;
+                }
+                ws.getUser(usernameTextField.getText().toString(), new Function1<RemoteUser, Unit>() {
+                    @Override
+                    public Unit invoke(RemoteUser user) {
+                        System.out.println(user);
+                        PreferenceManagerClass.setUsername(getApplicationContext(), user.get_id());
+                        Intent i = new Intent(getApplicationContext(), MenuActivity.class);
+                        startActivity(i);
+                        LoginActivity.this.finish();
+                        return null;
+                    }
+                });
+                return null;
             }
         });
     }
 
+    private void checkForPermissions() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
+                    123);
+        }
+    }
 
 }

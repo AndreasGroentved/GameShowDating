@@ -11,13 +11,12 @@ import android.widget.Button;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
-import dating.innovative.gameshowdating.R;
-import dating.innovative.gameshowdating.activity.CustomizeProfileActivity;
-import dating.innovative.gameshowdating.util.BaseActivity;
-import dating.innovative.gameshowdating.util.PreferenceManagerClass;
+
 import org.jetbrains.annotations.NotNull;
 
-import dating.innovative.gameshowdating.data.WebSocketHandler;
+import dating.innovative.gameshowdating.R;
+import dating.innovative.gameshowdating.util.BaseActivity;
+import dating.innovative.gameshowdating.util.PreferenceManagerClass;
 
 public class VideoSettingActivity extends BaseActivity {
 
@@ -43,16 +42,15 @@ public class VideoSettingActivity extends BaseActivity {
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_setting);
         final Intent lastScreenIntent = getIntent();
-        System.out.println(lastScreenIntent.getIntExtra("videoId", 0));
-        uploadVideoButton = (Button) findViewById(R.id.videoSettingUploadButton);
-        recordVideoButton = (Button) findViewById(R.id.videoSettingRecordButton);
-        returnButton = (Button) findViewById(R.id.videoSettingReturnButton);
-        confirmationLabel = (TextView) findViewById(R.id.videoSettingLabel);
-        videoView = (VideoView) findViewById(R.id.videoSettingView);
+        uploadVideoButton = findViewById(R.id.videoSettingUploadButton);
+        recordVideoButton = findViewById(R.id.videoSettingRecordButton);
+        returnButton = findViewById(R.id.videoSettingReturnButton);
+        confirmationLabel = findViewById(R.id.videoSettingLabel);
+        videoView = findViewById(R.id.videoSettingView);
         videoView.setVisibility(View.INVISIBLE);
         mediaController = new MediaController(this);
         mediaController.setAnchorView(videoView);
@@ -69,7 +67,7 @@ public class VideoSettingActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent recordVideo = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-                if(recordVideo.resolveActivity(getPackageManager()) != null){
+                if (recordVideo.resolveActivity(getPackageManager()) != null) {
                     startActivityForResult(recordVideo, 1);
                 }
             }
@@ -117,7 +115,6 @@ public class VideoSettingActivity extends BaseActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 
     @Override
