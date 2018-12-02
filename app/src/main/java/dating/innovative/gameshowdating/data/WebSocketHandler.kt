@@ -23,7 +23,7 @@ class WebSocketHandler private constructor() : WebSocketListener() {
     }
 
 
-    private val socket: Socket = IO.socket("http://192.168.0.101:3000")
+    private val socket: Socket = IO.socket("http://192.168.0.10:3000")
 
     init {
         socket.connect()
@@ -168,9 +168,9 @@ class WebSocketHandler private constructor() : WebSocketListener() {
         socket.emit("confirmParticipation", token, gameId, confirm)
     }
 
-    fun match(judger: Boolean, inQueueCallback: (Boolean) -> Unit, matchAcceptedIdCallback: (String) -> Unit) {
+    fun match(judger: Boolean, inQueueCallback: (String) -> Unit, matchAcceptedIdCallback: (String) -> Unit) {
         socket.on("inQueue") {
-            val success = it[0] as Boolean
+            val success = it[0] as String
             inQueueCallback(success)
         }
         socket.on("match") {

@@ -31,14 +31,14 @@ public class InQueueActivity extends Activity {
 
         boolean maleCheck = lastActivityIntent.getBooleanExtra("maleCheckBox", false);
         boolean femaleCheck = lastActivityIntent.getBooleanExtra("femaleCheckBox", false);
-        boolean beJudgedCheck = lastActivityIntent.getBooleanExtra("beJudged", false);
-        boolean judgeCheck = lastActivityIntent.getBooleanExtra("judge", false);
+        final boolean beJudgedCheck = lastActivityIntent.getBooleanExtra("beJudged", false);
+        final boolean judgeCheck = lastActivityIntent.getBooleanExtra("judge", false);
 
         final Activity a = this;
-        ws.match(true, new Function1<Boolean, Unit>() {
+        ws.match(true, new Function1<String, Unit>() {
             @Override
-            public Unit invoke(Boolean aBoolean) {
-                System.out.println("in queueu " + aBoolean);
+            public Unit invoke(String aString) {
+                System.out.println("in queueu " + aString);
                 return null;
             }
         }, new Function1<String, Unit>() {
@@ -46,10 +46,21 @@ public class InQueueActivity extends Activity {
             public Unit invoke(String s) {
                 String gameID = s;
 
-                Intent i = new Intent(a, GameActivity.class);
-                i.putExtra("gameId", gameID);
-                a.startActivity(i);
-                return null;
+                if(beJudgedCheck){
+                    Intent i = new Intent(a, GameBeingJudgedActivity.class);
+                    i.putExtra("gameId", gameID);
+                    a.startActivity(i);
+                    return null;
+                } else if(judgeCheck){
+                    Intent i = new Intent(a, GameJudgingActivity.class);
+                    i.putExtra("gameId", gameID);
+                    a.startActivity(i);
+                    return null;
+                } else {
+                    //This should not be able to happen.
+                    return null;
+                }
+
             }
         });
 

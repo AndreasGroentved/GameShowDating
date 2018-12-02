@@ -8,12 +8,12 @@ import dating.innovative.gameshowdating.model.Game;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 
-public class GameActivity extends Activity {
+public class GameBeingJudgedActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game);
+        setContentView(R.layout.activity_game_being_judged);
 
         String gameId = getIntent().getExtras().getString("gameId");
         WebSocketHandler ws = WebSocketHandler.getInstance();

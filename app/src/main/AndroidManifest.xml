@@ -55,6 +55,8 @@
         <activity android:name=".activity.FindGameActivity"/>
         <activity android:name=".activity.ViewFeedbackActivity"/>
         <activity android:name=".activity.InQueueActivity"/>
+        <activity android:name=".activity.GameJudgingActivity"/>
+        <activity android:name=".activity.ProvideFeedbackActivity"/>
         <activity
             android:name=".activity.CustomizeProfileActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -64,7 +66,7 @@
         <activity
             android:name=".activity.ImageSettingActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.GameActivity"/>
+        <activity android:name=".activity.GameBeingJudgedActivity"/>
     </application>
 
 </manifest>

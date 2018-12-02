@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+                                             android:layout_height="match_parent">
+
+    <TextView
+            android:text="Let the user know why you are out:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/provideFeedbackHeading" android:textSize="18sp"
+            android:textColor="@android:color/black" android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintVertical_bias="0.095"/>
+    <EditText
+            android:layout_width="531dp"
+            android:layout_height="341dp"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:id="@+id/provideFeedbackEditText" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/provideFeedbackHeading"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.121"/>
+    <Button
+            android:text="Send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" tools:layout_editor_absoluteY="545dp"
+            tools:layout_editor_absoluteX="256dp" android:id="@+id/provideFeedbackSendButton"
+            android:background="@color/colorPrimary" android:textAppearance="@style/TextAppearance.AppCompat"/>
+    <Button
+            android:text="Do not send feedback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/provideFeedbackDontSendFeedbackButton" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/provideFeedbackSendButton"
+            app:layout_constraintHorizontal_bias="0.983" app:layout_constraintVertical_bias="0.952"
+            android:textAppearance="@style/TextAppearance.AppCompat" android:background="@color/colorPrimary"/>
+</android.support.constraint.ConstraintLayout>
