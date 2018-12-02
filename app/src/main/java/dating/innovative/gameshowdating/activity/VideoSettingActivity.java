@@ -11,12 +11,10 @@ import android.widget.Button;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
-
-import org.jetbrains.annotations.NotNull;
-
 import dating.innovative.gameshowdating.R;
 import dating.innovative.gameshowdating.util.BaseActivity;
 import dating.innovative.gameshowdating.util.PreferenceManagerClass;
+import org.jetbrains.annotations.NotNull;
 
 public class VideoSettingActivity extends BaseActivity {
 

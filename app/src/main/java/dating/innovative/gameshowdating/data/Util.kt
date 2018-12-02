@@ -8,34 +8,42 @@ import android.net.Uri
 import android.os.Environment
 import android.util.Base64
 import dating.innovative.gameshowdating.activity.MessageScheduler
+import dating.innovative.gameshowdating.model.RemoteUser
+import dating.innovative.gameshowdating.model.User
+import dating.innovative.gameshowdating.util.PreferenceManagerClass
 import java.io.File
 import java.io.FileOutputStream
 
 
 object Util {
 
+    @JvmStatic
+    fun fileToBytes(file: File): ByteArray = file.readBytes()
 
     fun Uri.uriToFile(): File = File(this.path)
 
+    @JvmStatic
+    fun remoteUserToUser(remoteUser: RemoteUser) =
+        User(remoteUser._id, remoteUser.password, "", remoteUser.biography, "", "", "", remoteUser.sex, remoteUser.age)
 
     //https://stackoverflow.com/questions/17149205/android-convert-bytes-array-to-file-and-save-file-in-sd-card
     fun ByteArray.saveToSdCard(name: String): String =
-            try {
-                /* file_byte is yous json string*/
-                val decodestring = Base64.decode(this, Base64.DEFAULT)
-                val file = Environment.getExternalStorageDirectory()
-                val dir = File(file.absolutePath + "/videos/")
-                if (!dir.exists()) dir.mkdirs()
-                val document = File(dir, name)
-                if (document.exists()) document.delete()
+        try {
+            /* file_byte is yous json string*/
+            val decodestring = Base64.decode(this, Base64.DEFAULT)
+            val file = Environment.getExternalStorageDirectory()
+            val dir = File(file.absolutePath + "/videos/")
+            if (!dir.exists()) dir.mkdirs()
+            val document = File(dir, name)
+            if (document.exists()) document.delete()
 
-                val fos = FileOutputStream(document.path)
-                fos.write(decodestring)
-                fos.close()
-                dir.path + name
-            } catch (e: Exception) {
-                ""
-            }
+            val fos = FileOutputStream(document.path)
+            fos.write(decodestring)
+            fos.close()
+            dir.path + name
+        } catch (e: Exception) {
+            ""
+        }
 
     // schedule the start of the service every 10 - 30 seconds
     @JvmStatic
@@ -46,5 +54,13 @@ object Util {
         builder.setOverrideDeadline((10 * 1000).toLong()) // maximum delay
         val jobScheduler = context.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
         jobScheduler.schedule(builder.build())
+    }
+
+    @JvmStatic
+    fun createProfilePicture(context: Context): File {
+        val imageName = "profileImage_" + PreferenceManagerClass.getUsername(context)
+        val storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val image = File.createTempFile(imageName, ".jpg", storageDir)
+        return image
     }
 }

@@ -46,7 +46,7 @@ public class ProfileActivity extends BaseActivity {
         video3 = findViewById(R.id.profileVideo3Button);
         dbHelper = SQLiteHelper.getSqLiteHelperInstance(getApplicationContext());
 
-        if(!dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).profileImage.isEmpty()){
+        if (!dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).profileImage.isEmpty()) {
             Uri profilePicUri = Uri.parse(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).profileImage);
             InputStream imageStream = null;
             try {
@@ -55,7 +55,7 @@ public class ProfileActivity extends BaseActivity {
                 e.printStackTrace();
             }
             Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-            if(photoPath != null) {
+            if (photoPath != null) {
                 ExifInterface ei = null;
                 try {
                     ei = new ExifInterface(photoPath);
@@ -93,8 +93,8 @@ public class ProfileActivity extends BaseActivity {
         }
 
         profileUsername.setText(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username + ", " +
-        dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).sex + ", " +
-        dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).age);
+                dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).sex + ", " +
+                dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).age);
         profileBiography.setText(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).biography);
 
         video1.setOnClickListener(new View.OnClickListener() {
@@ -117,13 +117,13 @@ public class ProfileActivity extends BaseActivity {
         });
     }
 
-    public void checkVideoContent(String videoURL, int videoId){
-        if(!videoURL.isEmpty()){
+    public void checkVideoContent(String videoURL, int videoId) {
+        if (!videoURL.isEmpty()) {
             Intent i = new Intent(getApplicationContext(), VideoPlayerActivity.class);
             i.putExtra("videoId", videoId);
             startActivity(i);
         } else {
-            Toast.makeText(getApplicationContext(),"There is no available video", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "There is no available video", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -139,18 +139,18 @@ public class ProfileActivity extends BaseActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_profile, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item){
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         super.onOptionsItemSelected(item);
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.profileLogOut:
                 PreferenceManagerClass.clearPreferences(getApplicationContext());
-                Intent logoutIntent = new Intent(getApplicationContext(),LoginActivity.class);
+                Intent logoutIntent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(logoutIntent);
                 break;
             case R.id.profileCustomize:

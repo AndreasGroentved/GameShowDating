@@ -11,16 +11,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import org.jetbrains.annotations.NotNull;
-
 import dating.innovative.gameshowdating.R;
+import dating.innovative.gameshowdating.data.Util;
 import dating.innovative.gameshowdating.data.WebSocketHandler;
 import dating.innovative.gameshowdating.model.RemoteUser;
 import dating.innovative.gameshowdating.util.BaseActivity;
 import dating.innovative.gameshowdating.util.PreferenceManagerClass;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
+import org.jetbrains.annotations.NotNull;
 
 public class LoginActivity extends BaseActivity {
 
@@ -31,6 +30,7 @@ public class LoginActivity extends BaseActivity {
     TextView errorLabel;
     SQLiteHelper dbHelper;
     WebSocketHandler ws = WebSocketHandler.getInstance();
+    //final File storageDirImage = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
 
     @NotNull
@@ -54,8 +54,7 @@ public class LoginActivity extends BaseActivity {
 
         dbHelper = SQLiteHelper.getSqLiteHelperInstance(getApplicationContext());
 
-        if (!PreferenceManagerClass.getUsername(getApplicationContext()).isEmpty() &&
-                dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())) != null) {
+        if (!PreferenceManagerClass.getUsername(getApplicationContext()).isEmpty()) {
             loginUser(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username,
                     dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).password);
         }
@@ -82,9 +81,11 @@ public class LoginActivity extends BaseActivity {
             }
         });
         checkForPermissions();
+
     }
 
-    private void loginUser(String username, String password) {
+    private void loginUser(final String username, String password) {
+        System.out.println("logon " + username + ", " + password);
         ws.logon(username, password, new Function1<Boolean, Unit>() {
             @Override
             public Unit invoke(final Boolean aBoolean) {
@@ -97,11 +98,13 @@ public class LoginActivity extends BaseActivity {
                     });
                     return null;
                 }
-                ws.getUser(usernameTextField.getText().toString(), new Function1<RemoteUser, Unit>() {
+                ws.getUser(username, new Function1<RemoteUser, Unit>() {
                     @Override
                     public Unit invoke(RemoteUser user) {
+                        System.out.println("user");
                         System.out.println(user);
-                        PreferenceManagerClass.setUsername(getApplicationContext(), user.get_id());
+
+                        setUserData(user);
                         Intent i = new Intent(getApplicationContext(), MenuActivity.class);
                         startActivity(i);
                         LoginActivity.this.finish();
@@ -111,6 +114,32 @@ public class LoginActivity extends BaseActivity {
                 return null;
             }
         });
+    }
+
+    private void setUserData(RemoteUser user) {
+
+/*
+
+        try {
+            File.createTempFile("profilePictureUpload_" + user.get_id(), ".jpg", storageDirImage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        File file = Util.createProfilePicture(this);
+
+        if (file != null) {
+            Intent snapPictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            Uri uri = FileProvider.getUriForFile(getApplicationContext(), "dating.innovative.gameshowdating", file);
+            snapPictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+            startActivityForResult(snapPictureIntent, 1);
+        }
+*/
+
+   /*     dbHelper.updateUserProfileImage(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),
+                PreferenceManagerClass.getProfilePictureUpdated(getApplicationContext()));*/
+        PreferenceManagerClass.setUsername(getApplicationContext(), user.get_id());
+        SQLiteHelper.getSqLiteHelperInstance(LoginActivity.this).addUser(Util.remoteUserToUser(user));
+
     }
 
     private void checkForPermissions() {

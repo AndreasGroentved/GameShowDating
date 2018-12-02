@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-
 import dating.innovative.gameshowdating.R;
+import dating.innovative.gameshowdating.data.WebSocketHandler;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 public class MenuActivity extends Activity {
 
@@ -23,6 +25,13 @@ public class MenuActivity extends Activity {
         gameButton = findViewById(R.id.mainMenuGameButton);
         chatButton = findViewById(R.id.mainMenuChatButton);
 
+        WebSocketHandler.getInstance().getVideo("test1", 1, new Function1<byte[], Unit>() {
+            @Override
+            public Unit invoke(byte[] bytes) {
+
+                return null;
+            }
+        });
 
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override

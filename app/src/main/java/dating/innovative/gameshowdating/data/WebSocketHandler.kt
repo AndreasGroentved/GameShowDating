@@ -8,7 +8,6 @@ import dating.innovative.gameshowdating.model.*
 import okhttp3.WebSocketListener
 import org.json.JSONArray
 import org.json.JSONObject
-import java.io.File
 
 
 class WebSocketHandler private constructor() : WebSocketListener() {
@@ -54,12 +53,17 @@ class WebSocketHandler private constructor() : WebSocketListener() {
     fun getVideo(username: String, roundNumber: Int, callBack: (ByteArray?) -> Unit) {
         socket.on("getVideo") {
             socket.off("getVideo")
-
             val failure = (it[0] as? String ?: "") == "failure"
             if (failure) callBack(null)
             else {
-                val byteArr = it[0] as ByteArray
-                callBack(byteArr)
+                try {
+                    val byteArr = it[0] as ByteArray
+                    println("get video success")
+                    callBack(byteArr)
+                } catch (e: Exception) {
+                    println("failure")
+                    callBack(null)
+                }
             }
         }
         socket.emit("getVideo", token, username, roundNumber)
@@ -85,12 +89,12 @@ class WebSocketHandler private constructor() : WebSocketListener() {
     }
 
 
-    fun sendOrUpdateVideo(file: File, username: String, roundNumber: Int, callBack: (Boolean) -> Unit) {
+    fun sendOrUpdateVideo(file: ByteArray, username: String, roundNumber: Int, callBack: (Boolean) -> Unit) {
         socket.on("uploadFile") {
             val success = it[0] as String == "success"
             callBack(success)
         }
-        socket.emit("uploadFile", token, username, roundNumber, file)
+        socket.emit("uploadFile", token, roundNumber, file)
     }
 
     fun getUser(username: String, callBack: (RemoteUser?) -> Unit) {
@@ -98,20 +102,29 @@ class WebSocketHandler private constructor() : WebSocketListener() {
         var callBack: ((RemoteUser?) -> Unit)? = callBack
         socket.on("getUser") {
             //socket.off("getUser")
+            println(it)
             val returnVal = try {
                 it[0] as String?
             } catch (e: Exception) {
                 "success"
             }
             if (returnVal == "failure") {
+                println("failure")
                 callBack(null)
                 callBack = null
                 return@on
             }
-            val data = (it[0] as JSONObject).toString()
+            val data = (it[0] as JSONObject)/*.toString()
+            println(data)
             val gsonToken = object : TypeToken<RemoteUser>() {}.type
-            val user = gson.fromJson<RemoteUser>(data, gsonToken)
+            val user = gson.fromJson<RemoteUser>(data, gsonToken)*/
 
+            val password = data.getString("password")
+            val biography = data.getString("biography")
+            val sex = data.getString("sex")
+            val age = data.getInt("age")
+            val picture = data.get("profilePicture") as ByteArray
+            val user = RemoteUser(username, password, picture, biography, sex, age)
             if (username == user._id) {
                 callBack?.invoke(user)
                 callBack = null
@@ -121,11 +134,12 @@ class WebSocketHandler private constructor() : WebSocketListener() {
         socket.emit("getUser", token, username)
     }
 
-    fun updateProfilePicture(profilePicture: File, callBack: (Boolean) -> Unit) {
+    fun updateProfilePicture(profilePicture: ByteArray, callBack: (Boolean) -> Unit) {
         socket.on("updateProfilePicture") {
             val success = it[0] as String == "success"
             callBack(success)
         }
+        println(profilePicture)
         socket.emit("updateProfilePicture", token, profilePicture)
     }
 
@@ -140,10 +154,6 @@ class WebSocketHandler private constructor() : WebSocketListener() {
 
     fun imOut(gameId: String, videoTimeStamp: Long) {
         socket.emit("vote", token, gameId, videoTimeStamp)
-    }
-
-    fun videoWatched(gameId: String) {
-        socket.emit("videoOver", token, gameId)
     }
 
     fun comment(gameId: String, comment: String) {
