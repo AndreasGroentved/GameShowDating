@@ -3,13 +3,16 @@ package dating.innovative.gameshowdating.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Environment
 import android.support.design.widget.Snackbar
 import dating.innovative.gameshowdating.R
-import dating.innovative.gameshowdating.data.Util.saveToSdCard
 import dating.innovative.gameshowdating.data.WebSocketHandler
 import dating.innovative.gameshowdating.model.Game
 import kotlinx.android.synthetic.main.activity_game_judging.*
 import kotlinx.android.synthetic.main.activity_videoplayer.*
+import java.io.BufferedOutputStream
+import java.io.File
+import java.io.FileOutputStream
 
 class GameJudgingActivity : Activity() {
 
@@ -43,8 +46,14 @@ class GameJudgingActivity : Activity() {
 
     private fun loadVideo(game: Game) {
         ws.getVideo(game.nonJudger, game.roundNumber) {
-            val path = it?.saveToSdCard("video" + game.roundNumber)
-            gameJudgingVideoView.setVideoPath(path)
+            //val path = it?.saveToSdCard("video" + game.roundNumber)
+            println("file size " + it!!.size)
+            val file = File.createTempFile("abcdefgh", ".mp4", getExternalFilesDir(Environment.DIRECTORY_MOVIES))
+            val bufferedOutputStream = BufferedOutputStream(FileOutputStream(file))
+            bufferedOutputStream.apply { write(it); flush(); close() }
+
+            gameJudgingVideoView.setVideoPath(file.absolutePath)
+
             gameJudgingVideoView.setOnCompletionListener {
                 ws.videoOver(game.gameId)
                 //TODO slet video
@@ -70,7 +79,7 @@ class GameJudgingActivity : Activity() {
 
     private fun updateViews(game: Game) {
         runOnUiThread {
-            gameJudgingRemainingUsers.text = "Users remaining: ${game.gameId}"
+            gameJudgingRemainingUsers.text = "Users remaining: ${game.userLeft}"
             setJudgedBio(game.nonJudger)
         }
     }

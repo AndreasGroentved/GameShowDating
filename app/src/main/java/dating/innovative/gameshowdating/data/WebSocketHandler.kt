@@ -53,17 +53,13 @@ class WebSocketHandler private constructor() : WebSocketListener() {
     fun getVideo(username: String, roundNumber: Int, callBack: (ByteArray?) -> Unit) {
         socket.on("getVideo") {
             socket.off("getVideo")
-            val failure = (it[0] as? String ?: "") == "failure"
-            if (failure) callBack(null)
-            else {
-                try {
-                    val byteArr = it[0] as ByteArray
-                    println("get video success")
-                    callBack(byteArr)
-                } catch (e: Exception) {
-                    println("failure")
-                    callBack(null)
-                }
+            try {
+                val byteArr = it[0] as ByteArray
+                println("get video success")
+                callBack(byteArr)
+            } catch (e: Exception) {
+                println("failure")
+                callBack(null)
             }
         }
         socket.emit("getVideo", token, username, roundNumber)
@@ -196,13 +192,16 @@ class WebSocketHandler private constructor() : WebSocketListener() {
             val gameId = it[0] as String
             val userCount = it[1] as Int
             userName = it[2] as String
-            gameUpdates(Game(userName, userCount, userCount, gameId, 0))
+            gameUpdates(Game(userName, userCount, userCount, gameId, 1))
         }
         socket.on("gameUpdate") {
             val userCount = it[0] as Int
             val roundNumber = it[2] as Int
             val userTotal = it[1] as Int
-            gameUpdates(Game(userName, userTotal, userCount, gameId, roundNumber))
+            val game = Game(userName, userCount, userTotal, gameId, roundNumber)
+            println("gameUpdate")
+            println(game)
+            gameUpdates(game)
         }
 
         socket.on("gameOver") {
