@@ -69,14 +69,18 @@ class GameJudgingActivity : Activity() {
     }
 
     private fun updateViews(game: Game) {
-        gameJudgingRemainingUsers.text = "Users remaining: ${game.gameId}"
-        setJudgedBio(game.nonJudger)
+        runOnUiThread {
+            gameJudgingRemainingUsers.text = "Users remaining: ${game.gameId}"
+            setJudgedBio(game.nonJudger)
+        }
     }
 
     private fun setJudgedBio(userName: String) {
         ws.getUser(userName) {
             if (it == null) return@getUser
-            gameJudgingUserBio.text = it.biography
+            runOnUiThread {
+                gameJudgingUserBio.text = it.biography
+            }
         }
     }
 }
