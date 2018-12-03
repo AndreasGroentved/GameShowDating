@@ -2,17 +2,13 @@ package dating.innovative.gameshowdating.activity
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.support.design.widget.Snackbar
-import android.view.View
-import android.widget.MediaController
 import dating.innovative.gameshowdating.R
 import dating.innovative.gameshowdating.data.WebSocketHandler
 import dating.innovative.gameshowdating.model.Game
 import kotlinx.android.synthetic.main.activity_game_judging.*
-import kotlinx.android.synthetic.main.activity_videoplayer.*
 import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -49,36 +45,47 @@ class GameJudgingActivity : Activity() {
 
     private fun loadVideo(game: Game) {
         ws.getVideo(game.nonJudger, game.roundNumber) {
+            println("boom")
             if (it == null) {
                 println("VIDEOOOOOOOOOOOOOO NULLLLLLLLLLLLLLLLLLLL")
                 return@getVideo
             }
-            //val path = it?.saveToSdCard("video" + game.roundNumber)
-            //println("file size " + it!!.size)
-            val file = File(Environment.getExternalStorageDirectory(), "virker.mp4")
-            println(file.absoluteFile)
-            val bufferedOutputStream = BufferedOutputStream(FileOutputStream(file))
-            bufferedOutputStream.apply { write(it); flush(); close() }
-            println("wrote file")
-            val mediaController = MediaController(this)
-            //mediaController.setAnchorView(gameJudgingVideoView)
-            mediaController.setMediaPlayer(gameJudgingVideoView)
-            gameJudgingVideoView.visibility = View.VISIBLE;
-            gameJudgingVideoView.setMediaController(mediaController)
-            println(file.exists())
-            val uri = Uri.fromFile(file)
+            runOnUiThread {
+                //val path = it?.saveToSdCard("video" + game.roundNumber)
+                //println("file size " + it!!.size)
+                val file = File(Environment.getExternalStorageDirectory(), "virker.mp4")
+                println(file.absoluteFile)
+                val bufferedOutputStream = BufferedOutputStream(FileOutputStream(file))
+                bufferedOutputStream.apply { write(it); flush(); close() }
+                println("wrote file")
 
-            gameJudgingVideoView.setVideoURI(uri)
+                //   val mediaController = MediaController(this.applicationContext)
+                println("sup")
+                //mediaController.setAnchorView(gameJudgingVideoView)
+                // mediaController.setMediaPlayer(gameJudgingVideoView)
+                println("sup2")
+                //gameJudgingVideoView.setMediaController(mediaController)
+                println("su3")
+                println(file.exists())
+                //val uri = Uri.fromFile(file)
 
-            // setVideoPath(file.absolutePath)
-            gameJudgingVideoView.requestFocus()
-            gameJudgingVideoView.setZOrderOnTop(true)
-            gameJudgingVideoView.seekTo(1000)
-            gameJudgingVideoView.start()
+                gameJudgingVideoView.setVideoPath(file.absolutePath)
 
-            gameJudgingVideoView.setOnCompletionListener {
-                ws.videoOver(game.gameId)
-                //TODO slet video
+                println("duration " + gameJudgingVideoView.duration)
+                // setVideoPath(file.absolutePath)
+                gameJudgingVideoView.requestFocus()
+                gameJudgingVideoView.setZOrderOnTop(true)
+                gameJudgingVideoView.seekTo(1000)
+
+                //gameJudgingVideoView.start()
+                gameJudgingVideoView.setOnPreparedListener {
+                    println("asddddddddddddddddddddddd")
+                    it.start()
+                }
+                gameJudgingVideoView.setOnCompletionListener {
+                    ws.videoOver(game.gameId)
+                    //TODO slet video
+                }
             }
         }
     }
@@ -88,7 +95,7 @@ class GameJudgingActivity : Activity() {
 
     private fun setOutButton() {
         gameJudgingOutButton.setOnClickListener {
-            val timeStamp = videoPlayerView.currentPosition
+            val timeStamp = gameJudgingVideoView.currentPosition
             ws.stopGameUpdates()
             ws.imOut(gameId, timeStamp.toLong())
             val outIntent = Intent(applicationContext, ProvideFeedbackActivity::class.java)
