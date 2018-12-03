@@ -25,7 +25,7 @@ class WebSocketHandler private constructor() : WebSocketListener() {
     fun isTokenSet() = ::token.isInitialized
 
 
-    private val socket: Socket = IO.socket("http://192.168.0.101:3000")
+    private val socket: Socket = IO.socket("http://10.126.48.222:3000")
 
     init {
         socket.connect()
@@ -123,7 +123,12 @@ class WebSocketHandler private constructor() : WebSocketListener() {
             val biography = data.getString("biography")
             val sex = data.getString("sex")
             val age = data.getInt("age")
-            val picture = data.get("profilePicture") as ByteArray
+            val picture =
+                try {
+                    data.get("profilePicture") as ByteArray
+                } catch (e: java.lang.Exception) {
+                    null
+                }
             val user = RemoteUser(username, password, picture, biography, sex, age)
             if (username == user._id) {
                 callBack?.invoke(user)

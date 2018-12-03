@@ -26,8 +26,6 @@ class MessageScheduler : JobService() {
                     getMessages(userName)
                 }
             }
-
-
         }
 
         Util.scheduleJob(applicationContext) // reschedule the job
@@ -39,16 +37,13 @@ class MessageScheduler : JobService() {
         val oldHash = PreferenceManagerClass.getMessageHash(this)
         WebSocketHandler.instance.getMessages(userName) {
             val newHash = it.map { it.value.count() }.sum().toString() //Den eneste rigtige måde at udregne hashes på!
-
             if (newHash != oldHash) {
-                println("new")
                 createNotification()
             }
             PreferenceManagerClass.setMessageHash(this, newHash)
         }
 
     }
-
 
     private fun createNotification() {
         val builder = NotificationCompat.Builder(this, "123" /*didn't want to read documentation...*/)
@@ -63,12 +58,7 @@ class MessageScheduler : JobService() {
         }
     }
 
-    override fun onStopJob(params: JobParameters): Boolean {
-        return true
-    }
+    override fun onStopJob(params: JobParameters): Boolean = true
 
-    companion object {
-        private val TAG = "SyncService"
-    }
 
 }

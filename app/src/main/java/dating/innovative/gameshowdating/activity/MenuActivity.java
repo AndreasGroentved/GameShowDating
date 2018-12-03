@@ -28,7 +28,6 @@ public class MenuActivity extends Activity {
         WebSocketHandler.getInstance().getVideo("test1", 1, new Function1<byte[], Unit>() {
             @Override
             public Unit invoke(byte[] bytes) {
-
                 return null;
             }
         });

@@ -44,13 +44,11 @@ class ShouldDateActivity : BaseActivity() {
         profileBiography.text = user.biography
     }
 
-    override fun getLayout(): Int {
-        return R.layout.activity_should_date
-    }
+    override fun getLayout() = R.layout.activity_should_date
 
-    override fun getToolBar(): Toolbar {
-        return findViewById(R.id.toolbar_should_date)
-    }
+
+    override fun getToolBar(): Toolbar = findViewById(R.id.toolbar_should_date)
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_profile, menu)
