@@ -55,13 +55,15 @@ class WebSocketHandler private constructor() : WebSocketListener() {
             socket.off("getVideo")
 
             try {
-                val data = (it[0] as String).toByteArray()
-                println("Her")
-                println(data.size)
 
+                val data = (it[0] as JSONObject)
+                val video = data.get("video") as ByteArray
+                println(video.size)
+
+                //println(data.size)
                 //val byteArr = it[0] as ByteArray
                 println("get video success")
-                callBack(data)
+                callBack(video)
             } catch (e: Exception) {
                 println("failure")
                 callBack(null)
