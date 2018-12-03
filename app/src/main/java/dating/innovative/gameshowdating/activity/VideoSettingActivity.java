@@ -12,9 +12,12 @@ import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
 import dating.innovative.gameshowdating.R;
+import dating.innovative.gameshowdating.data.Util;
 import dating.innovative.gameshowdating.util.BaseActivity;
 import dating.innovative.gameshowdating.util.PreferenceManagerClass;
 import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
 
 public class VideoSettingActivity extends BaseActivity {
 
@@ -125,6 +128,12 @@ public class VideoSettingActivity extends BaseActivity {
                 videoUri = data.getData();
                 confirmationLabel.setText(videoUri.toString());
                 videoView.setVideoURI(videoUri);
+
+                System.out.println(videoUri.toString());
+                File f = new File(videoUri.getPath());
+                byte[] b = Util.fileToBytes(f);
+                System.out.println("size " + b.length);
+
                 videoView.requestFocus();
                 videoView.start();
 

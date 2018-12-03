@@ -89,11 +89,13 @@ class WebSocketHandler private constructor() : WebSocketListener() {
     }
 
 
-    fun sendOrUpdateVideo(file: ByteArray, username: String, roundNumber: Int, callBack: (Boolean) -> Unit) {
+    fun sendOrUpdateVideo(file: ByteArray, roundNumber: Int, callBack: (Boolean) -> Unit) {
         socket.on("uploadFile") {
             val success = it[0] as String == "success"
             callBack(success)
         }
+        println("file size")
+        println(file.size)
         socket.emit("uploadFile", token, roundNumber, file)
     }
 
@@ -144,6 +146,7 @@ class WebSocketHandler private constructor() : WebSocketListener() {
             val success = it[0] as String == "success"
             callBack(success)
         }
+        println(profilePicture.size)
         println(profilePicture)
         socket.emit("updateProfilePicture", token, profilePicture)
     }

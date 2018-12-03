@@ -84,13 +84,8 @@ public class CustomizeProfileActivity extends BaseActivity {
                         profilePictureFile = File.createTempFile("profilePictureUpload_" + dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username, ".jpg", storageDirImage);
                     } catch (IOException e) {
                         e.printStackTrace();
+                        System.out.println("file error");
                     }
-                    ws.updateProfilePicture(Util.fileToBytes(profilePictureFile), new Function1<Boolean, Unit>() {
-                        @Override
-                        public Unit invoke(Boolean aBoolean) {
-                            return null;
-                        }
-                    });
                 }
                 if (!PreferenceManagerClass.getPreferenceVideo1(getApplicationContext()).isEmpty()) {
                     dbHelper.updateUserVideo1(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),
@@ -102,7 +97,7 @@ public class CustomizeProfileActivity extends BaseActivity {
                         e.printStackTrace();
                     }
 
-                    ws.sendOrUpdateVideo(Util.fileToBytes(video1File), PreferenceManagerClass.getUsername(getApplicationContext()), 1, new Function1<Boolean, Unit>() {
+                    ws.sendOrUpdateVideo(Util.fileToBytes(video1File), 1, new Function1<Boolean, Unit>() {
                         @Override
                         public Unit invoke(Boolean aBoolean) {
                             System.out.println(aBoolean);
@@ -121,7 +116,7 @@ public class CustomizeProfileActivity extends BaseActivity {
                         e.printStackTrace();
                     }
 
-                    ws.sendOrUpdateVideo(Util.fileToBytes(video2File), PreferenceManagerClass.getUsername(getApplicationContext()), 2, new Function1<Boolean, Unit>() {
+                    ws.sendOrUpdateVideo(Util.fileToBytes(video2File), 2, new Function1<Boolean, Unit>() {
                         @Override
                         public Unit invoke(Boolean aBoolean) {
                             System.out.println(aBoolean);
@@ -140,7 +135,7 @@ public class CustomizeProfileActivity extends BaseActivity {
                         e.printStackTrace();
                     }
 
-                    ws.sendOrUpdateVideo(Util.fileToBytes(video3File), PreferenceManagerClass.getUsername(getApplicationContext()), 3, new Function1<Boolean, Unit>() {
+                    ws.sendOrUpdateVideo(Util.fileToBytes(video3File), 3, new Function1<Boolean, Unit>() {
                         @Override
                         public Unit invoke(Boolean aBoolean) {
                             System.out.println(aBoolean);
