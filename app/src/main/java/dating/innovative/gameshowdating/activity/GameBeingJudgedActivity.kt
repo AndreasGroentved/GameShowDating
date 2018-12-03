@@ -50,15 +50,20 @@ class GameBeingJudgedActivity : Activity() {
     private fun clickListener(userNames: List<String>) = object : ClickListener {
         override fun onLongClick(view: View, position: Int) {}
         override fun onClick(view: View, position: Int) {
-            val intent: Intent = Intent(this@GameBeingJudgedActivity, ShouldDateActivity::class.java).putExtra("username", userNames[position])
+            val intent: Intent = Intent(this@GameBeingJudgedActivity, ShouldDateActivity::class.java).putExtra(
+                "username",
+                userNames[position]
+            )
             startActivity(intent)
         }
     }
 
     private fun updateUI(game: Game) {
-        adapter.totalCount = game.userCount
-        adapter.isInCount = game.userLeft
-        round_number_view.text = "Round number: ${game.roundNumber}"
+        runOnUiThread {
+            adapter.totalCount = game.userCount
+            adapter.isInCount = game.userLeft
+            round_number_view.text = "Round number: ${game.roundNumber}"
+        }
     }
 
     private fun setUpListView() {
