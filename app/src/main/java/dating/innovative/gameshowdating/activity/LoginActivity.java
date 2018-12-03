@@ -102,7 +102,6 @@ public class LoginActivity extends BaseActivity {
                     @Override
                     public Unit invoke(RemoteUser user) {
                         System.out.println("user");
-                        System.out.println(user);
 
                         setUserData(user);
                         Intent i = new Intent(getApplicationContext(), MenuActivity.class);
@@ -138,7 +137,10 @@ public class LoginActivity extends BaseActivity {
    /*     dbHelper.updateUserProfileImage(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),
                 PreferenceManagerClass.getProfilePictureUpdated(getApplicationContext()));*/
         PreferenceManagerClass.setUsername(getApplicationContext(), user.get_id());
-        SQLiteHelper.getSqLiteHelperInstance(LoginActivity.this).addUser(Util.remoteUserToUser(user));
+        if(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())) == null){
+            dbHelper.addUser(Util.remoteUserToUser(user));
+        }
+
 
     }
 

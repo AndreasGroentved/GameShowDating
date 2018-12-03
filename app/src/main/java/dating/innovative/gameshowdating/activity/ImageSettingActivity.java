@@ -158,6 +158,18 @@ public class ImageSettingActivity extends BaseActivity {
 
                     fromAlbum = false; // data persistence
                     previewImageView.setImageBitmap(rotatedBitmap);
+
+
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    selectedImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    byte[] byteArray = stream.toByteArray();
+                    WebSocketHandler.getInstance().updateProfilePicture(byteArray, new Function1<Boolean, Unit>() {
+                        @Override
+                        public Unit invoke(Boolean aBoolean) {
+                            return null;
+                        }
+                    });
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -167,7 +179,7 @@ public class ImageSettingActivity extends BaseActivity {
     }
 
     private File createImageFile() throws IOException {
-        String imageName = "profileImage_" + PreferenceManagerClass.getUsername(getApplicationContext());
+        String imageName = "profilePictureImage_" + PreferenceManagerClass.getUsername(getApplicationContext());
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(imageName, ".jpg", storageDir);
         photoPath = image.getAbsolutePath();
