@@ -82,7 +82,7 @@ public class CustomizeProfileActivity extends BaseActivity {
                     dbHelper.updateUserProfileImage(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),
                             PreferenceManagerClass.getProfilePictureUpdated(getApplicationContext()));
                     PreferenceManagerClass.clearRef(getApplicationContext(), PreferenceManagerClass.PREFERENCE_PROFILE_PICTURE);
-                    if(!ImageSettingActivity.photoPath.isEmpty()){
+                    if(ImageSettingActivity.photoPath != null){
                         ws.getUser(PreferenceManagerClass.getUsername(getApplicationContext()), new Function1<RemoteUser, Unit>() {
                             @Override
                             public Unit invoke(RemoteUser remoteUser) {
