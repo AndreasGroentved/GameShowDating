@@ -10,13 +10,13 @@ import android.widget.TextView;
 import dating.innovative.gameshowdating.R;
 import dating.innovative.gameshowdating.model.Feedback;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class ViewFeedbackAdapter extends RecyclerView.Adapter<ViewFeedbackAdapter.ViewFeedbackHolder> {
 
-    public ArrayList<Feedback> feedbackArrayList;
+    public List<Feedback> feedbackArrayList;
 
-    public ViewFeedbackAdapter(ArrayList<Feedback> feedbackArrayList) {
+    public ViewFeedbackAdapter(List<Feedback> feedbackArrayList) {
         this.feedbackArrayList = feedbackArrayList;
     }
 

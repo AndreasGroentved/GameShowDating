@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
-
 import dating.innovative.gameshowdating.R;
 import dating.innovative.gameshowdating.data.WebSocketHandler;
 import kotlin.Unit;
@@ -35,8 +34,9 @@ public class InQueueActivity extends Activity {
         final boolean beJudgedCheck = lastActivityIntent.getBooleanExtra("beJudged", false);
         final boolean judgeCheck = lastActivityIntent.getBooleanExtra("judge", false);
 
+
         final Activity a = this;
-        ws.match(true, new Function1<String, Unit>() {
+        ws.match(judgeCheck, new Function1<String, Unit>() {
             @Override
             public Unit invoke(String aString) {
                 System.out.println("in queueu " + aString);
