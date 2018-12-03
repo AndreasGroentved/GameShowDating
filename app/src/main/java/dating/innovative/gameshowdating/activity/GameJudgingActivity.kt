@@ -46,13 +46,20 @@ class GameJudgingActivity : Activity() {
 
     private fun loadVideo(game: Game) {
         ws.getVideo(game.nonJudger, game.roundNumber) {
+            if (it == null) {
+                println("VIDEOOOOOOOOOOOOOO NULLLLLLLLLLLLLLLLLLLL")
+                return@getVideo
+            }
             //val path = it?.saveToSdCard("video" + game.roundNumber)
-            println("file size " + it!!.size)
+            //println("file size " + it!!.size)
             val file = File.createTempFile("abcdefgh", ".mp4", getExternalFilesDir(Environment.DIRECTORY_MOVIES))
+            println(file.absoluteFile)
             val bufferedOutputStream = BufferedOutputStream(FileOutputStream(file))
             bufferedOutputStream.apply { write(it); flush(); close() }
+            println("wrote file")
 
             gameJudgingVideoView.setVideoPath(file.absolutePath)
+            gameJudgingVideoView.start()
 
             gameJudgingVideoView.setOnCompletionListener {
                 ws.videoOver(game.gameId)

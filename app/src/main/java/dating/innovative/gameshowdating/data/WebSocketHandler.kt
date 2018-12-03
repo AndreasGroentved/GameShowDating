@@ -53,10 +53,15 @@ class WebSocketHandler private constructor() : WebSocketListener() {
     fun getVideo(username: String, roundNumber: Int, callBack: (ByteArray?) -> Unit) {
         socket.on("getVideo") {
             socket.off("getVideo")
+
             try {
-                val byteArr = it[0] as ByteArray
+                val data = (it[0] as String).toByteArray()
+                println("Her")
+                println(data.size)
+
+                //val byteArr = it[0] as ByteArray
                 println("get video success")
-                callBack(byteArr)
+                callBack(data)
             } catch (e: Exception) {
                 println("failure")
                 callBack(null)
