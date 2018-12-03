@@ -228,8 +228,7 @@ class WebSocketHandler private constructor() : WebSocketListener() {
             inQueueCallback(success)
         }
         socket.on("match") {
-            val success = it[0] as String == "success"
-            val gameId = it[1] as String
+            val gameId = it[0] as String
             matchAcceptedIdCallback(gameId)
         }
         socket.emit("match", token, judger)

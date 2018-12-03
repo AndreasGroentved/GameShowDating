@@ -12,10 +12,10 @@ import java.util.*
 
 class ViewFeedbackActivity : Activity() {
 
-    var recyclerView: RecyclerView? = null
-    var recyclerAdapter: ViewFeedbackAdapter? = null
-    var recyclerLayoutManager: RecyclerView.LayoutManager? = null
-    var dbHelper: SQLiteHelper? = null
+    private var recyclerView: RecyclerView? = null
+    private var recyclerAdapter: ViewFeedbackAdapter? = null
+    private var recyclerLayoutManager: RecyclerView.LayoutManager? = null
+    private var dbHelper: SQLiteHelper? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
