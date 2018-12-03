@@ -10,13 +10,16 @@ import android.widget.EditText;
 import dating.innovative.gameshowdating.R;
 import dating.innovative.gameshowdating.data.Util;
 import dating.innovative.gameshowdating.data.WebSocketHandler;
+import dating.innovative.gameshowdating.model.RemoteUser;
 import dating.innovative.gameshowdating.util.BaseActivity;
 import dating.innovative.gameshowdating.util.PreferenceManagerClass;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class CustomizeProfileActivity extends BaseActivity {
@@ -32,8 +35,7 @@ public class CustomizeProfileActivity extends BaseActivity {
     File video1File;
     File video2File;
     File video3File;
-    File profilePictureFile;
-
+    File profileImageFile;
 
     @NotNull
     @Override
@@ -63,6 +65,7 @@ public class CustomizeProfileActivity extends BaseActivity {
         final File storageDirVideo = getExternalFilesDir(Environment.DIRECTORY_MOVIES);
         final File storageDirImage = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
+
         saveChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,14 +82,45 @@ public class CustomizeProfileActivity extends BaseActivity {
                     dbHelper.updateUserProfileImage(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),
                             PreferenceManagerClass.getProfilePictureUpdated(getApplicationContext()));
                     PreferenceManagerClass.clearRef(getApplicationContext(), PreferenceManagerClass.PREFERENCE_PROFILE_PICTURE);
+                    if(!ImageSettingActivity.photoPath.isEmpty()){
+                        ws.getUser(PreferenceManagerClass.getUsername(getApplicationContext()), new Function1<RemoteUser, Unit>() {
+                            @Override
+                            public Unit invoke(RemoteUser remoteUser) {
+                                if(remoteUser.getProfilePicture() != null){
+                                    profileImageFile = new File(ImageSettingActivity.photoPath);
+                                    dbHelper.updateUserProfileImage(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())), profileImageFile.getAbsolutePath());
+                                }
+                                return null;
+                            }
+                        });
+                    } else {
+                        try {
+                            profileImageFile = File.createTempFile("profilePictureImage_" + PreferenceManagerClass.getUsername(getApplicationContext()), ".jpg", getExternalFilesDir(Environment.DIRECTORY_PICTURES));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        };
 
-                    try {
-                        profilePictureFile = File.createTempFile("profilePictureUpload_" + dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username, ".jpg", storageDirImage);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        System.out.println("file error");
+                        ws.getUser(PreferenceManagerClass.getUsername(getApplicationContext()), new Function1<RemoteUser, Unit>() {
+                            @Override
+                            public Unit invoke(RemoteUser remoteUser) {
+                                if(remoteUser.getProfilePicture() != null){
+                                    try{
+                                        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(profileImageFile));
+                                        bos.write(remoteUser.getProfilePicture());
+                                        dbHelper.updateUserProfileImage(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())), profileImageFile.getAbsolutePath());
+                                        bos.flush();
+                                        bos.close();
+
+                                    } catch (IOException e){
+                                        e.printStackTrace();
+                                    }
+                                }
+                                return null;
+                            }
+                        });
                     }
                 }
+
                 if (!PreferenceManagerClass.getPreferenceVideo1(getApplicationContext()).isEmpty()) {
                     dbHelper.updateUserVideo1(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),
                             PreferenceManagerClass.getPreferenceVideo1(getApplicationContext()));
