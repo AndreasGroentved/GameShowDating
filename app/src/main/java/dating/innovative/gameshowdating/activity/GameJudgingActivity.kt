@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import android.support.design.widget.Snackbar
+import android.widget.MediaController
 import dating.innovative.gameshowdating.R
 import dating.innovative.gameshowdating.data.WebSocketHandler
 import dating.innovative.gameshowdating.model.Game
@@ -57,8 +58,12 @@ class GameJudgingActivity : Activity() {
             val bufferedOutputStream = BufferedOutputStream(FileOutputStream(file))
             bufferedOutputStream.apply { write(it); flush(); close() }
             println("wrote file")
+            val mediaController = MediaController(this)
+            mediaController.setAnchorView(gameJudgingVideoView)
+            gameJudgingVideoView.setMediaController(mediaController)
 
             gameJudgingVideoView.setVideoPath(file.absolutePath)
+            gameJudgingVideoView.requestFocus()
             gameJudgingVideoView.start()
 
             gameJudgingVideoView.setOnCompletionListener {
