@@ -30,7 +30,7 @@
             tools:layout_editor_absoluteX="256dp" android:id="@+id/provideFeedbackSendButton"
             android:background="@color/colorPrimary" android:textAppearance="@style/TextAppearance.AppCompat"/>
     <Button
-            android:text="Do not send feedback"
+            android:text="Do not send text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/provideFeedbackDontSendFeedbackButton" app:layout_constraintEnd_toEndOf="parent"

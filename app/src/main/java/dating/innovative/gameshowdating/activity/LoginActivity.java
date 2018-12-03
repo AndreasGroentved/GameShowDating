@@ -102,8 +102,8 @@ public class LoginActivity extends BaseActivity {
                     @Override
                     public Unit invoke(RemoteUser user) {
                         System.out.println("user");
-                        System.out.println(user);
-
+                        //System.out.println(user);
+                        //  System.out.println("byte length " + user.getProfilePicture().length);
                         setUserData(user);
                         Intent i = new Intent(getApplicationContext(), MenuActivity.class);
                         startActivity(i);

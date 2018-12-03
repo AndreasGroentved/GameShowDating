@@ -55,7 +55,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     private static final String KEY_MESSAGES_MESSAGE_FROM_NAME_TWO = "userTwoMessage";
     private static final String KEY_MESSAGES_MESSAGE_TIMESTAMP = "timestamp";
 
-    //coloumns for feedback
+    //coloumns for text
     private static final String KEY_FEEDBACK_ID = "id";
     private static final String KEY_FEEDBACK_NAME = "feedbackGiverName";
     private static final String KEY_FEEDBACK_FEEDBACK = "feedbackContents";
@@ -173,7 +173,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 do{
                     Feedback feedback = new Feedback();
                     feedback.name = cursor.getString(cursor.getColumnIndex(KEY_FEEDBACK_NAME));
-                    feedback.feedback = cursor.getString(cursor.getColumnIndex(KEY_FEEDBACK_FEEDBACK));
+                    feedback.text = cursor.getString(cursor.getColumnIndex(KEY_FEEDBACK_FEEDBACK));
                     feedbackArrayList.add(feedback);
                 } while(cursor.moveToNext());
             }

@@ -53,7 +53,7 @@ class GameJudgingActivity : Activity() {
     }
 
     private fun didRoundChange(newGameUpdate: Game) = newGameUpdate.roundNumber > (lastGameUpdate?.roundNumber
-            ?: 0)
+        ?: 0)
 
     private fun setOutButton() {
         gameJudgingOutButton.setOnClickListener {
@@ -62,6 +62,7 @@ class GameJudgingActivity : Activity() {
             ws.imOut(gameId, timeStamp.toLong())
             val outIntent = Intent(applicationContext, ProvideFeedbackActivity::class.java)
             outIntent.putExtra("gameId", gameId)
+            outIntent.putExtra("timeStamp", timeStamp)
             startActivity(outIntent)
             this@GameJudgingActivity.finish()
         }

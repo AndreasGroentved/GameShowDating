@@ -25,13 +25,6 @@ public class MenuActivity extends Activity {
         gameButton = findViewById(R.id.mainMenuGameButton);
         chatButton = findViewById(R.id.mainMenuChatButton);
 
-        WebSocketHandler.getInstance().getVideo("test1", 1, new Function1<byte[], Unit>() {
-            @Override
-            public Unit invoke(byte[] bytes) {
-                return null;
-            }
-        });
-
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

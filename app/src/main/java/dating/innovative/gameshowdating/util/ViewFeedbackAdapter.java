@@ -14,22 +14,20 @@ import java.util.ArrayList;
 
 public class ViewFeedbackAdapter extends RecyclerView.Adapter<ViewFeedbackAdapter.ViewFeedbackHolder> {
 
-    ArrayList<Feedback> feedbackArrayList;
-    Context context;
+    public ArrayList<Feedback> feedbackArrayList;
 
-    public ViewFeedbackAdapter(ArrayList<Feedback> feedbackArrayList){
+    public ViewFeedbackAdapter(ArrayList<Feedback> feedbackArrayList) {
         this.feedbackArrayList = feedbackArrayList;
     }
 
     @NonNull
     @Override
     public ViewFeedbackHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        context = parent.getContext();
+        Context context = parent.getContext();
         LayoutInflater layoutInflater = LayoutInflater.from(context);
 
-        View feedbackView = layoutInflater.inflate(R.layout.feedback_cell,parent,false);
-        ViewFeedbackHolder viewFeedbackHolder = new ViewFeedbackHolder(feedbackView);
-        return viewFeedbackHolder;
+        View feedbackView = layoutInflater.inflate(R.layout.feedback_cell, parent, false);
+        return new ViewFeedbackHolder(feedbackView);
     }
 
     @Override
@@ -40,7 +38,7 @@ public class ViewFeedbackAdapter extends RecyclerView.Adapter<ViewFeedbackAdapte
         nameTextView.setText(feedback.name);
 
         TextView feedbackTextView = holder.feedbackTextView;
-        feedbackTextView.setText(feedback.feedback);
+        feedbackTextView.setText(feedback.text);
     }
 
     @Override
@@ -48,17 +46,16 @@ public class ViewFeedbackAdapter extends RecyclerView.Adapter<ViewFeedbackAdapte
         return feedbackArrayList.size();
     }
 
-    public static class ViewFeedbackHolder extends RecyclerView.ViewHolder{
+    static class ViewFeedbackHolder extends RecyclerView.ViewHolder {
 
         TextView nameTextView;
         TextView feedbackTextView;
 
-        public ViewFeedbackHolder(View itemView) {
+        ViewFeedbackHolder(View itemView) {
             super(itemView);
 
-            this.nameTextView = (TextView) itemView.findViewById(R.id.feedbackNameTextview);
-            this.feedbackTextView = (TextView) itemView.findViewById(R.id.feedbackFeedbackTextview);
-
+            nameTextView = itemView.findViewById(R.id.feedbackNameTextview);
+            feedbackTextView = itemView.findViewById(R.id.feedbackFeedbackTextview);
         }
     }
 }

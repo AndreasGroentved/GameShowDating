@@ -25,7 +25,7 @@ class WebSocketHandler private constructor() : WebSocketListener() {
     fun isTokenSet() = ::token.isInitialized
 
 
-    private val socket: Socket = IO.socket("http://10.126.48.222:3000")
+    private val socket: Socket = IO.socket("http://10.126.48.222:3001")
 
     init {
         socket.connect()
@@ -164,8 +164,24 @@ class WebSocketHandler private constructor() : WebSocketListener() {
         socket.emit("vote", token, gameId, videoTimeStamp)
     }
 
-    fun comment(gameId: String, comment: String) {
-        socket.emit("comment", token, gameId, comment)
+    fun comment(gameId: String, comment: String, timeStamp: Long) {
+        socket.emit("comment", token, gameId, comment, timeStamp)
+    }
+
+    fun getComments(username: String, callBack: (List<Feedback>) -> Unit) {
+        socket.on("getComments") {
+            socket.off("getComments")
+            val comments = try {
+                val data = (it[0] as JSONArray).toString()
+                val gsonToken = object : TypeToken<List<Feedback>>() {}.type
+                gson.fromJson<List<Feedback>>(data, gsonToken)
+            } catch (e: java.lang.Exception) {
+                listOf<Feedback>()
+            }
+            println("${comments.size} comments")
+            callBack(comments)
+        }
+        socket.emit("getComments", token, username)
     }
 
     fun confirmGame(
@@ -202,7 +218,6 @@ class WebSocketHandler private constructor() : WebSocketListener() {
                 })
             )
         }
-
 
         socket.emit("confirmParticipation", token, gameId, confirm)
     }

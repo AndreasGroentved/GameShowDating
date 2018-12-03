@@ -1,6 +1,7 @@
 package dating.innovative.gameshowdating.activity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -13,8 +14,11 @@ import android.widget.TextView;
 import android.widget.VideoView;
 import dating.innovative.gameshowdating.R;
 import dating.innovative.gameshowdating.data.Util;
+import dating.innovative.gameshowdating.data.WebSocketHandler;
 import dating.innovative.gameshowdating.util.BaseActivity;
 import dating.innovative.gameshowdating.util.PreferenceManagerClass;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -77,7 +81,7 @@ public class VideoSettingActivity extends BaseActivity {
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!videoUri.toString().isEmpty() && videoUri != null) {
+                if (videoUri != null && !videoUri.toString().isEmpty()) {
                     if (lastScreenIntent.getIntExtra("videoId", 0) == 1) {
                         PreferenceManagerClass.setPreferenceVideo1(getApplicationContext(), videoUri.toString());
                     } else if (lastScreenIntent.getIntExtra("videoId", 0) == 2) {
@@ -129,10 +133,19 @@ public class VideoSettingActivity extends BaseActivity {
                 confirmationLabel.setText(videoUri.toString());
                 videoView.setVideoURI(videoUri);
 
-                System.out.println(videoUri.toString());
-                File f = new File(videoUri.getPath());
+                System.out.println(getPath(videoUri));
+                File f = new File(getPath(videoUri));
                 byte[] b = Util.fileToBytes(f);
                 System.out.println("size " + b.length);
+
+                WebSocketHandler.getInstance().sendOrUpdateVideo(b, getIntent().getIntExtra("videoId", 0), new Function1<Boolean, Unit>() {
+                            @Override
+                            public Unit invoke(Boolean aBoolean) {
+                                System.out.println("success?????????????  " + aBoolean);
+                                return null;
+                            }
+                        }
+                );
 
                 videoView.requestFocus();
                 videoView.start();
@@ -141,6 +154,17 @@ public class VideoSettingActivity extends BaseActivity {
         }
 
 
+    }
+
+    public String getPath(Uri uri) {
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+        if (cursor == null) return null;
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String s = cursor.getString(column_index);
+        cursor.close();
+        return s;
     }
 
 

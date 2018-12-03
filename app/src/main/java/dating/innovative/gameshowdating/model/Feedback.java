@@ -1,30 +1,16 @@
 package dating.innovative.gameshowdating.model;
 
+
+//TODO fix sqlite
 public class Feedback {
 
     public String name;
-    public String feedback;
+    public String text;
+    public Long timeStamp;
+    public int video;
+    public String to;
 
-    public Feedback(){}
-
-    public Feedback(String name, String feedback) {
-        this.name = name;
-        this.feedback = feedback;
+    public Feedback() {
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getFeedback() {
-        return feedback;
-    }
-
-    public void setFeedback(String feedback) {
-        this.feedback = feedback;
-    }
 }
