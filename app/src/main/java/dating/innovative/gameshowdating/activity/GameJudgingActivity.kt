@@ -2,9 +2,11 @@ package dating.innovative.gameshowdating.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.support.design.widget.Snackbar
+import android.view.View
 import android.widget.MediaController
 import dating.innovative.gameshowdating.R
 import dating.innovative.gameshowdating.data.WebSocketHandler
@@ -53,17 +55,25 @@ class GameJudgingActivity : Activity() {
             }
             //val path = it?.saveToSdCard("video" + game.roundNumber)
             //println("file size " + it!!.size)
-            val file = File.createTempFile("abcdefgh", ".mp4", getExternalFilesDir(Environment.DIRECTORY_MOVIES))
+            val file = File(Environment.getExternalStorageDirectory(), "virker.mp4")
             println(file.absoluteFile)
             val bufferedOutputStream = BufferedOutputStream(FileOutputStream(file))
             bufferedOutputStream.apply { write(it); flush(); close() }
             println("wrote file")
             val mediaController = MediaController(this)
-            mediaController.setAnchorView(gameJudgingVideoView)
+            //mediaController.setAnchorView(gameJudgingVideoView)
+            mediaController.setMediaPlayer(gameJudgingVideoView)
+            gameJudgingVideoView.visibility = View.VISIBLE;
             gameJudgingVideoView.setMediaController(mediaController)
+            println(file.exists())
+            val uri = Uri.fromFile(file)
 
-            gameJudgingVideoView.setVideoPath(file.absolutePath)
+            gameJudgingVideoView.setVideoURI(uri)
+
+            // setVideoPath(file.absolutePath)
             gameJudgingVideoView.requestFocus()
+            gameJudgingVideoView.setZOrderOnTop(true)
+            gameJudgingVideoView.seekTo(1000)
             gameJudgingVideoView.start()
 
             gameJudgingVideoView.setOnCompletionListener {
