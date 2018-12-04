@@ -9,11 +9,13 @@ import android.view.View
 import dating.innovative.gameshowdating.R
 import dating.innovative.gameshowdating.data.WebSocketHandler
 import dating.innovative.gameshowdating.model.Game
+import dating.innovative.gameshowdating.util.GameUtil
 import kotlinx.android.synthetic.main.activity_game_being_judged.*
 
 class GameBeingJudgedActivity : Activity() {
 
     private lateinit var adapter: JudgerAdapter
+    private var lastGameUpdate: Game? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,15 +26,20 @@ class GameBeingJudgedActivity : Activity() {
         ws.confirmGame(true, gameId!!, { game ->
             if (game.userCount == 0) nooneLeft()
             updateUI(game)
+            if (GameUtil.didRoundChange(game, lastGameUpdate)) {
+                println("round changed")
+                GameUtil.loadVideo(ws,game, this, gameVideoView)
+            } else {
+                println("round didn't change")
+            }
         }, {
-            if (it == null || it.isEmpty()) nooneLeft()
+            if (it.isEmpty()) nooneLeft()
             someLeft(it)
         })
         setUpListView()
     }
 
-    private fun someLeft(it: List<String>?) {
-        if (it == null) return
+    private fun someLeft(it: List<String>) {
         val recyclerLayoutManager = GridLayoutManager(this, it.size)
         judged_recycler.layoutManager = recyclerLayoutManager
         adapter.names = it
@@ -50,10 +57,8 @@ class GameBeingJudgedActivity : Activity() {
     private fun clickListener(userNames: List<String>) = object : ClickListener {
         override fun onLongClick(view: View, position: Int) {}
         override fun onClick(view: View, position: Int) {
-            val intent: Intent = Intent(this@GameBeingJudgedActivity, ShouldDateActivity::class.java).putExtra(
-                "username",
-                userNames[position]
-            )
+            val intent: Intent = Intent(this@GameBeingJudgedActivity, ShouldDateActivity::class.java)
+                .putExtra("username", userNames[position])
             startActivity(intent)
         }
     }

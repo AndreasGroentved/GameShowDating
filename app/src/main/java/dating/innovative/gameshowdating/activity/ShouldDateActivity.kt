@@ -28,25 +28,23 @@ class ShouldDateActivity : BaseActivity() {
 
     private fun setChatButton(userName: String) {
         start_chat_button.setOnClickListener {
-            Intent(this, ChatActivity::class.java).apply {
-                putExtra("username", userName)
-                startActivity(this)
-            }
+            val i = Intent(this, ChatActivity::class.java).putExtra("username", userName)
+            startActivity(i)
         }
     }
 
     private fun setUser(user: RemoteUser) {
-        if (user.profilePicture?.isEmpty() == false) {
-            val selectedImage = BitmapFactory.decodeByteArray(user.profilePicture, 0, user.profilePicture.size);
-            profileImage.setImageBitmap(selectedImage)
+        runOnUiThread {
+            if (user.profilePicture?.isEmpty() == false) {
+                val selectedImage = BitmapFactory.decodeByteArray(user.profilePicture, 0, user.profilePicture.size);
+                profileImage.setImageBitmap(selectedImage)
+            }
+            profileName.text = "${user._id}, ${user.sex}, ${user.age}"
+            profileBiography.text = user.biography
         }
-        profileName.text = "${user._id}, ${user.sex}, ${user.age}"
-        profileBiography.text = user.biography
     }
 
     override fun getLayout() = R.layout.activity_should_date
-
-
     override fun getToolBar(): Toolbar = findViewById(R.id.toolbar_should_date)
 
 

@@ -52,10 +52,8 @@ class MessageScheduler : JobService() {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .build()
 
-        with(NotificationManagerCompat.from(this)) {
-            // notificationId is a unique int for each notification that you must define
-            notify(123, builder)
-        }
+        NotificationManagerCompat.from(this).notify(123, builder)
+
     }
 
     override fun onStopJob(params: JobParameters): Boolean = true

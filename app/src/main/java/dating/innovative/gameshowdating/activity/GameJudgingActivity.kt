@@ -3,15 +3,12 @@ package dating.innovative.gameshowdating.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.os.Environment
 import android.support.design.widget.Snackbar
 import dating.innovative.gameshowdating.R
 import dating.innovative.gameshowdating.data.WebSocketHandler
 import dating.innovative.gameshowdating.model.Game
+import dating.innovative.gameshowdating.util.GameUtil
 import kotlinx.android.synthetic.main.activity_game_judging.*
-import java.io.BufferedOutputStream
-import java.io.File
-import java.io.FileOutputStream
 
 class GameJudgingActivity : Activity() {
 
@@ -31,9 +28,9 @@ class GameJudgingActivity : Activity() {
     private fun handleGameUpdates(gameId: String) {
         ws.confirmGame(true, gameId, { game ->
             updateViews(game)
-            if (didRoundChange(game)) {
+            if (GameUtil.didRoundChange(game, lastGameUpdate)) {
                 println("round changed")
-                loadVideo(game)
+                GameUtil.loadVideo(ws, game, this, gameJudgingVideoView)
             } else {
                 println("round didn't change")
             }
@@ -45,45 +42,16 @@ class GameJudgingActivity : Activity() {
         })
     }
 
-    private fun loadVideo(game: Game) {
-        ws.getVideo(game.nonJudger, game.roundNumber) {
-            println("boom")
-            if (it == null) {
-                println("VIDEOOOOOOOOOOOOOO NULLLLLLLLLLLLLLLLLLLL")
-                return@getVideo
-            }
-            runOnUiThread {
-                val file = File(Environment.getExternalStorageDirectory(), "virker.mp4")
-                val bufferedOutputStream = BufferedOutputStream(FileOutputStream(file))
-                bufferedOutputStream.apply { write(it); flush(); close() }
-                gameJudgingVideoView.setVideoPath(file.absolutePath)
-                println("duration " + gameJudgingVideoView.duration)
-                gameJudgingVideoView.requestFocus()
-                gameJudgingVideoView.setZOrderOnTop(true)
-                gameJudgingVideoView.setOnPreparedListener {
-                    println("asddddddddddddddddddddddd")
-                    it.start()
-                }
-                gameJudgingVideoView.setOnCompletionListener {
-                    ws.videoOver(game.gameId)
-                    //TODO slet video
-                }
-            }
-        }
-    }
-
-    private fun didRoundChange(newGameUpdate: Game) = newGameUpdate.roundNumber > (lastGameUpdate?.roundNumber
-        ?: 0)
 
     private fun setOutButton() {
         gameJudgingOutButton.setOnClickListener {
             val timeStamp = gameJudgingVideoView.currentPosition
             ws.stopGameUpdates()
             ws.imOut(gameId, timeStamp.toLong())
-            val outIntent = Intent(applicationContext, ProvideFeedbackActivity::class.java)
-            outIntent.putExtra("gameId", gameId)
-            outIntent.putExtra("timeStamp", timeStamp)
-            startActivity(outIntent)
+            val intent = Intent(applicationContext, ProvideFeedbackActivity::class.java)
+                .putExtra("gameId", gameId)
+                .putExtra("timeStamp", timeStamp)
+            startActivity(intent)
             this@GameJudgingActivity.finish()
         }
     }

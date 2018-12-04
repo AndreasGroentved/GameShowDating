@@ -10,7 +10,6 @@ import android.util.Base64
 import dating.innovative.gameshowdating.activity.MessageScheduler
 import dating.innovative.gameshowdating.model.RemoteUser
 import dating.innovative.gameshowdating.model.User
-import dating.innovative.gameshowdating.util.PreferenceManagerClass
 import java.io.File
 import java.io.FileOutputStream
 
@@ -56,11 +55,4 @@ object Util {
         jobScheduler.schedule(builder.build())
     }
 
-    @JvmStatic
-    fun createProfilePicture(context: Context): File {
-        val imageName = "profileImage_" + PreferenceManagerClass.getUsername(context)
-        val storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        val image = File.createTempFile(imageName, ".jpg", storageDir)
-        return image
-    }
 }

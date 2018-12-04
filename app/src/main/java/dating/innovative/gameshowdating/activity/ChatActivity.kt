@@ -9,7 +9,6 @@ import dating.innovative.gameshowdating.model.Message
 import dating.innovative.gameshowdating.util.ChatAdapter
 import dating.innovative.gameshowdating.util.PreferenceManagerClass
 import kotlinx.android.synthetic.main.activity_chat.*
-import java.util.*
 
 class ChatActivity : Activity() {
 
@@ -32,17 +31,21 @@ class ChatActivity : Activity() {
     }
 
     private fun setUpSendMessage() {
-        val messages = ArrayList<Message>()
+        val messages = mutableListOf<Message>()
         val dbHelper = SQLiteHelper.getSqLiteHelperInstance(applicationContext)!!
         chatSendMessageButton.setOnClickListener {
             if (!chatEditText.text.toString().isEmpty()) {
                 val to = intent.getStringExtra("username")
 
-                dbHelper.addMessageToConversationFromSelf(PreferenceManagerClass.getUsername(applicationContext),
-                        intent.getStringExtra("username"), chatEditText.text.toString())
+                dbHelper.addMessageToConversationFromSelf(
+                    PreferenceManagerClass.getUsername(applicationContext),
+                    intent.getStringExtra("username"), chatEditText.text.toString()
+                )
 
-                val message = Message(PreferenceManagerClass.getUsername(applicationContext), intent.getStringExtra("username"),
-                        chatEditText.text.toString(), null)
+                val message = Message(
+                    PreferenceManagerClass.getUsername(applicationContext), intent.getStringExtra("username"),
+                    chatEditText.text.toString(), null
+                )
                 WebSocketHandler.instance.sendChatMessage(to, message.messageFromSelf, System.currentTimeMillis()) {
                     updateMessages()
                 }
@@ -57,8 +60,8 @@ class ChatActivity : Activity() {
     private fun updateMessages() {
         val toUser = intent.getStringExtra("username")
 
-        WebSocketHandler.instance.getMessages(PreferenceManagerClass.getUsername(this)) { stringMap ->
-            val messageList = stringMap[toUser]
+        WebSocketHandler.instance.getMessages(PreferenceManagerClass.getUsername(this)) { messageMap ->
+            val messageList = messageMap[toUser]
             messagesAdapter.messages = messageList
             runOnUiThread {
                 messagesAdapter.notifyDataSetChanged()
