@@ -25,7 +25,7 @@ class WebSocketHandler private constructor() : WebSocketListener() {
     fun isTokenSet() = ::token.isInitialized
 
 
-    private val socket: Socket = IO.socket("http://192.168.0.101:3001")
+    private val socket: Socket = IO.socket("http://10.126.48.222:3001")
 
     init {
         socket.connect()

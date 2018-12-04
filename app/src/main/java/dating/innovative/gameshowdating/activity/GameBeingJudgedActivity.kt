@@ -40,13 +40,15 @@ class GameBeingJudgedActivity : Activity() {
     }
 
     private fun someLeft(it: List<String>) {
-        val recyclerLayoutManager = GridLayoutManager(this, it.size)
-        judged_recycler.layoutManager = recyclerLayoutManager
-        adapter.names = it
-        adapter.totalCount = it.size
-        adapter.isInCount = it.size
-        judged_recycler.addOnItemTouchListener(RecyclerTouchListener(this, judged_recycler, clickListener(it)))
-        Snackbar.make(being_judged_parent, "Click on user to see more and begin chat", Snackbar.LENGTH_LONG).show()
+        runOnUiThread{
+            val recyclerLayoutManager = GridLayoutManager(this, it.size)
+            judged_recycler.layoutManager = recyclerLayoutManager
+            adapter.names = it
+            adapter.totalCount = it.size
+            adapter.isInCount = it.size
+            judged_recycler.addOnItemTouchListener(RecyclerTouchListener(this, judged_recycler, clickListener(it)))
+            Snackbar.make(being_judged_parent, "Click on user to see more and begin chat", Snackbar.LENGTH_LONG).show()
+        }
     }
 
     private fun nooneLeft() {

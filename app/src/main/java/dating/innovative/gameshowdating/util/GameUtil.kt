@@ -29,9 +29,7 @@ object GameUtil {
                 val bufferedOutputStream = BufferedOutputStream(FileOutputStream(file))
                 bufferedOutputStream.apply { write(it); flush(); close() }
                 videoView.setVideoPath(file.absolutePath)
-                println("duration " + videoView.duration)
                 videoView.requestFocus()
-                videoView.setZOrderOnTop(true)
                 videoView.setOnPreparedListener {
                     println("asddddddddddddddddddddddd")
                     it.start()
