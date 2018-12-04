@@ -25,7 +25,7 @@ class WebSocketHandler private constructor() : WebSocketListener() {
     fun isTokenSet() = ::token.isInitialized
 
 
-    private val socket: Socket = IO.socket("http://192.168.0.101:3001")
+    private val socket: Socket = IO.socket("http://10.126.48.222:3001")
 
     init {
         socket.connect()
@@ -208,6 +208,7 @@ class WebSocketHandler private constructor() : WebSocketListener() {
 
         socket.on("gameOver") {
             socket.off("gameOver")
+            if (it == null) gameOverCallBack(listOf())
             println(it[0])
             gameOverCallBack(
                 try {
@@ -276,7 +277,8 @@ class WebSocketHandler private constructor() : WebSocketListener() {
                 } catch (e: java.lang.Exception) {
                     listOf<RemoteMessage>() //If this failes, make empty list
                 }).groupBy { if (username == it.reciever) it.sender else it.reciever } //Group messages based on person
-                    .map { (key, value) -> //Map it to key value pairs, with user as key and messages as value
+                    .map { (key, value) ->
+                        //Map it to key value pairs, with user as key and messages as value
                         key to value.map {
                             val other = if (it.reciever == username) it.sender else it.reciever
                             val self = it.sender == username
