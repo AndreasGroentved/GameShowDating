@@ -162,8 +162,8 @@ class WebSocketHandler private constructor() : WebSocketListener() {
         socket.emit("vote", token, gameId, videoTimeStamp)
     }
 
-    fun comment(gameId: String, comment: String, timeStamp: Long) {
-        socket.emit("comment", token, gameId, comment, timeStamp)
+    fun comment(username: String, comment: String, timeStamp: Long, roundNumber: Int) {
+        socket.emit("comment", token, username, comment, timeStamp, roundNumber)
     }
 
     fun getComments(username: String, callBack: (List<Feedback>) -> Unit) {

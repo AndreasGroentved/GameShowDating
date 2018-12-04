@@ -39,7 +39,7 @@ public class ProvideFeedbackActivity extends Activity {
             @Override
             public void onClick(View view) {
                 if (!writeFeedbackEditText.getText().toString().isEmpty()) {
-                    ws.comment(getIntent().getStringExtra("gameId"), writeFeedbackEditText.getText().toString(), getIntent().getLongExtra("timeStamp", 0));
+                    ws.comment(getIntent().getStringExtra("username"), writeFeedbackEditText.getText().toString(), getIntent().getLongExtra("timeStamp", 0), getIntent().getIntExtra("roundnumber", -1111));
                     Intent i = new Intent(getApplicationContext(), MenuActivity.class);
                     startActivity(i);
                 } else {

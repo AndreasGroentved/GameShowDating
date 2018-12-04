@@ -51,6 +51,8 @@ class GameJudgingActivity : Activity() {
             val intent = Intent(applicationContext, ProvideFeedbackActivity::class.java)
                 .putExtra("gameId", gameId)
                 .putExtra("timeStamp", timeStamp)
+                .putExtra("username", lastGameUpdate!!.nonJudger)
+                .putExtra("roundnumber", lastGameUpdate!!.roundNumber)
             startActivity(intent)
             this@GameJudgingActivity.finish()
         }
