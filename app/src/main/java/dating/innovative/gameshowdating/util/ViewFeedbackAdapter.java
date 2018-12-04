@@ -35,7 +35,7 @@ public class ViewFeedbackAdapter extends RecyclerView.Adapter<ViewFeedbackAdapte
         Feedback feedback = feedbackArrayList.get(position);
 
         TextView nameTextView = holder.nameTextView;
-        nameTextView.setText(feedback.name);
+        nameTextView.setText(feedback.from);
 
         TextView feedbackTextView = holder.feedbackTextView;
         feedbackTextView.setText(feedback.text);

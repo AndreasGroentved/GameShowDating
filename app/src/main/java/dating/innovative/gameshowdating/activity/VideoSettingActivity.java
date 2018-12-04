@@ -2,6 +2,7 @@ package dating.innovative.gameshowdating.activity;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -149,7 +150,6 @@ public class VideoSettingActivity extends BaseActivity {
 
                 videoView.requestFocus();
                 videoView.start();
-
             }
         }
 

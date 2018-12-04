@@ -32,14 +32,16 @@ class GameJudgingActivity : Activity() {
         ws.confirmGame(true, gameId, { game ->
             updateViews(game)
             if (didRoundChange(game)) {
+                println("round changed")
                 loadVideo(game)
+            } else {
+                println("round didn't change")
             }
             lastGameUpdate = game
         }, {
             //TODO tid til at lave damer/mænd(/starte chat)
             Snackbar.make(judging_parent, "Wait and see if you are chosen", Snackbar.LENGTH_LONG).show()
             this.finish()
-
         })
     }
 
@@ -51,33 +53,13 @@ class GameJudgingActivity : Activity() {
                 return@getVideo
             }
             runOnUiThread {
-                //val path = it?.saveToSdCard("video" + game.roundNumber)
-                //println("file size " + it!!.size)
                 val file = File(Environment.getExternalStorageDirectory(), "virker.mp4")
-                println(file.absoluteFile)
                 val bufferedOutputStream = BufferedOutputStream(FileOutputStream(file))
                 bufferedOutputStream.apply { write(it); flush(); close() }
-                println("wrote file")
-
-                //   val mediaController = MediaController(this.applicationContext)
-                println("sup")
-                //mediaController.setAnchorView(gameJudgingVideoView)
-                // mediaController.setMediaPlayer(gameJudgingVideoView)
-                println("sup2")
-                //gameJudgingVideoView.setMediaController(mediaController)
-                println("su3")
-                println(file.exists())
-                //val uri = Uri.fromFile(file)
-
                 gameJudgingVideoView.setVideoPath(file.absolutePath)
-
                 println("duration " + gameJudgingVideoView.duration)
-                // setVideoPath(file.absolutePath)
                 gameJudgingVideoView.requestFocus()
                 gameJudgingVideoView.setZOrderOnTop(true)
-                gameJudgingVideoView.seekTo(1000)
-
-                //gameJudgingVideoView.start()
                 gameJudgingVideoView.setOnPreparedListener {
                     println("asddddddddddddddddddddddd")
                     it.start()

@@ -25,7 +25,7 @@ class WebSocketHandler private constructor() : WebSocketListener() {
     fun isTokenSet() = ::token.isInitialized
 
 
-    private val socket: Socket = IO.socket("http://10.126.48.222:3001")
+    private val socket: Socket = IO.socket("http://192.168.0.101:3001")
 
     init {
         socket.connect()
@@ -202,10 +202,10 @@ class WebSocketHandler private constructor() : WebSocketListener() {
             gameUpdates(Game(userName, userCount, userCount, gameId, 1))
         }
         socket.on("gameUpdate") {
-            val userCount = it[0] as Int
-            val roundNumber = it[2] as Int
+            val userLeft = it[0] as Int
             val userTotal = it[1] as Int
-            val game = Game(userName, userCount, userTotal, gameId, roundNumber)
+            val roundNumber = it[2] as Int
+            val game = Game(userName, userLeft, userTotal, gameId, roundNumber)
             println("gameUpdate")
             println(game)
             gameUpdates(game)
@@ -215,13 +215,13 @@ class WebSocketHandler private constructor() : WebSocketListener() {
             socket.off("gameOver")
             println(it[0])
             gameOverCallBack(
-                (try {
+                try {
                     val data = (it[0] as JSONArray).toString()
                     val gsonToken = object : TypeToken<List<String>>() {}.type
                     gson.fromJson<List<String>>(data, gsonToken)
                 } catch (e: java.lang.Exception) {
                     listOf<String>()
-                })
+                }
             )
         }
 
@@ -259,7 +259,7 @@ class WebSocketHandler private constructor() : WebSocketListener() {
     }
 
     fun videoOver(gameId: String) {
-        socket.emit("videoOver", gameId)
+        socket.emit("videoOver", token, gameId)
     }
 
     private fun getMessageUpdate(username: String, callBack: (Map<String, List<Message>>) -> Unit) {
