@@ -106,7 +106,7 @@ public class LoginActivity extends BaseActivity {
                         Intent i = new Intent(getApplicationContext(), MenuActivity.class);
                         startActivity(i);
                         LoginActivity.this.finish();
-                        Util.scheduleJob(LoginActivity.this);
+                        //Util.scheduleJob(LoginActivity.this);
                         return null;
                     }
                 });

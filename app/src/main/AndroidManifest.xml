@@ -72,10 +72,10 @@
         <activity android:name=".activity.ShouldDateActivity"
                   android:theme="@style/AppTheme.NoActionBar"/>
 
-        <service
+<!--        <service
                 android:name=".activity.MessageScheduler"
                 android:exported="true"
-                android:permission="android.permission.BIND_JOB_SERVICE"/>
+                android:permission="android.permission.BIND_JOB_SERVICE"/>-->
     </application>
 
 </manifest>
