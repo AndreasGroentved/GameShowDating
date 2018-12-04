@@ -34,8 +34,6 @@ public class InQueueActivity extends Activity {
         final boolean beJudgedCheck = lastActivityIntent.getBooleanExtra("beJudged", false);
         final boolean judgeCheck = lastActivityIntent.getBooleanExtra("judge", false);
 
-
-        final Activity a = this;
         ws.match(judgeCheck, new Function1<String, Unit>() {
             @Override
             public Unit invoke(String aString) {
@@ -46,13 +44,13 @@ public class InQueueActivity extends Activity {
             @Override
             public Unit invoke(String gameID) {
                 if (beJudgedCheck) {
-                    Intent i = new Intent(a, GameBeingJudgedActivity.class);
+                    Intent i = new Intent(InQueueActivity.this, GameBeingJudgedActivity.class);
                     i.putExtra("gameId", gameID);
-                    a.startActivity(i);
+                    InQueueActivity.this.startActivity(i);
                 } else if (judgeCheck) {
-                    Intent i = new Intent(a, GameJudgingActivity.class);
+                    Intent i = new Intent(InQueueActivity.this, GameJudgingActivity.class);
                     i.putExtra("gameId", gameID);
-                    a.startActivity(i);
+                    InQueueActivity.this.startActivity(i);
                 }
                 return null;
 

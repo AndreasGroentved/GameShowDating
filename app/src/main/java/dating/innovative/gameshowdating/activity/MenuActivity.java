@@ -6,15 +6,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import dating.innovative.gameshowdating.R;
-import dating.innovative.gameshowdating.data.WebSocketHandler;
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
 
 public class MenuActivity extends Activity {
 
-    Button profileButton;
-    Button gameButton;
-    Button chatButton;
+    private Button profileButton;
+    private Button gameButton;
+    private Button chatButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

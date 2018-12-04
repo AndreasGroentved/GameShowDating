@@ -10,7 +10,8 @@ import android.view.MotionEvent
  */
 
 //Låne kode
-class RecyclerTouchListener(context: Context, recyclerView: RecyclerView, private val clickListener: ClickListener) : RecyclerView.OnItemTouchListener {
+class RecyclerTouchListener(context: Context, recyclerView: RecyclerView, private val clickListener: ClickListener) :
+    RecyclerView.OnItemTouchListener {
     private val gestureDetector: GestureDetector
 
     init {
@@ -25,7 +26,10 @@ class RecyclerTouchListener(context: Context, recyclerView: RecyclerView, privat
 
     override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
         val child = rv.findChildViewUnder(e.x, e.y)
-        if (child != null && gestureDetector.onTouchEvent(e)) clickListener.onClick(child, rv.getChildLayoutPosition(child)) //TODO check om succes getChildPosition() //TODO ryk
+        if (child != null && gestureDetector.onTouchEvent(e)) clickListener.onClick(
+            child,
+            rv.getChildLayoutPosition(child)
+        ) //TODO check om succes getChildPosition() //TODO ryk
         return false
     }
 

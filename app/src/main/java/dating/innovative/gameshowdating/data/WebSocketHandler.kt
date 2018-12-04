@@ -25,7 +25,7 @@ class WebSocketHandler private constructor() : WebSocketListener() {
     fun isTokenSet() = ::token.isInitialized
 
 
-    private val socket: Socket = IO.socket("http://10.126.48.222:3001")
+    private val socket: Socket = IO.socket("http://192.168.0.101:3001")
 
     init {
         socket.connect()
@@ -119,11 +119,7 @@ class WebSocketHandler private constructor() : WebSocketListener() {
                 callBack = null
                 return@on
             }
-            val data = (it[0] as JSONObject)/*.toString()
-            println(data)
-            val gsonToken = object : TypeToken<RemoteUser>() {}.type
-            val user = gson.fromJson<RemoteUser>(data, gsonToken)*/
-
+            val data = (it[0] as JSONObject)
             val password = data.getString("password")
             val biography = data.getString("biography")
             val sex = data.getString("sex")
@@ -150,7 +146,6 @@ class WebSocketHandler private constructor() : WebSocketListener() {
             callBack(success)
         }
         println(profilePicture.size)
-        println(profilePicture)
         socket.emit("updateProfilePicture", token, profilePicture)
     }
 
@@ -191,7 +186,7 @@ class WebSocketHandler private constructor() : WebSocketListener() {
         confirm: Boolean,
         gameId: String,
         gameUpdates: (Game) -> Unit,
-        gameOverCallBack: ((List<String>?) -> Unit)
+        gameOverCallBack: ((List<String>) -> Unit)
     ) {
         var userName = ""
         socket.on("startGame") {
@@ -202,10 +197,10 @@ class WebSocketHandler private constructor() : WebSocketListener() {
             gameUpdates(Game(userName, userCount, userCount, gameId, 1))
         }
         socket.on("gameUpdate") {
-            val userCount = it[0] as Int
-            val roundNumber = it[2] as Int
+            val userLeft = it[0] as Int
             val userTotal = it[1] as Int
-            val game = Game(userName, userCount, userTotal, gameId, roundNumber)
+            val roundNumber = it[2] as Int
+            val game = Game(userName, userLeft, userTotal, gameId, roundNumber)
             println("gameUpdate")
             println(game)
             gameUpdates(game)
@@ -215,13 +210,13 @@ class WebSocketHandler private constructor() : WebSocketListener() {
             socket.off("gameOver")
             println(it[0])
             gameOverCallBack(
-                (try {
+                try {
                     val data = (it[0] as JSONArray).toString()
                     val gsonToken = object : TypeToken<List<String>>() {}.type
                     gson.fromJson<List<String>>(data, gsonToken)
                 } catch (e: java.lang.Exception) {
                     listOf<String>()
-                })
+                }
             )
         }
 
@@ -259,7 +254,7 @@ class WebSocketHandler private constructor() : WebSocketListener() {
     }
 
     fun videoOver(gameId: String) {
-        socket.emit("videoOver", gameId)
+        socket.emit("videoOver", token, gameId)
     }
 
     private fun getMessageUpdate(username: String, callBack: (Map<String, List<Message>>) -> Unit) {
@@ -276,12 +271,12 @@ class WebSocketHandler private constructor() : WebSocketListener() {
                 (try {
                     if (returnVal == "failure") callBack(mapOf())
                     val data = (it[0] as JSONArray).toString()
-                    val gsonToken = object : TypeToken<List<RemoteMessage>>() {}.type
-                    gson.fromJson<List<RemoteMessage>>(data, gsonToken)
+                    val gsonToken = object : TypeToken<List<RemoteMessage>>() {}.type //Get all messages from server
+                    gson.fromJson<List<RemoteMessage>>(data, gsonToken) //Try to deserialize
                 } catch (e: java.lang.Exception) {
-                    listOf<RemoteMessage>()
-                }).groupBy { if (username == it.reciever) it.sender else it.reciever }
-                    .map { (key, value) ->
+                    listOf<RemoteMessage>() //If this failes, make empty list
+                }).groupBy { if (username == it.reciever) it.sender else it.reciever } //Group messages based on person
+                    .map { (key, value) -> //Map it to key value pairs, with user as key and messages as value
                         key to value.map {
                             val other = if (it.reciever == username) it.sender else it.reciever
                             val self = it.sender == username

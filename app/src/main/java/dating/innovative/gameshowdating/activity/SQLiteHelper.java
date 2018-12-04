@@ -61,17 +61,16 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     private static final String KEY_FEEDBACK_FEEDBACK = "feedbackContents";
 
 
-
     //ensure singleton pattern
-    public static synchronized SQLiteHelper getSqLiteHelperInstance(Context context){
-        if(sqLiteHelperInstance == null){
+    public static synchronized SQLiteHelper getSqLiteHelperInstance(Context context) {
+        if (sqLiteHelperInstance == null) {
             sqLiteHelperInstance = new SQLiteHelper(context.getApplicationContext());
         }
         return sqLiteHelperInstance;
     }
 
     //constructor for singleton
-    public SQLiteHelper(Context context){
+    public SQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -134,7 +133,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
-        if(oldVersion != newVersion){
+        if (oldVersion != newVersion) {
             sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
             sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_MATCHES);
             sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_MESSAGES);
@@ -143,86 +142,87 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void addFeedback(String name, String feedback){
+    public void addFeedback(String name, String feedback) {
         SQLiteDatabase db = getWritableDatabase();
 
         db.beginTransaction();
-        try{
+        try {
             String id = UUID.randomUUID().toString();
             ContentValues values = new ContentValues();
-            values.put(KEY_FEEDBACK_ID,id);
+            values.put(KEY_FEEDBACK_ID, id);
             values.put(KEY_FEEDBACK_NAME, name);
-            values.put(KEY_FEEDBACK_FEEDBACK,feedback);
+            values.put(KEY_FEEDBACK_FEEDBACK, feedback);
 
             db.insertOrThrow(TABLE_FEEDBACK, null, values);
             db.setTransactionSuccessful();
-        } catch(Exception exception){
+        } catch (Exception exception) {
             exception.printStackTrace();
         } finally {
             db.endTransaction();
         }
     }
 
-    public ArrayList<Feedback> getFeedback(){
+    public ArrayList<Feedback> getFeedback() {
         SQLiteDatabase db = getReadableDatabase();
         ArrayList<Feedback> feedbackArrayList = new ArrayList<>();
         String GET_FEEDBACK = "SELECT * FROM " + TABLE_FEEDBACK;
         Cursor cursor = db.rawQuery(GET_FEEDBACK, null);
-        try{
-            if(cursor.moveToFirst()){
-                do{
+        try {
+            if (cursor.moveToFirst()) {
+                do {
                     Feedback feedback = new Feedback();
-                    feedback.name = cursor.getString(cursor.getColumnIndex(KEY_FEEDBACK_NAME));
+                    //TODO sqlite
+                    feedback.from = cursor.getString(cursor.getColumnIndex(KEY_FEEDBACK_NAME));
                     feedback.text = cursor.getString(cursor.getColumnIndex(KEY_FEEDBACK_FEEDBACK));
                     feedbackArrayList.add(feedback);
-                } while(cursor.moveToNext());
+                } while (cursor.moveToNext());
             }
-        } catch (Exception exception){
+        } catch (Exception exception) {
             exception.printStackTrace();
         } finally {
-            if(cursor != null && !cursor.isClosed()){
+            if (cursor != null && !cursor.isClosed()) {
                 cursor.close();
             }
         }
         return feedbackArrayList;
     }
 
-    public void addMessageToConversationFromSelf(String self, String match, String message){
+    public void addMessageToConversationFromSelf(String self, String match, String message) {
         SQLiteDatabase db = getWritableDatabase();
 
         db.beginTransaction();
-        try{
+        try {
             String id = UUID.randomUUID().toString();
             ContentValues values = new ContentValues();
-            values.put(KEY_MESSAGES_ID,id);
+            values.put(KEY_MESSAGES_ID, id);
             values.put(KEY_MESSAGES_NAME_ONE, self);
             values.put(KEY_MESSAGES_NAME_TWO, match);
             values.put(KEY_MESSAGES_MESSAGE_FROM_NAME_ONE, message);
 
             db.insertOrThrow(TABLE_MESSAGES, null, values);
             db.setTransactionSuccessful();
-        }catch (Exception exception){
+        } catch (Exception exception) {
             exception.printStackTrace();
         } finally {
             db.endTransaction();
         }
     }
 
-    public void addMessageToConversationFromMatch(String self, String match, String message){
+    public void addMessageToConversationFromMatch(String self, String match, String message) {
         SQLiteDatabase db = getWritableDatabase();
 
         db.beginTransaction();
-        try{
+        try {
             String id = UUID.randomUUID().toString();
             ContentValues values = new ContentValues();
-            values.put(KEY_MESSAGES_ID,id);
+            values.put(KEY_MESSAGES_ID, id);
             values.put(KEY_MESSAGES_NAME_ONE, self);
             values.put(KEY_MESSAGES_NAME_TWO, match);
             values.put(KEY_MESSAGES_MESSAGE_FROM_NAME_TWO, message);
 
             db.insertOrThrow(TABLE_MESSAGES, null, values);
             db.setTransactionSuccessful();
-        }catch (Exception exception){
+        } catch (Exception exception) {
             exception.printStackTrace();
         } finally {
             db.endTransaction();
@@ -230,55 +230,54 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
 
 
-
     /*
     helper method for testing
      */
-    public void truncateMessages(){
+    public void truncateMessages() {
         SQLiteDatabase db = getWritableDatabase();
         String truncate = "DELETE FROM " + TABLE_MESSAGES;
         db.execSQL(truncate);
     }
 
-    public ArrayList<Message> getMessagesForConversation(String self, String match){
+    public ArrayList<Message> getMessagesForConversation(String self, String match) {
         SQLiteDatabase db = getReadableDatabase();
         ArrayList<Message> messages = new ArrayList<>();
         String GET_MESSAGES_FOR_CONVERSATION =
-                "SELECT *"+
+                "SELECT *" +
                         " FROM " + TABLE_MESSAGES +
                         " WHERE " + KEY_MESSAGES_NAME_ONE + "='" + self + "' AND "
                         + KEY_MATCHES_NAME_TWO + "='" + match + "';";
-        Cursor cursor = db.rawQuery(GET_MESSAGES_FOR_CONVERSATION,null);
-        try{
-            if(cursor.moveToFirst()){
-                do{
+        Cursor cursor = db.rawQuery(GET_MESSAGES_FOR_CONVERSATION, null);
+        try {
+            if (cursor.moveToFirst()) {
+                do {
                     Message message = new Message();
                     message.self = cursor.getString(cursor.getColumnIndex(KEY_MESSAGES_NAME_ONE));
                     message.match = cursor.getString(cursor.getColumnIndex(KEY_MESSAGES_NAME_TWO));
-                    if(cursor.getString(cursor.getColumnIndex(KEY_MESSAGES_MESSAGE_FROM_NAME_ONE)) != null){
+                    if (cursor.getString(cursor.getColumnIndex(KEY_MESSAGES_MESSAGE_FROM_NAME_ONE)) != null) {
                         message.messageFromSelf = cursor.getString(cursor.getColumnIndex(KEY_MESSAGES_MESSAGE_FROM_NAME_ONE));
                     } else {
                         message.messageFromMatch = cursor.getString(cursor.getColumnIndex(KEY_MESSAGES_MESSAGE_FROM_NAME_TWO));
                     }
                     message.timestamp = cursor.getString(cursor.getColumnIndex(KEY_MESSAGES_MESSAGE_TIMESTAMP));
                     messages.add(message);
-                } while(cursor.moveToNext());
+                } while (cursor.moveToNext());
             }
-        } catch (Exception exception){
+        } catch (Exception exception) {
             exception.printStackTrace();
         } finally {
-            if(cursor != null && !cursor.isClosed()){
+            if (cursor != null && !cursor.isClosed()) {
                 cursor.close();
             }
         }
         return messages;
     }
 
-    public void addMatch(String self, String match){
+    public void addMatch(String self, String match) {
         SQLiteDatabase db = getWritableDatabase();
 
         db.beginTransaction();
-        try{
+        try {
             String id = UUID.randomUUID().toString();
             ContentValues values = new ContentValues();
             values.put(KEY_MATCHES_ID, id);
@@ -287,7 +286,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
             db.insertOrThrow(TABLE_MATCHES, null, values);
             db.setTransactionSuccessful();
-        } catch (Exception exception){
+        } catch (Exception exception) {
             exception.printStackTrace();
         } finally {
             db.endTransaction();
@@ -310,31 +309,31 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                     match.nameOne = cursor.getString(cursor.getColumnIndex(KEY_MATCHES_NAME_ONE));
                     match.nameTwo = cursor.getString(cursor.getColumnIndex(KEY_MATCHES_NAME_TWO));
                     matches.add(match);
-                } while(cursor.moveToNext());
+                } while (cursor.moveToNext());
             }
 
-        } catch (Exception exception){
+        } catch (Exception exception) {
             exception.printStackTrace();
         } finally {
-            if(cursor != null && !cursor.isClosed()){
+            if (cursor != null && !cursor.isClosed()) {
                 cursor.close();
             }
         }
-        if(matches.size() > 0){
+        if (matches.size() > 0) {
             return matches;
         } else {
             return null;
         }
     }
 
-    public void addUser(User user){
+    public void addUser(User user) {
         SQLiteDatabase db = getWritableDatabase();
 
         db.beginTransaction();
-        try{
+        try {
             String id = UUID.randomUUID().toString();
             ContentValues values = new ContentValues();
-            values.put(KEY_USER_ID,id);
+            values.put(KEY_USER_ID, id);
             values.put(KEY_USER_NAME, user.username);
             values.put(KEY_USER_PASSWORD, user.password);
             values.put(KEY_USER_PROFILE_PICTURE, user.profileImage);
@@ -347,14 +346,14 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
             db.insertOrThrow(TABLE_USERS, null, values);
             db.setTransactionSuccessful();
-        } catch (Exception exception){
+        } catch (Exception exception) {
             exception.printStackTrace();
         } finally {
             db.endTransaction();
         }
     }
 
-    public User getUserByUsername(String username){
+    public User getUserByUsername(String username) {
         SQLiteDatabase db = getReadableDatabase();
 
         String USERNAME_GET_QUERY = "SELECT * FROM " + TABLE_USERS + " WHERE " + KEY_USER_NAME + "='" + username + "';";
@@ -362,7 +361,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
         Cursor cursor = db.rawQuery(USERNAME_GET_QUERY, null);
         try {
-            if(cursor.moveToFirst()){
+            if (cursor.moveToFirst()) {
                 do {
                     user.username = cursor.getString(cursor.getColumnIndex(KEY_USER_NAME));
                     user.password = cursor.getString(cursor.getColumnIndex(KEY_USER_PASSWORD));
@@ -373,16 +372,16 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                     user.video3 = cursor.getString(cursor.getColumnIndex(KEY_USER_VIDEO_3));
                     user.sex = cursor.getString(cursor.getColumnIndex(KEY_USER_SEX));
                     user.age = cursor.getInt(cursor.getColumnIndex(KEY_USER_AGE));
-                } while(cursor.moveToNext());
+                } while (cursor.moveToNext());
             }
-        } catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if(cursor != null && !cursor.isClosed()){
+            if (cursor != null && !cursor.isClosed()) {
                 cursor.close();
             }
         }
-        if(user.username != null){
+        if (user.username != null) {
             return user;
         } else {
             return null;
@@ -390,7 +389,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     }
 
-    public int updateUserBiography(User user, String biography){
+    public int updateUserBiography(User user, String biography) {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
@@ -398,7 +397,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return db.update(TABLE_USERS, contentValues, KEY_USER_NAME + " = ?", new String[]{String.valueOf(user.username)});
     }
 
-    public int updateUserProfileImage(User user, String profileImageURL){
+    public int updateUserProfileImage(User user, String profileImageURL) {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
@@ -406,7 +405,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return db.update(TABLE_USERS, contentValues, KEY_USER_NAME + " = ?", new String[]{String.valueOf(user.username)});
     }
 
-    public int updateUserVideo1(User user, String video1URL){
+    public int updateUserVideo1(User user, String video1URL) {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
@@ -414,7 +413,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return db.update(TABLE_USERS, contentValues, KEY_USER_NAME + " = ?", new String[]{String.valueOf(user.username)});
     }
 
-    public int updateUserVideo2(User user, String video2URL){
+    public int updateUserVideo2(User user, String video2URL) {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
@@ -422,7 +421,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return db.update(TABLE_USERS, contentValues, KEY_USER_NAME + " = ?", new String[]{String.valueOf(user.username)});
     }
 
-    public int updateUserVideo3(User user, String video3URL){
+    public int updateUserVideo3(User user, String video3URL) {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();

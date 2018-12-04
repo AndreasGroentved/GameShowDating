@@ -18,7 +18,7 @@ public class FindGameActivity extends Activity {
     RadioButton beJudgedRadioButton;
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_game);
 
@@ -31,7 +31,7 @@ public class FindGameActivity extends Activity {
         findGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if((lookingForMalesCheckBox.isChecked() || lookingForFemalesCheckBox.isChecked()) &&  (beJudgedRadioButton.isChecked() || judgeRadioButton.isChecked())){
+                if ((lookingForMalesCheckBox.isChecked() || lookingForFemalesCheckBox.isChecked()) && (beJudgedRadioButton.isChecked() || judgeRadioButton.isChecked())) {
                     Intent findGameIntent = new Intent(getApplicationContext(), InQueueActivity.class);
                     findGameIntent.putExtra("maleCheckBox", lookingForMalesCheckBox.isChecked());
                     findGameIntent.putExtra("femaleCheckBox", lookingForFemalesCheckBox.isChecked());
@@ -44,18 +44,18 @@ public class FindGameActivity extends Activity {
         });
     }
 
-    public void onRadioButtonClicked(View view){
+    public void onRadioButtonClicked(View view) {
         boolean checked = ((RadioButton) view).isChecked();
 
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.findGame_radio_judge:
-                if(checked){
+                if (checked) {
                     judgeRadioButton.setChecked(true);
                     beJudgedRadioButton.setChecked(false);
                 }
                 break;
             case R.id.findGame_radio_be_judged:
-                if(checked){
+                if (checked) {
                     beJudgedRadioButton.setChecked(true);
                     judgeRadioButton.setChecked(false);
                 }
@@ -64,18 +64,18 @@ public class FindGameActivity extends Activity {
 
     public void onCheckboxClicked(View view) {
         boolean checked = ((CheckBox) view).isChecked();
-        switch(view.getId()) {
+        switch (view.getId()) {
             case R.id.findGame_checkbox_female:
                 if (checked)
-                lookingForFemalesCheckBox.setChecked(true);
-            else
-                lookingForFemalesCheckBox.setChecked(false);
+                    lookingForFemalesCheckBox.setChecked(true);
+                else
+                    lookingForFemalesCheckBox.setChecked(false);
                 break;
             case R.id.findGame_male_checkbox:
                 if (checked)
-                lookingForMalesCheckBox.setChecked(true);
-            else
-                lookingForMalesCheckBox.setChecked(false);
+                    lookingForMalesCheckBox.setChecked(true);
+                else
+                    lookingForMalesCheckBox.setChecked(false);
                 break;
         }
     }

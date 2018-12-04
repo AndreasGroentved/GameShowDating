@@ -33,7 +33,7 @@ public class ChatOverviewActivity extends Activity {
 
         //dbHelper.addMatch(PreferenceManagerClass.getUsername(getApplicationContext()), "test");
 
-        ArrayList<RemoteUser> matches = new ArrayList<>();
+        List<RemoteUser> matches = new ArrayList<>();
        /* if(dbHelper.getAllMatchesForUser(PreferenceManagerClass.getUsername(getApplicationContext())) != null){
             for(int i = 0; i < dbHelper.getAllMatchesForUser(PreferenceManagerClass.getUsername(getApplicationContext())).size(); i++){
                 matches.add(dbHelper.getUserByUsername(dbHelper.getAllMatchesForUser(PreferenceManagerClass.getUsername(getApplicationContext())).get(i).nameTwo));
@@ -54,7 +54,6 @@ public class ChatOverviewActivity extends Activity {
     }
 
     private void getData() {
-        final ChatOverviewActivity c = this;
         String username = PreferenceManagerClass.getUsername(this);
         final WebSocketHandler ws = WebSocketHandler.getInstance();
         ws.getMessages(username, new Function1<Map<String, ? extends List<? extends Message>>, Unit>() {
@@ -66,7 +65,7 @@ public class ChatOverviewActivity extends Activity {
                         @Override
                         public Unit invoke(RemoteUser remoteUser) {
                             recyclerAdapter.userDataSet.add(remoteUser);
-                            c.runOnUiThread(new Runnable() {
+                            ChatOverviewActivity.this.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     recyclerAdapter.notifyDataSetChanged();
@@ -76,7 +75,6 @@ public class ChatOverviewActivity extends Activity {
                         }
                     });
                 }
-
                 return null;
             }
         });

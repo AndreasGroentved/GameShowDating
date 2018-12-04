@@ -71,7 +71,7 @@ public class CustomizeProfileActivity extends BaseActivity {
             public void onClick(View view) {
                 if (!biographyEdit.getText().toString().isEmpty()) {
                     dbHelper.updateUserBiography(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())), biographyEdit.getText().toString());
-                    ws.updateBiography(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).biography, new Function1<Boolean, Unit>() {
+                    ws.updateBiography(biographyEdit.getText().toString(), new Function1<Boolean, Unit>() {
                         @Override
                         public Unit invoke(Boolean aBoolean) {
                             return null;
@@ -82,43 +82,44 @@ public class CustomizeProfileActivity extends BaseActivity {
                     dbHelper.updateUserProfileImage(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),
                             PreferenceManagerClass.getProfilePictureUpdated(getApplicationContext()));
                     PreferenceManagerClass.clearRef(getApplicationContext(), PreferenceManagerClass.PREFERENCE_PROFILE_PICTURE);
-                    /*if(ImageSettingActivity.photoPath != null){
+                    if (ImageSettingActivity.photoPath != null) {
                         ws.getUser(PreferenceManagerClass.getUsername(getApplicationContext()), new Function1<RemoteUser, Unit>() {
                             @Override
                             public Unit invoke(RemoteUser remoteUser) {
-                                if(remoteUser.getProfilePicture() != null){
+                                if (remoteUser.getProfilePicture() != null) {
                                     profileImageFile = new File(ImageSettingActivity.photoPath);
                                     dbHelper.updateUserProfileImage(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())), profileImageFile.getAbsolutePath());
                                 }
                                 return null;
                             }
                         });
-                    } else {*/
+                    } else {
                         try {
                             profileImageFile = File.createTempFile("profilePictureImage_" + PreferenceManagerClass.getUsername(getApplicationContext()), ".jpg", getExternalFilesDir(Environment.DIRECTORY_PICTURES));
                         } catch (IOException e) {
                             e.printStackTrace();
-                        };
+                        }
+                        ;
 
                         ws.getUser(PreferenceManagerClass.getUsername(getApplicationContext()), new Function1<RemoteUser, Unit>() {
                             @Override
                             public Unit invoke(RemoteUser remoteUser) {
-                                if(remoteUser.getProfilePicture() != null){
-                                    try{
+                                if (remoteUser.getProfilePicture() != null) {
+                                    try {
                                         BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(profileImageFile));
                                         bos.write(remoteUser.getProfilePicture());
                                         dbHelper.updateUserProfileImage(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())), profileImageFile.getAbsolutePath());
                                         bos.flush();
                                         bos.close();
 
-                                    } catch (IOException e){
+                                    } catch (IOException e) {
                                         e.printStackTrace();
                                     }
                                 }
                                 return null;
                             }
                         });
-                    //}
+                    }
                 }
 
                 if (!PreferenceManagerClass.getPreferenceVideo1(getApplicationContext()).isEmpty()) {
