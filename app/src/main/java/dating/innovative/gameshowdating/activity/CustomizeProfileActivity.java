@@ -126,57 +126,17 @@ public class CustomizeProfileActivity extends BaseActivity {
                     dbHelper.updateUserVideo1(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),
                             PreferenceManagerClass.getPreferenceVideo1(getApplicationContext()));
                     PreferenceManagerClass.clearRef(getApplicationContext(), PreferenceManagerClass.PREFERENCE_VIDEO_1);
-                    try {
-                        video1File = File.createTempFile("video1_" + dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username, ".mp4", storageDirVideo);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    ws.sendOrUpdateVideo(Util.fileToBytes(video1File), 1, new Function1<Boolean, Unit>() {
-                        @Override
-                        public Unit invoke(Boolean aBoolean) {
-                            System.out.println(aBoolean);
-                            return null;
-                        }
-                    });
                 }
                 if (!PreferenceManagerClass.getPreferenceVideo2(getApplicationContext()).isEmpty()) {
                     dbHelper.updateUserVideo2(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),
                             PreferenceManagerClass.getPreferenceVideo2(getApplicationContext()));
                     PreferenceManagerClass.clearRef(getApplicationContext(), PreferenceManagerClass.PREFERENCE_VIDEO_2);
 
-                    try {
-                        video2File = File.createTempFile("video2_" + dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username, ".mp4", storageDirVideo);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    ws.sendOrUpdateVideo(Util.fileToBytes(video2File), 2, new Function1<Boolean, Unit>() {
-                        @Override
-                        public Unit invoke(Boolean aBoolean) {
-                            System.out.println(aBoolean);
-                            return null;
-                        }
-                    });
                 }
                 if (!PreferenceManagerClass.getPreferenceVideo3(getApplicationContext()).isEmpty()) {
                     dbHelper.updateUserVideo3(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),
                             PreferenceManagerClass.getPreferenceVideo3(getApplicationContext()));
                     PreferenceManagerClass.clearRef(getApplicationContext(), PreferenceManagerClass.PREFERENCE_VIDEO_3);
-
-                    try {
-                        video3File = File.createTempFile("video3_" + dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())).username, ".mp4", storageDirVideo);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    ws.sendOrUpdateVideo(Util.fileToBytes(video3File), 3, new Function1<Boolean, Unit>() {
-                        @Override
-                        public Unit invoke(Boolean aBoolean) {
-                            System.out.println(aBoolean);
-                            return null;
-                        }
-                    });
                 }
                 Intent backToProfile = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(backToProfile);

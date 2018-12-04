@@ -61,7 +61,7 @@ class ChatActivity : Activity() {
         val toUser = intent.getStringExtra("username")
 
         WebSocketHandler.instance.getMessages(PreferenceManagerClass.getUsername(this)) { messageMap ->
-            val messageList = messageMap[toUser]
+            val messageList = messageMap[toUser]?: listOf()
             messagesAdapter.messages = messageList
             runOnUiThread {
                 messagesAdapter.notifyDataSetChanged()

@@ -69,7 +69,8 @@
                 android:name=".activity.ImageSettingActivity"
                 android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".activity.GameBeingJudgedActivity"/>
-        <activity android:name=".activity.ShouldDateActivity"/>
+        <activity android:name=".activity.ShouldDateActivity"
+                  android:theme="@style/AppTheme.NoActionBar"/>
 
         <service
                 android:name=".activity.MessageScheduler"
