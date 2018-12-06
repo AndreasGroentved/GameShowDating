@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager
 import dating.innovative.gameshowdating.R
 import dating.innovative.gameshowdating.data.WebSocketHandler
 import dating.innovative.gameshowdating.util.PreferenceManagerClass
+import dating.innovative.gameshowdating.util.SQLiteHelper
 import dating.innovative.gameshowdating.util.ViewFeedbackAdapter
 import kotlinx.android.synthetic.main.activity_view_feedback.*
 import java.util.*

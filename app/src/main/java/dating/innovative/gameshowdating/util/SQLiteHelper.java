@@ -1,4 +1,4 @@
-package dating.innovative.gameshowdating.activity;
+package dating.innovative.gameshowdating.util;
 
 import android.content.ContentValues;
 import android.content.Context;

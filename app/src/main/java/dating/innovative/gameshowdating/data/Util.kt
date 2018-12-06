@@ -7,7 +7,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Environment
 import android.util.Base64
-import dating.innovative.gameshowdating.activity.MessageScheduler
+import dating.innovative.gameshowdating.util.MessageScheduler
 import dating.innovative.gameshowdating.model.RemoteUser
 import dating.innovative.gameshowdating.model.User
 import java.io.File

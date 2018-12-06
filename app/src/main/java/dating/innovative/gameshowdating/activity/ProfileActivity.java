@@ -3,13 +3,8 @@ package dating.innovative.gameshowdating.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.ExifInterface;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.storage.StorageManager;
 import android.support.annotation.NonNull;
-import android.support.v4.content.FileProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,16 +15,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import dating.innovative.gameshowdating.R;
 import dating.innovative.gameshowdating.data.WebSocketHandler;
-import dating.innovative.gameshowdating.model.RemoteUser;
 import dating.innovative.gameshowdating.util.BaseActivity;
 import dating.innovative.gameshowdating.util.PreferenceManagerClass;
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
+import dating.innovative.gameshowdating.util.SQLiteHelper;
 
 import java.io.*;
-import java.util.logging.FileHandler;
-
-import static dating.innovative.gameshowdating.activity.ImageSettingActivity.photoPath;
 
 public class ProfileActivity extends BaseActivity {
 

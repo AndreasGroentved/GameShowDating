@@ -8,6 +8,7 @@ import dating.innovative.gameshowdating.data.WebSocketHandler
 import dating.innovative.gameshowdating.model.Message
 import dating.innovative.gameshowdating.util.ChatAdapter
 import dating.innovative.gameshowdating.util.PreferenceManagerClass
+import dating.innovative.gameshowdating.util.SQLiteHelper
 import kotlinx.android.synthetic.main.activity_chat.*
 
 class ChatActivity : Activity() {

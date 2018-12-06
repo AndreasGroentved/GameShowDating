@@ -1,9 +1,10 @@
-package dating.innovative.gameshowdating.activity
+package dating.innovative.gameshowdating.util
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.GestureDetector
 import android.view.MotionEvent
+import dating.innovative.gameshowdating.util.ClickListener
 
 /**
  * Created by Andreas on 20-Jun-16.

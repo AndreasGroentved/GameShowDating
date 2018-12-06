@@ -1,4 +1,4 @@
-package dating.innovative.gameshowdating.activity
+package dating.innovative.gameshowdating.util
 
 import android.app.job.JobParameters
 import android.app.job.JobService
@@ -7,7 +7,6 @@ import android.support.v4.app.NotificationManagerCompat
 import dating.innovative.gameshowdating.R
 import dating.innovative.gameshowdating.data.Util
 import dating.innovative.gameshowdating.data.WebSocketHandler
-import dating.innovative.gameshowdating.util.PreferenceManagerClass
 
 
 class MessageScheduler : JobService() {

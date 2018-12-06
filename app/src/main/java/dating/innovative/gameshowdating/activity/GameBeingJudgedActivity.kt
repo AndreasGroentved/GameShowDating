@@ -9,7 +9,10 @@ import android.view.View
 import dating.innovative.gameshowdating.R
 import dating.innovative.gameshowdating.data.WebSocketHandler
 import dating.innovative.gameshowdating.model.Game
+import dating.innovative.gameshowdating.util.ClickListener
 import dating.innovative.gameshowdating.util.GameUtil
+import dating.innovative.gameshowdating.util.JudgerAdapter
+import dating.innovative.gameshowdating.util.RecyclerTouchListener
 import kotlinx.android.synthetic.main.activity_game_being_judged.*
 
 class GameBeingJudgedActivity : Activity() {
@@ -46,7 +49,13 @@ class GameBeingJudgedActivity : Activity() {
             adapter.names = it
             adapter.totalCount = it.size
             adapter.isInCount = it.size
-            judged_recycler.addOnItemTouchListener(RecyclerTouchListener(this, judged_recycler, clickListener(it)))
+            judged_recycler.addOnItemTouchListener(
+                RecyclerTouchListener(
+                    this,
+                    judged_recycler,
+                    clickListener(it)
+                )
+            )
             Snackbar.make(being_judged_parent, "Click on user to see more and begin chat", Snackbar.LENGTH_LONG).show()
         }
     }
