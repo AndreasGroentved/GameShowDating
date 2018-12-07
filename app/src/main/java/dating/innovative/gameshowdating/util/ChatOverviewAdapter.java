@@ -45,18 +45,7 @@ public class ChatOverviewAdapter extends RecyclerView.Adapter<ChatOverviewAdapte
                     Bitmap.createScaledBitmap(BitmapFactory.decodeByteArray(user.getProfilePicture(), 0, user.getProfilePicture().length), 50, 50, false)
             );
         }
-        /*Uri profilePicUri = Uri.parse(user.profileImage);
-        InputStream imageStream = null;
-        try {
-            imageStream = context.getContentResolver().openInputStream(profilePicUri);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }*/
-        /*Bitmap matchImage = BitmapFactory.decodeStream(imageStream);
-        matchProfileImage.setImageBitmap(resizeBitmap(matchImage, 50));*/
-
         holder.nameTextView.setText(user.get_id());
-
         Button openChatButton = holder.messageButton;
         openChatButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,24 +55,6 @@ public class ChatOverviewAdapter extends RecyclerView.Adapter<ChatOverviewAdapte
                 context.startActivity(chatActivity);
             }
         });
-
-    }
-
-    private Bitmap resizeBitmap(Bitmap image, int maxSize) {
-
-        int bitmapWidth = image.getWidth();
-        int bitmapHeight = image.getHeight();
-
-        float bitmapRatio = (float) bitmapWidth / (float) bitmapHeight;
-        if (bitmapRatio > 1) {
-            bitmapWidth = maxSize;
-            bitmapHeight = (int) (bitmapWidth / bitmapRatio);
-        } else {
-            bitmapHeight = maxSize;
-            bitmapWidth = (int) (bitmapHeight * bitmapRatio);
-        }
-
-        return Bitmap.createScaledBitmap(image, bitmapWidth, bitmapHeight, true);
     }
 
     @Override

@@ -2,6 +2,7 @@ package dating.innovative.gameshowdating.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import dating.innovative.gameshowdating.R;
 import dating.innovative.gameshowdating.data.WebSocketHandler;
+import dating.innovative.gameshowdating.util.SQLiteHelper;
 
 public class ProvideFeedbackActivity extends Activity {
 
@@ -16,6 +18,7 @@ public class ProvideFeedbackActivity extends Activity {
     Button sendFeedbackButton;
     Button skipButton;
     WebSocketHandler ws;
+    SQLiteHelper dbHelper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -26,6 +29,7 @@ public class ProvideFeedbackActivity extends Activity {
         sendFeedbackButton = findViewById(R.id.provideFeedbackSendButton);
         skipButton = findViewById(R.id.provideFeedbackDontSendFeedbackButton);
         ws = WebSocketHandler.getInstance();
+        dbHelper = SQLiteHelper.getSqLiteHelperInstance(getApplicationContext());
 
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,6 +44,7 @@ public class ProvideFeedbackActivity extends Activity {
             public void onClick(View view) {
                 if (!writeFeedbackEditText.getText().toString().isEmpty()) {
                     ws.comment(getIntent().getStringExtra("username"), writeFeedbackEditText.getText().toString(), getIntent().getLongExtra("timeStamp", 0), getIntent().getIntExtra("roundnumber", -1111));
+                    dbHelper.addFeedback(getIntent().getStringExtra("username"), writeFeedbackEditText.getText().toString());
                     Intent i = new Intent(getApplicationContext(), MenuActivity.class);
                     startActivity(i);
                 } else {

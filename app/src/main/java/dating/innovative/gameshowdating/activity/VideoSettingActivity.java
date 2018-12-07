@@ -133,27 +133,19 @@ public class VideoSettingActivity extends BaseActivity {
                 videoUri = data.getData();
                 confirmationLabel.setText(videoUri.toString());
                 videoView.setVideoURI(videoUri);
-
-                System.out.println(getPath(videoUri));
                 File f = new File(getPath(videoUri));
                 byte[] b = Util.fileToBytes(f);
-                System.out.println("size " + b.length);
-
                 WebSocketHandler.getInstance().sendOrUpdateVideo(b, getIntent().getIntExtra("videoId", 0), new Function1<Boolean, Unit>() {
                             @Override
                             public Unit invoke(Boolean aBoolean) {
-                                System.out.println("success?????????????  " + aBoolean);
                                 return null;
                             }
                         }
                 );
-
                 videoView.requestFocus();
                 videoView.start();
             }
         }
-
-
     }
 
     public String getPath(Uri uri) {

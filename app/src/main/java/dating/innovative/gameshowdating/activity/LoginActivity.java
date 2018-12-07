@@ -117,26 +117,6 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void setUserData(RemoteUser user) {
-
-/*
-
-        try {
-            File.createTempFile("profilePictureUpload_" + user.get_id(), ".jpg", storageDirImage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        File file = Util.createProfilePicture(this);
-
-        if (file != null) {
-            Intent snapPictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            Uri uri = FileProvider.getUriForFile(getApplicationContext(), "dating.innovative.gameshowdating", file);
-            snapPictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-            startActivityForResult(snapPictureIntent, 1);
-        }
-*/
-
-   /*     dbHelper.updateUserProfileImage(dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())),
-                PreferenceManagerClass.getProfilePictureUpdated(getApplicationContext()));*/
         PreferenceManagerClass.setUsername(getApplicationContext(), user.get_id());
         if (dbHelper.getUserByUsername(PreferenceManagerClass.getUsername(getApplicationContext())) == null) {
             dbHelper.addUser(Util.remoteUserToUser(user));

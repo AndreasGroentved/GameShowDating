@@ -23,7 +23,6 @@ class GameBeingJudgedActivity : Activity() {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_being_judged)
-
         val gameId = intent.extras!!.getString("gameId")
         val ws = WebSocketHandler.instance
         ws.confirmGame(true, gameId!!, { game ->

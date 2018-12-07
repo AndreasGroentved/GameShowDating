@@ -36,7 +36,6 @@ class GameJudgingActivity : Activity() {
             }
             lastGameUpdate = game
         }, {
-            //TODO tid til at lave damer/mænd(/starte chat)
             Snackbar.make(judging_parent, "Wait and see if you are chosen", Snackbar.LENGTH_LONG).show()
             this.finish()
         })
