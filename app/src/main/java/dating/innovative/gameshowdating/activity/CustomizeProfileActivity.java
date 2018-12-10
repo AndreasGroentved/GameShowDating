@@ -22,6 +22,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+/*  Andreas Jeppesen - ajepp09@student.sdu.dk
+    Emil Jensen - emije14@student.sdu.dk
+    Nicolai Jensen - nije214@student.sdu.dk */
+
 public class CustomizeProfileActivity extends BaseActivity {
 
     EditText biographyEdit;

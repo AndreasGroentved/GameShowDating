@@ -10,6 +10,10 @@ import dating.innovative.gameshowdating.model.Game
 import dating.innovative.gameshowdating.util.GameUtil
 import kotlinx.android.synthetic.main.activity_game_judging.*
 
+/*  Andreas Jeppesen - ajepp09@student.sdu.dk
+    Emil Jensen - emije14@student.sdu.dk
+    Nicolai Jensen - nije214@student.sdu.dk */
+
 class GameJudgingActivity : Activity() {
 
     private lateinit var gameId: String

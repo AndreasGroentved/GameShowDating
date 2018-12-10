@@ -15,6 +15,10 @@ import dating.innovative.gameshowdating.util.JudgerAdapter
 import dating.innovative.gameshowdating.util.RecyclerTouchListener
 import kotlinx.android.synthetic.main.activity_game_being_judged.*
 
+/*  Andreas Jeppesen - ajepp09@student.sdu.dk
+    Emil Jensen - emije14@student.sdu.dk
+    Nicolai Jensen - nije214@student.sdu.dk */
+
 class GameBeingJudgedActivity : Activity() {
 
     private lateinit var adapter: JudgerAdapter
@@ -30,19 +34,19 @@ class GameBeingJudgedActivity : Activity() {
             updateUI(game)
             if (GameUtil.didRoundChange(game, lastGameUpdate)) {
                 println("round changed")
-                GameUtil.loadVideo(ws,game, this, gameVideoView)
+                GameUtil.loadVideo(ws, game, this, gameVideoView)
             } else {
                 println("round didn't change")
             }
         }, {
             if (it.isEmpty()) nooneLeft()
-            someLeft(it)
+            else someLeft(it)
         })
         setUpListView()
     }
 
     private fun someLeft(it: List<String>) {
-        runOnUiThread{
+        runOnUiThread {
             val recyclerLayoutManager = GridLayoutManager(this, it.size)
             judged_recycler.layoutManager = recyclerLayoutManager
             adapter.names = it
@@ -67,7 +71,7 @@ class GameBeingJudgedActivity : Activity() {
     private fun clickListener(userNames: List<String>) = object : ClickListener {
         override fun onLongClick(view: View, position: Int) {}
         override fun onClick(view: View, position: Int) {
-            val intent: Intent = Intent(this@GameBeingJudgedActivity, ShouldDateActivity::class.java)
+            val intent = Intent(this@GameBeingJudgedActivity, ShouldDateActivity::class.java)
                 .putExtra("username", userNames[position])
             startActivity(intent)
         }

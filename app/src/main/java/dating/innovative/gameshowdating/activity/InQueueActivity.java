@@ -9,6 +9,10 @@ import dating.innovative.gameshowdating.data.WebSocketHandler;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 
+/*  Andreas Jeppesen - ajepp09@student.sdu.dk
+    Emil Jensen - emije14@student.sdu.dk
+    Nicolai Jensen - nije214@student.sdu.dk */
+
 public class InQueueActivity extends Activity {
 
     TextView sexPreferenceQueueTextView;

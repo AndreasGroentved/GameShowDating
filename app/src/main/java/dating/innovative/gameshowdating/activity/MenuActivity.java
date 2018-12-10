@@ -7,6 +7,10 @@ import android.view.View;
 import android.widget.Button;
 import dating.innovative.gameshowdating.R;
 
+/*  Andreas Jeppesen - ajepp09@student.sdu.dk
+    Emil Jensen - emije14@student.sdu.dk
+    Nicolai Jensen - nije214@student.sdu.dk */
+
 public class MenuActivity extends Activity {
 
     private Button profileButton;

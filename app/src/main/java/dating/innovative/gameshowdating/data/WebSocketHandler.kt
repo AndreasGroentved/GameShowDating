@@ -9,6 +9,9 @@ import okhttp3.WebSocketListener
 import org.json.JSONArray
 import org.json.JSONObject
 
+/*  Andreas Jeppesen - ajepp09@student.sdu.dk
+    Emil Jensen - emije14@student.sdu.dk
+    Nicolai Jensen - nije214@student.sdu.dk */
 
 class WebSocketHandler private constructor() : WebSocketListener() {
 
@@ -36,9 +39,7 @@ class WebSocketHandler private constructor() : WebSocketListener() {
      *  Returns user token or "failure", call first!!!!!!!!!!!!!!
      */
     fun logon(userName: String, password: String, callBack: (Boolean) -> Unit) {
-        println("logon!!!")
         socket.on("login") {
-            println("logged in")
             socket.off("login")
             val json = it[0] as String
             if (json != "failure") token = json
@@ -53,19 +54,11 @@ class WebSocketHandler private constructor() : WebSocketListener() {
     fun getVideo(username: String, roundNumber: Int, callBack: (ByteArray?) -> Unit) {
         socket.on("getVideo") {
             socket.off("getVideo")
-
             try {
-
                 val data = (it[0] as JSONObject)
                 val video = data.get("video") as ByteArray
-                println(video.size)
-
-                //println(data.size)
-                //val byteArr = it[0] as ByteArray
-                println("get video success")
                 callBack(video)
             } catch (e: Exception) {
-                println("failure")
                 callBack(null)
             }
         }
@@ -174,9 +167,8 @@ class WebSocketHandler private constructor() : WebSocketListener() {
                 val gsonToken = object : TypeToken<List<Feedback>>() {}.type
                 gson.fromJson<List<Feedback>>(data, gsonToken)
             } catch (e: java.lang.Exception) {
-                listOf<Feedback>()
+                emptyList<Feedback>()
             }
-            println("${comments.size} comments")
             callBack(comments)
         }
         socket.emit("getComments", token, username)
@@ -216,7 +208,7 @@ class WebSocketHandler private constructor() : WebSocketListener() {
                     val gsonToken = object : TypeToken<List<String>>() {}.type
                     gson.fromJson<List<String>>(data, gsonToken)
                 } catch (e: java.lang.Exception) {
-                    listOf<String>()
+                    emptyList<String>()
                 }
             )
         }
@@ -268,14 +260,14 @@ class WebSocketHandler private constructor() : WebSocketListener() {
             } catch (e: Exception) {
                 "success"
             }
-            val remoteMessage =/*nailed it*/
+            val remoteMessage =
                 (try {
-                    if (returnVal == "failure") callBack(mapOf())
+                    if (returnVal == "failure") callBack(emptyMap())
                     val data = (it[0] as JSONArray).toString()
                     val gsonToken = object : TypeToken<List<RemoteMessage>>() {}.type //Get all messages from server
                     gson.fromJson<List<RemoteMessage>>(data, gsonToken) //Try to deserialize
                 } catch (e: java.lang.Exception) {
-                    listOf<RemoteMessage>() //If this failes, make empty list
+                    emptyList<RemoteMessage>() //If this failes, make empty list
                 }).groupBy { if (username == it.reciever) it.sender else it.reciever } //Group messages based on person
                     .map { (key, value) ->
                         //Map it to key value pairs, with user as key and messages as value

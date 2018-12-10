@@ -10,6 +10,9 @@ import dating.innovative.gameshowdating.util.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
+/*  Andreas Jeppesen - ajepp09@student.sdu.dk
+    Emil Jensen - emije14@student.sdu.dk
+    Nicolai Jensen - nije214@student.sdu.dk */
 
 class MainActivity : BaseActivity() {
     override fun getLayout(): Int = R.layout.activity_main

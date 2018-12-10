@@ -11,6 +11,10 @@ import dating.innovative.gameshowdating.R;
 import dating.innovative.gameshowdating.util.SQLiteHelper;
 import dating.innovative.gameshowdating.util.PreferenceManagerClass;
 
+/*  Andreas Jeppesen - ajepp09@student.sdu.dk
+    Emil Jensen - emije14@student.sdu.dk
+    Nicolai Jensen - nije214@student.sdu.dk */
+
 public class VideoPlayerActivity extends AppCompatActivity {
     VideoView videoPlayer;
     MediaController mediaController;

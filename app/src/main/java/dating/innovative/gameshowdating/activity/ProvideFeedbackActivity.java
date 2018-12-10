@@ -12,6 +12,10 @@ import dating.innovative.gameshowdating.R;
 import dating.innovative.gameshowdating.data.WebSocketHandler;
 import dating.innovative.gameshowdating.util.SQLiteHelper;
 
+/*  Andreas Jeppesen - ajepp09@student.sdu.dk
+    Emil Jensen - emije14@student.sdu.dk
+    Nicolai Jensen - nije214@student.sdu.dk */
+
 public class ProvideFeedbackActivity extends Activity {
 
     EditText writeFeedbackEditText;

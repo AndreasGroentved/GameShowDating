@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- Andreas Jeppesen - ajepp09@student.sdu.dk
+      Emil Jensen - emije14@student.sdu.dk
+      Nicolai Jensen - nije214@student.sdu.dk -->
+
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-                                             xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:id="@+id/being_judged_parent"
-    android:layout_height="match_parent">
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             android:layout_width="match_parent"
+                                             android:id="@+id/being_judged_parent"
+                                             android:layout_height="match_parent">
 
     <VideoView
             android:id="@+id/gameVideoView"
@@ -15,28 +20,28 @@
             android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/round_number_view"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/judged_recycler"
-        android:layout_width="0dp"
-        android:layout_height="192dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/round_number_view" />
+            android:id="@+id/judged_recycler"
+            android:layout_width="0dp"
+            android:layout_height="192dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/round_number_view"/>
 
     <TextView
-        android:id="@+id/round_number_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="Round number: 1"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gameVideoView" />
+            android:id="@+id/round_number_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Round number: 1"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gameVideoView"/>
 
 </android.support.constraint.ConstraintLayout>

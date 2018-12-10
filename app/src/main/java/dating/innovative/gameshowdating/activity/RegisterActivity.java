@@ -17,6 +17,10 @@ import dating.innovative.gameshowdating.util.SQLiteHelper;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 
+/*  Andreas Jeppesen - ajepp09@student.sdu.dk
+    Emil Jensen - emije14@student.sdu.dk
+    Nicolai Jensen - nije214@student.sdu.dk */
+
 public class RegisterActivity extends BaseActivity {
 
     EditText registerUsername;

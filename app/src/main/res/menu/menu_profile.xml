@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
+
+<!-- Andreas Jeppesen - ajepp09@student.sdu.dk
+      Emil Jensen - emije14@student.sdu.dk
+      Nicolai Jensen - nije214@student.sdu.dk -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:title="Log out" android:id="@+id/profileLogOut"/>
     <item android:title="Customize profile" android:id="@+id/profileCustomize"/>

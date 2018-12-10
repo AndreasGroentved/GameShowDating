@@ -15,6 +15,10 @@ import dating.innovative.gameshowdating.model.User;
 import java.util.ArrayList;
 import java.util.UUID;
 
+/*  Andreas Jeppesen - ajepp09@student.sdu.dk
+    Emil Jensen - emije14@student.sdu.dk
+    Nicolai Jensen - nije214@student.sdu.dk */
+
 public class SQLiteHelper extends SQLiteOpenHelper {
 
     //Singleton variable for best practice

@@ -18,6 +18,10 @@ import dating.innovative.gameshowdating.model.RemoteUser;
 
 import java.util.ArrayList;
 
+/*  Andreas Jeppesen - ajepp09@student.sdu.dk
+    Emil Jensen - emije14@student.sdu.dk
+    Nicolai Jensen - nije214@student.sdu.dk */
+
 public class ChatOverviewAdapter extends RecyclerView.Adapter<ChatOverviewAdapter.ChatOverviewViewHolder> {
 
     public ArrayList<RemoteUser> userDataSet;

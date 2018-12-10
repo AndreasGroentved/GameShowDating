@@ -9,6 +9,10 @@ import android.widget.CheckBox;
 import android.widget.RadioButton;
 import dating.innovative.gameshowdating.R;
 
+/*  Andreas Jeppesen - ajepp09@student.sdu.dk
+    Emil Jensen - emije14@student.sdu.dk
+    Nicolai Jensen - nije214@student.sdu.dk */
+
 public class FindGameActivity extends Activity {
 
     Button findGameButton;

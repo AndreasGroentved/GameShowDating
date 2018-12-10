@@ -9,6 +9,10 @@ import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileOutputStream
 
+/*  Andreas Jeppesen - ajepp09@student.sdu.dk
+    Emil Jensen - emije14@student.sdu.dk
+    Nicolai Jensen - nije214@student.sdu.dk */
+
 object GameUtil {
     @JvmStatic
     fun didRoundChange(newGameUpdate: Game, lastGameUpdate: Game?) =

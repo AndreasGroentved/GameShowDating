@@ -14,6 +14,10 @@ import java.util.List;
 import dating.innovative.gameshowdating.R;
 import dating.innovative.gameshowdating.model.Message;
 
+/*  Andreas Jeppesen - ajepp09@student.sdu.dk
+    Emil Jensen - emije14@student.sdu.dk
+    Nicolai Jensen - nije214@student.sdu.dk */
+
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
 
     public List<Message> messages;

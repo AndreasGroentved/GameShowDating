@@ -25,6 +25,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 
+/*  Andreas Jeppesen - ajepp09@student.sdu.dk
+    Emil Jensen - emije14@student.sdu.dk
+    Nicolai Jensen - nije214@student.sdu.dk */
+
 public class ImageSettingActivity extends BaseActivity {
 
     ImageView previewImageView;

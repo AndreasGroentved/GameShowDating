@@ -11,6 +11,10 @@ import dating.innovative.gameshowdating.util.ViewFeedbackAdapter
 import kotlinx.android.synthetic.main.activity_view_feedback.*
 import java.util.*
 
+/*  Andreas Jeppesen - ajepp09@student.sdu.dk
+    Emil Jensen - emije14@student.sdu.dk
+    Nicolai Jensen - nije214@student.sdu.dk */
+
 class ViewFeedbackActivity : Activity() {
 
     private lateinit var recyclerAdapter: ViewFeedbackAdapter

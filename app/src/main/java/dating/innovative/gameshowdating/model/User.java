@@ -2,6 +2,10 @@ package dating.innovative.gameshowdating.model;
 
 import com.google.gson.annotations.SerializedName;
 
+/*  Andreas Jeppesen - ajepp09@student.sdu.dk
+    Emil Jensen - emije14@student.sdu.dk
+    Nicolai Jensen - nije214@student.sdu.dk */
+
 public class User {
     @SerializedName("_id")
     public String username;

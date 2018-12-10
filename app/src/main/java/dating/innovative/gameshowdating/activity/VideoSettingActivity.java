@@ -2,7 +2,6 @@ package dating.innovative.gameshowdating.activity;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -23,6 +22,10 @@ import kotlin.jvm.functions.Function1;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+
+/*  Andreas Jeppesen - ajepp09@student.sdu.dk
+    Emil Jensen - emije14@student.sdu.dk
+    Nicolai Jensen - nije214@student.sdu.dk */
 
 public class VideoSettingActivity extends BaseActivity {
 

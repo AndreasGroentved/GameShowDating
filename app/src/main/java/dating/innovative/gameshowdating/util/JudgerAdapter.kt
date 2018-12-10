@@ -9,6 +9,9 @@ import dating.innovative.gameshowdating.R.drawable.cross
 import dating.innovative.gameshowdating.R.drawable.stick
 import kotlinx.android.synthetic.main.list_item_judger.view.*
 
+/*  Andreas Jeppesen - ajepp09@student.sdu.dk
+    Emil Jensen - emije14@student.sdu.dk
+    Nicolai Jensen - nije214@student.sdu.dk */
 
 class JudgerAdapter : RecyclerView.Adapter<JudgerAdapter.GuessHolder>() {
 
